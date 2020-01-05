@@ -23,14 +23,14 @@ More detailed documentation/code layout will be added in a later release.
 
 ## Roadmap
 The following functionality will be implemented in GAS:
-* ~~ Basic character stats ~~ [Done]
-* ~~ Basic gameplay effects ~~ [Done]
-* ~~ Basic stat modification from gameplay effects ~~ [Done]
-* ~~ Basic abilities ~~ [Done]
-* ~~ Cooldown effects ~~ [Done]
-* ~~ Cooldown sharing between abilities (e.g. a Global cooldown after every ability cast) ~~ [Done]
-* ~~ Visual display of abilities (e.g. an "ability bar") ~~ [Done]
-* ~~ Visual display of cooldowns(e.g. on an "ability bar" ~~ [Done]
+* ~~Basic character stats~~[Done]
+* ~~Basic gameplay effects~~[Done]
+* ~~Basic stat modification from gameplay effects~~[Done]
+* ~~Basic abilities~~[Done]
+* ~~Cooldown effects~~[Done]
+* ~~Cooldown sharing between abilities (e.g. a Global cooldown after every ability cast)~~[Done]
+* ~~Visual display of abilities (e.g. an "ability bar")~~[Done]
+* ~~Visual display of cooldowns(e.g. on an "ability bar"~~[Done]
 * Visual display of active gameplay effects
 * Sample code showing how to restrict which gameplay effects are displayed (e.g. on a "status bar")
 * Periodic effects (such as damage-over-time)

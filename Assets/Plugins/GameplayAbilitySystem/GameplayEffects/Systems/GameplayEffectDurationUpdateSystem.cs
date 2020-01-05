@@ -35,15 +35,15 @@ namespace GameplayAbilitySystem.GameplayEffects.Systems {
         struct GameplayEffectDurationUpdateSystemJob : IJobForEach<GameplayEffectDurationComponent> {
             public float deltaTime;
             public void Execute(ref GameplayEffectDurationComponent duration) {
-                duration.RemainingTime -= deltaTime;
-                duration.RemainingTime = math.max(0, duration.RemainingTime);
+                duration.Value.RemainingTime -= deltaTime;
+                duration.Value.RemainingTime = math.max(0, duration.Value.RemainingTime);
             }
         }
 
         protected override JobHandle OnUpdate(JobHandle inputDependencies) {
             var job = new GameplayEffectDurationUpdateSystemJob
             {
-                deltaTime = Time.deltaTime
+                deltaTime = Time.DeltaTime
             };
 
             // Now that the job is set up, schedule it to be run. 

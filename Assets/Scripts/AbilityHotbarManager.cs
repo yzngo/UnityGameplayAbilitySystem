@@ -1,66 +1,123 @@
+/*
+ * Created on Sat Nov 23 2019
+ *
+ * The MIT License (MIT)
+ * Copyright (c) 2019 Sahil Jain
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+ * TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Entities;
-using Unity.Collections;
+using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
+using GameplayAbilitySystem.AbilitySystem.Components;
+using GameplayAbilitySystem.Abilities.Components;
+using MyGameplayAbilitySystem.Common.ScriptableObjects;
 
 public class AbilityHotbarManager : MonoBehaviour {
-    public AbilityCharacter AbilityCharacter;
+    public ActorAbilitySystem AbilityCharacter;
     public List<AbilityHotbarButton> AbilityButtons;
-    public List<AbilityIconMap> AbilityIconMaps;
+    public AbilityIconMapScriptableObject AbilityIconMaps;
+
+    public List<int> AbilityIdentifiers;
 
     void Start() {
-        for (int i = 0; i < AbilityCharacter.Abilities.Count; i++) {
-            if (AbilityButtons.Count > i) {
-                var abilityGraphic = AbilityIconMaps.FirstOrDefault(x => x.Ability == AbilityCharacter.Abilities[i].Ability);
-
-                if (abilityGraphic != null) {
-                    AbilityButtons[i].ImageIcon.sprite = abilityGraphic.Sprite;
-                    AbilityButtons[i].ImageIcon.color = abilityGraphic.SpriteColor;
-                }
-            }
-        }
-
-        World.Active.GetOrCreateSystem<AbilityHotbarUpdateSystem>().CharacterEntity = AbilityCharacter.SelfAbilitySystem.entity;
-        World.Active.GetOrCreateSystem<AbilityHotbarUpdateSystem>().AbilityButtons = AbilityButtons;
-
+        World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<AbilityHotbarUpdateSystem>().AbilityOwnerEntity = AbilityCharacter.AbilityOwnerEntity;
+        World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<AbilityHotbarUpdateSystem>().AbilityButtons = AbilityButtons;
+        World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<AbilityHotbarUpdateSystem>().AbilityIdentifiers = AbilityIdentifiers;
+        World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<AbilityHotbarUpdateSystem>().AbilityIconMaps = AbilityIconMaps.AbilityIconMaps;
     }
-
 }
 
 public class AbilityHotbarUpdateSystem : ComponentSystem {
-    public Entity CharacterEntity;
-    public List<AbilityHotbarButton> AbilityButtons = new List<AbilityHotbarButton>();
-    EAbility[] AbilityMapping;
+    public Entity AbilityOwnerEntity;
 
-    protected override void OnCreate() {
-        AbilityMapping = new[] {
-            EAbility.FireAbility,
-            EAbility.FireAbility,
-            EAbility.HealAbility
-        };
-    }
+    [SerializeField]
+    public List<AbilityHotbarButton> AbilityButtons;
 
+    public List<int> AbilityIdentifiers;
+
+
+    public List<AbilityIconMap> AbilityIconMaps;
+
+    public Entity[] GrantedAbilityEntities = new Entity[8];
 
     protected override void OnUpdate() {
-        // reset all cooldowns
-        for (int i = 0; i < AbilityButtons.Count; i++) {
-            AbilityButtons[i].SetCooldownRemainingPercent(1);
+        // We need to store list of entities corresponding to the player's granted abilities
+        // If the first ability is still null, then update the granted abilities list
+        if (GrantedAbilityEntities[0] == default(Entity)) {
+            UpdateGrantedAbilityEntitiesList();
         }
-        Entities.ForEach<AbilityComponent, GrantedAbilityComponent, GrantedAbilityCooldownComponent>((Entity entity, ref AbilityComponent Ability, ref GrantedAbilityComponent grantedAbility, ref GrantedAbilityCooldownComponent cooldown) => {
-            // UpdateButton(0, cooldown.Duration, cooldown.TimeRemaining);
-            for (var i = 0; i < AbilityMapping.Length; i++) {
-                if (Ability.Ability == AbilityMapping[i] && grantedAbility.GrantedTo == CharacterEntity) {
-                    UpdateButton(i, cooldown.Duration, cooldown.TimeRemaining, cooldown.Duration > 0);
+        
+        for (int i = 0; i < AbilityButtons.Count; i++) {
+            // reset all cooldowns
+            AbilityButtons[i].SetCooldownRemainingPercent(1);
+            var abilityIconMap = AbilityIconMaps.FirstOrDefault(x => x.AbilityIdentifier == AbilityIdentifiers[i]);
+            if (abilityIconMap != null) {
+                // Set icon to what is defined in Ability Icon Maps, if different
+                AbilityButtons[i].ImageIcon.sprite = abilityIconMap.Sprite;
+                AbilityButtons[i].ImageIcon.color = abilityIconMap.SpriteColor;
+            } else {
+                AbilityButtons[i].ImageIcon.sprite = null;
+                AbilityButtons[i].ImageIcon.color = new Color32(0, 0, 0, 0);
+            }
+
+
+            if (World.DefaultGameObjectInjectionWorld.EntityManager.HasComponent<AbilityCooldownComponent>(GrantedAbilityEntities[i])) {
+                var abilityCooldown = World.DefaultGameObjectInjectionWorld.EntityManager.GetComponentData<AbilityCooldownComponent>(GrantedAbilityEntities[i]);
+                var abilityState = World.DefaultGameObjectInjectionWorld.EntityManager.GetComponentData<AbilityStateComponent>(GrantedAbilityEntities[i]);
+                UpdateButton(i, abilityCooldown.Value.NominalDuration, abilityCooldown.Value.RemainingTime, abilityState > 0);
+            }
+
+        }
+
+    }
+
+    public void UpdateGrantedAbilityEntitiesList() {
+        // Clear existing list of granted abilities
+        for (var i = 0; i < GrantedAbilityEntities.Length; i++) {
+            GrantedAbilityEntities[i] = default(Entity);
+        }
+
+        Entities
+        .ForEach<AbilityOwnerComponent, AbilityCooldownComponent, AbilityStateComponent, AbilityIdentifierComponent>((Entity entity, ref AbilityOwnerComponent abilityOwner, ref AbilityCooldownComponent abilityCooldown, ref AbilityStateComponent state, ref AbilityIdentifierComponent identifier) => {
+            // Only do this for the appropriate actor
+            if (abilityOwner.Value == AbilityOwnerEntity) {
+                // Check our list to see if this ability is defined
+                var id = identifier.Value;
+                var abilityIdentifierIndex = AbilityIdentifiers.FindIndex(x => x == id);
+                if (abilityIdentifierIndex >= 0) {
+                    GrantedAbilityEntities[abilityIdentifierIndex] = entity;
                 }
             }
+
         });
     }
+
+
     private void UpdateButton(int index, float cooldownDuration, float cooldownTimeRemaining, bool cooldownActive) {
+
         var button = AbilityButtons[index];
         var remainingPercent = 1f;
         if (cooldownDuration != 0) {
             remainingPercent = 1 - cooldownTimeRemaining / cooldownDuration;
+        }
+
+        if (remainingPercent == 1 && cooldownActive) {
+            remainingPercent = 0;
         }
         button.SetCooldownRemainingPercent(remainingPercent);
     }

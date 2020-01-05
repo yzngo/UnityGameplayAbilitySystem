@@ -30,26 +30,11 @@ namespace GameplayAbilitySystem.Attributes.Systems {
     /// Custom attribute modification types should inherit from this class
     /// and modify as necessary.
     /// 
-    /// See <see cref="GenericAttributeSystem{TAttributeTag}"> for a sample modifier system
+    /// See <see cref="GenericAttributeTemporarySystem{TAttributeTag}"> for a sample modifier system
     /// </summary>
     /// <typeparam name="TAttribute">The attribute this system modifies</typeparam>
     public abstract class AttributeModificationSystem<TAttribute> : JobComponentSystem
     where TAttribute : struct, IAttributeComponent, IComponentData {
-
-        /// <summary>
-        /// This is the list of queries that are use
-        /// </summary>
-        protected EntityQuery[] Queries = new EntityQuery[3];
-        protected EntityQuery actorsWithAttributesQuery;
-        protected EntityQuery CreateQuery<TOper>()
-        where TOper : struct, IAttributeOperator, IComponentData {
-            return GetEntityQuery(
-                ComponentType.ReadOnly<AttributeComponentTag<TAttribute>>(),
-                ComponentType.ReadOnly<TOper>(),
-                ComponentType.ReadOnly<AttributeModifier<TOper, TAttribute>>(),
-                ComponentType.ReadOnly<AttributesOwnerComponent>()
-                );
-        }
 
         protected override JobHandle OnUpdate(JobHandle inputDependencies) {
             inputDependencies = ScheduleJobs(inputDependencies);

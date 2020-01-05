@@ -33,3 +33,11 @@ using Unity.Entities;
 [assembly: RegisterGenericComponentType(typeof(GameplayTagsBufferElement<ISourceBlockedTagsBufferElement>))]
 [assembly: RegisterGenericComponentType(typeof(GameplayTagsBufferElement<ITargetRequiredTagsBufferElement>))]
 [assembly: RegisterGenericComponentType(typeof(GameplayTagsBufferElement<ITargetBlockedTagsBufferElement>))]
+
+[assembly: RegisterGenericComponentType(typeof(GameplayTagsBufferElement<IGameplayEffectAssetTagsBufferElement>))]
+[assembly: RegisterGenericComponentType(typeof(GameplayTagsBufferElement<IGrantedTagsBufferElement>))]
+[assembly: RegisterGenericComponentType(typeof(GameplayTagsBufferElement<IOngoingTagsRequirementsBufferElement>))]
+[assembly: RegisterGenericComponentType(typeof(GameplayTagsBufferElement<IApplicationTagRequirementsBufferElement>))]
+[assembly: RegisterGenericComponentType(typeof(GameplayTagsBufferElement<IGrantedApplicationImmunityTagsBufferElement>))]
+[assembly: RegisterGenericComponentType(typeof(GameplayTagsBufferElement<IRemoveGameplayEffectsWithTagsBufferElement>))]
+

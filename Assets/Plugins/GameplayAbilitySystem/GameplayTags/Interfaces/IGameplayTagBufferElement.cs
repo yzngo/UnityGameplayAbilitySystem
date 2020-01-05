@@ -33,5 +33,14 @@ namespace GameplayAbilitySystem.GameplayTags.Interfaces {
     public interface ISourceBlockedTagsBufferElement : IGameplayTagBufferElement { }
     public interface ITargetRequiredTagsBufferElement : IGameplayTagBufferElement { }
     public interface ITargetBlockedTagsBufferElement : IGameplayTagBufferElement { }
+
+    public interface IGameplayEffectAssetTagsBufferElement : IGameplayTagBufferElement { }
+    public interface IGrantedTagsBufferElement : IGameplayTagBufferElement { }
+    public interface IOngoingTagsRequirementsBufferElement : IGameplayTagBufferElement { }
+    public interface IApplicationTagRequirementsBufferElement : IGameplayTagBufferElement { }
+    public interface IGrantedApplicationImmunityTagsBufferElement : IGameplayTagBufferElement { }
+    public interface IRemoveGameplayEffectsWithTagsBufferElement : IGameplayTagBufferElement { }
+
+
 }
 

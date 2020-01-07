@@ -41,3 +41,5 @@ using Unity.Entities;
 [assembly: RegisterGenericComponentType(typeof(GameplayTagsBufferElement<IGrantedApplicationImmunityTagsBufferElement>))]
 [assembly: RegisterGenericComponentType(typeof(GameplayTagsBufferElement<IRemoveGameplayEffectsWithTagsBufferElement>))]
 
+
+[assembly: RegisterGenericComponentType(typeof(GameplayTagsBufferElement<IActorOwnedGameplayTags>))]

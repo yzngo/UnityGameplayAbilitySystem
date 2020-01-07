@@ -26,6 +26,7 @@ using Unity.Mathematics;
 namespace GameplayAbilitySystem.GameplayTags.Components {
 
     [StructLayout(LayoutKind.Explicit)]
+    [Serializable]
     public struct GameplayTagComponent : IComponentData, IEquatable<GameplayTagComponent> {
         [FieldOffset(0)] public uint TagId;
         [FieldOffset(0)] public byte TagIdLevel0;

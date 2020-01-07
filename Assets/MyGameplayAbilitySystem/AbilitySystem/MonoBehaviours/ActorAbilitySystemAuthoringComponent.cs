@@ -28,6 +28,8 @@ using GameplayAbilitySystem.Attributes.Components;
 using GameplayAbilitySystem.Attributes.ScriptableObjects;
 using GameplayAbilitySystem.Common.Components;
 using GameplayAbilitySystem.GameplayEffects.Components;
+using GameplayAbilitySystem.GameplayTags.Components;
+using GameplayAbilitySystem.GameplayTags.Interfaces;
 using MyGameplayAbilitySystem.Abilities;
 using MyGameplayAbilitySystem.Abilities.DefaultAttack;
 using MyGameplayAbilitySystem.Abilities.Fire1;
@@ -131,6 +133,7 @@ namespace MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours {
             attributeTypes.Add(typeof(AbilitySystemActorTransformComponent));
             attributeTypes.Add(typeof(GameplayEffectBufferElement));
             attributeTypes.Add(typeof(GrantedAbilityBufferElement));
+            attributeTypes.Add(typeof(GameplayTagsBufferElement<IActorOwnedGameplayTags>));
             var attributeArchetype = entityManager.CreateArchetype(attributeTypes.ToArray());
             // Create a new entity for this actor
             var abilitySystemAttributesEntity = entityManager.CreateEntity(attributeArchetype);
@@ -141,6 +144,7 @@ namespace MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours {
             entityManager.SetName(abilitySystemAttributesEntity, this.gameObject.name + " - GameplayAbilitySystem");
             return abilitySystemAttributesEntity;
         }
+
 
         /// <summary>
         /// For testing cooldowns

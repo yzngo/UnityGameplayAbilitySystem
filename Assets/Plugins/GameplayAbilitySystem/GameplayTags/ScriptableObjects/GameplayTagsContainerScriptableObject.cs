@@ -1,5 +1,5 @@
-/*
- * Created on Sun Jan 05 2020
+﻿/*
+ * Created on Tue Jan 07 2020
  *
  * The MIT License (MIT)
  * Copyright (c) 2020 Sahil Jain
@@ -19,15 +19,14 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.GameplayTags.Interfaces;
-using Unity.Entities;
 
-namespace GameplayAbilitySystem.GameplayTags.Components {
-    public struct GameplayTagsBufferElement<T> : IBufferElementData
-    where T : IGameplayTagBufferElement {
-        public GameplayTagComponent Value;
-        public Entity SourceGameplayEffectEntity;
-        public static implicit operator GameplayTagComponent(GameplayTagsBufferElement<T> e) { return e.Value; }
-        public static implicit operator GameplayTagsBufferElement<T>(GameplayTagComponent e) { return new GameplayTagsBufferElement<T> { Value = e }; }
+using System.Collections.Generic;
+using UnityEngine;
+namespace GameplayAbilitySystem.GameplayTags.ScriptableObjects {
+
+    [CreateAssetMenu(fileName = "GameplayTag", menuName = "Gameplay Ability System/Gameplay Tag Container")]
+    public class GameplayTagsContainerScriptableObject : ScriptableObject {
+        public List<GameplayTagScriptableObject> AssetTags;
     }
+
 }

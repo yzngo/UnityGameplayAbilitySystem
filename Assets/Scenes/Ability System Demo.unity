@@ -2051,6 +2051,36 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 766764832}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &768474951
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 768474952}
+  m_Layer: 0
+  m_Name: Abilities
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &768474952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768474951}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &769799382 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4558498789277372632, guid: a5095e4e55136f74b9b9debb65e1356c,
@@ -2290,6 +2320,31 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1213500972002230484, guid: da95b4f4307b6f0499178887a466f227,
         type: 3}
+    - target: {fileID: 5530444290832936069, guid: fddc582aed5bbbd4ab4ac8025536d369,
+        type: 3}
+      propertyPath: Gameplay.TagId
+      value: 33824767
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530444290832936069, guid: fddc582aed5bbbd4ab4ac8025536d369,
+        type: 3}
+      propertyPath: Gameplay.TagIdLevel0
+      value: 255
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530444290832936069, guid: fddc582aed5bbbd4ab4ac8025536d369,
+        type: 3}
+      propertyPath: Gameplay.TagIdLevel1
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530444290832936069, guid: fddc582aed5bbbd4ab4ac8025536d369,
+        type: 3}
+      propertyPath: Gameplay.TagIdLevel2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530444290832936069, guid: fddc582aed5bbbd4ab4ac8025536d369,
+        type: 3}
+      propertyPath: Gameplay.TagIdLevel3
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7899279095267793602, guid: fddc582aed5bbbd4ab4ac8025536d369,
         type: 3}
       propertyPath: m_Name

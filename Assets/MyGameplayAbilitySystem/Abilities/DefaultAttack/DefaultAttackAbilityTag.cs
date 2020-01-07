@@ -32,6 +32,8 @@ using UnityEngine;
 using Components = GameplayAbilitySystem.Attributes.Components;
 using GameplayAbilitySystem.Common.Components;
 using System;
+using GameplayAbilitySystem.GameplayTags.Components;
+using GameplayAbilitySystem.GameplayTags.Interfaces;
 
 namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
     [AbilitySystemDisplayName("Default Attack Ability")]
@@ -134,6 +136,14 @@ namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
             var transform = payload.ActorTransform;
             var actorAbilitySystem = payload.ActorAbilitySystem;
             var grantedAbilityEntity = payload.GrantedAbilityEntity;
+            /**************************************************************
+                            Check for gameplay tag interactions
+            ***************************************************************/
+            var actorTags = entityManager
+                                        .GetBuffer<GameplayTagsBufferElement<IActorOwnedGameplayTags>>(payload.ActorAbilitySystem.AbilityOwnerEntity);
+
+            
+
             // Check ability state
             var abilityStateComponent = entityManager.GetComponentData<AbilityStateComponent>(grantedAbilityEntity);
 

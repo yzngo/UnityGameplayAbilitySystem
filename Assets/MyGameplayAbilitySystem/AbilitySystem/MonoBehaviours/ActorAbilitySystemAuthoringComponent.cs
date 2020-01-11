@@ -21,7 +21,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameplayAbilitySystem.Abilities.Components;
+using GameplayAbilitySystem.Abilities.ScriptableObjects;
 using GameplayAbilitySystem.Abilities.Systems;
 using GameplayAbilitySystem.AbilitySystem.Components;
 using GameplayAbilitySystem.Attributes.Components;
@@ -30,7 +32,6 @@ using GameplayAbilitySystem.Common.Components;
 using GameplayAbilitySystem.GameplayEffects.Components;
 using GameplayAbilitySystem.GameplayTags.Components;
 using GameplayAbilitySystem.GameplayTags.Interfaces;
-using MyGameplayAbilitySystem.Abilities;
 using MyGameplayAbilitySystem.Abilities.DefaultAttack;
 using MyGameplayAbilitySystem.Abilities.Fire1;
 using Unity.Entities;
@@ -54,10 +55,10 @@ namespace MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours {
         // For example,
         //    public float scale;
         [SerializeReference]
-        private CharacterAttributesScriptableObject Attributes;
+        private CharacterAttributesContainerScriptableObject Attributes;
 
         [SerializeReference]
-        private GrantedAbilitiesScriptableObject GrantedAbilities;
+        private AbilitiesContainerScriptableObject GrantedAbilities;
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem) {
             var abilityOwnerEntity = CreateActorAbilitySystemEntities(entity, dstManager);
@@ -92,7 +93,7 @@ namespace MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours {
 
             var grantedAbilities = new List<ComponentType>();
             if (GrantedAbilities != null && GrantedAbilities.Components != null) {
-                grantedAbilities = GrantedAbilities.ComponentTypes;
+                grantedAbilities = GrantedAbilities.ComponentTypes.ToList();
             }
 
             var entities = new List<Entity>();
@@ -122,9 +123,10 @@ namespace MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours {
             var attributeTypes = new List<ComponentType>();
             Type genericAttributeBufferElement = typeof(AttributeBufferElement<,>);
             if (Attributes != null && Attributes.Components != null) {
-                attributeTypes = Attributes.ComponentTypes;
-                for (var i = 0; i < Attributes.ComponentTypes.Count; i++) {
-                    var temporaryBufferType = genericAttributeBufferElement.MakeGenericType(typeof(TemporaryAttributeModifierTag), Attributes.ComponentTypes[i].GetManagedType());
+                attributeTypes = Attributes.ComponentTypes.ToList();
+                var attributeComponentTypes = Attributes.ComponentTypes.ToList();
+                for (var i = 0; i < attributeComponentTypes.Count; i++) {
+                    var temporaryBufferType = genericAttributeBufferElement.MakeGenericType(typeof(TemporaryAttributeModifierTag), attributeComponentTypes[i].GetManagedType());
                     attributeTypes.Add(temporaryBufferType);
                 }
             }

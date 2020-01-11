@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e47bf2c1cb888749b85f8a11494ad65, type: 3}
+  m_Script: {fileID: 11500000, guid: 2084e46442b2b7542ba855d46958a584, type: 3}
   m_Name: Default Granted Abilities
   m_EditorClassIdentifier: 
-  Components:
-  - MyGameplayAbilitySystem.Abilities.Fire1.Fire1AbilityTag, Assembly-CSharp, Version=0.0.0.0,
-    Culture=neutral, PublicKeyToken=null
-  - MyGameplayAbilitySystem.Abilities.DefaultAttack.DefaultAttackAbilityTag, Assembly-CSharp,
-    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  Items:
+  - {fileID: 11400000, guid: 3bce4c7f996cb5b47b17291bda34207c, type: 2}
+  - {fileID: 11400000, guid: 46863ede93201c649bbc45dbb8a47a6b, type: 2}

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Created on Mon Nov 04 2019
  *
  * The MIT License (MIT)
@@ -19,11 +19,18 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.Attributes.ScriptableObjects;
-using GameplayAbilitySystem.Common.Editor;
-using UnityEditor;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.Entities;
+using UnityEngine;
 
-namespace GameplayAbilitySystem.Attributes.Components {
-    [CustomEditor(typeof(CharacterAttributesScriptableObject))]
-    public class CharacterAttributesComponentEditor : AbstractComponentTypeSelectionEditor<IAttributeComponent> { }
+namespace GameplayAbilitySystem.Common.ScriptableObjects {
+    public abstract class AbstractComponentTypeContainerSelectionScriptableObject<T1, T2> : ScriptableObject
+    where T1 : AbstractComponentTypeSelectionScriptableObject<T2> {
+        [SerializeField]
+        private List<T1> Items;
+
+        public IEnumerable<ComponentType> ComponentTypes => Items.Select(x => x.ComponentType);
+        public IEnumerable<string> Components => Items.Select(x => x.Component);
+    }
 }

@@ -19,20 +19,11 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System;
-using System.Collections.Generic;
-using Unity.Entities;
-using UnityEngine;
+using GameplayAbilitySystem.Attributes.ScriptableObjects;
+using GameplayAbilitySystem.Common.Editor;
+using UnityEditor;
 
-namespace GameplayAbilitySystem.Common.ScriptableObjects {
-    public abstract class AbstractComponentTypeSelectionScriptableObject<T> : ScriptableObject {
-        [SerializeField]
-        [HideInInspector]
-        public string Component;
-
-        public ComponentType ComponentType => ConvertAttributeToTypes();
-        private ComponentType ConvertAttributeToTypes() {
-            return Type.GetType(Component);
-        }
-    }
+namespace GameplayAbilitySystem.Attributes.Components {
+    [CustomEditor(typeof(CharacterAttributeScriptableObject))]
+    public class CharacterAttributesComponentEditor : AbstractComponentTypeSelectionEditor<IAttributeComponent> { }
 }

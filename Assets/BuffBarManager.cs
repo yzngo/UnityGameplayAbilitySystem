@@ -21,6 +21,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GameplayAbilitySystem.Attributes.ScriptableObjects;
 using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
 using MyGameplayAbilitySystem.Common.ScriptableObjects;
@@ -40,7 +41,7 @@ public class BuffBarManager : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        this.ComponentTypes = new HashSet<ComponentType>(EffectsToShow.ComponentTypes);
+        this.ComponentTypes = new HashSet<ComponentType>(EffectsToShow.Buffs.Select(x => x.ComponentType));
         this.Buffs = new HashSet<int>(EffectsToShow.GetIndices());
         BuffIconForIdentifier = new Dictionary<int, BuffIconMap>();
         for (var i = 0; i < BuffIconMaps.BuffIconMaps.Count; i++) {

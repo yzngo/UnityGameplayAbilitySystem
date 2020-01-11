@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Created on Mon Nov 04 2019
  *
  * The MIT License (MIT)
@@ -19,20 +19,16 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System;
 using System.Collections.Generic;
+using System.Linq;
+using GameplayAbilitySystem.Attributes.Components;
+using GameplayAbilitySystem.Common.ScriptableObjects;
 using Unity.Entities;
 using UnityEngine;
 
-namespace GameplayAbilitySystem.Common.ScriptableObjects {
-    public abstract class AbstractComponentTypeSelectionScriptableObject<T> : ScriptableObject {
-        [SerializeField]
-        [HideInInspector]
-        public string Component;
+namespace GameplayAbilitySystem.Attributes.ScriptableObjects {
+    [CreateAssetMenu(fileName = "Actor Attributes Container", menuName = "Gameplay Ability System/Attributes/Attributes Container")]
+    public class CharacterAttributesContainerScriptableObject : AbstractComponentTypeContainerSelectionScriptableObject<CharacterAttributeScriptableObject, IAttributeComponent> {
 
-        public ComponentType ComponentType => ConvertAttributeToTypes();
-        private ComponentType ConvertAttributeToTypes() {
-            return Type.GetType(Component);
-        }
     }
 }

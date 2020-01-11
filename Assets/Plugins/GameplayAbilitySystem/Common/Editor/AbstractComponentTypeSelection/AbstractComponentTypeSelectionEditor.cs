@@ -54,17 +54,17 @@ namespace GameplayAbilitySystem.Common.Editor {
                 );
             m_RootElement.styleSheets.Add(stylesheet);
 
-            // Cleanup any strings which correspond to types that no longer exist.
-            var allTypes = new ComponentCollector().GetAllTypes(System.AppDomain.CurrentDomain);
-            var serializedTypeStrings = new List<string>();
-            var componentsSerialized = serializedObject.FindProperty("Components");
-            var count = componentsSerialized.arraySize;
-            for (var i = count - 1; i >= 0; i--) {
-                var type = componentsSerialized.GetArrayElementAtIndex(i).stringValue;
-                if (!allTypes.Any(x => x.AssemblyQualifiedName == type)) {
-                    componentsSerialized.DeleteArrayElementAtIndex(i);
-                }
-            }
+            // // Cleanup any strings which correspond to types that no longer exist.
+            // var allTypes = new ComponentCollector().GetAllTypes(System.AppDomain.CurrentDomain);
+            // var serializedTypeStrings = new List<string>();
+            // var componentSerialized = serializedObject.FindProperty("Component");
+            // var count = componentSerialized.arraySize;
+            // for (var i = count - 1; i >= 0; i--) {
+            //     var type = componentSerialized.GetArrayElementAtIndex(i).stringValue;
+            //     if (!allTypes.Any(x => x.AssemblyQualifiedName == type)) {
+            //         componentSerialized.DeleteArrayElementAtIndex(i);
+            //     }
+            // }
             serializedObject.ApplyModifiedProperties();
             // Go through each item in list and check if it in allTypes.  If it isn't, delete.
         }
@@ -75,12 +75,8 @@ namespace GameplayAbilitySystem.Common.Editor {
             m_ModulesVisualTree.CloneTree(container);
             var allTypes = new ComponentCollector().GetAllTypes(System.AppDomain.CurrentDomain);
 
-            var componentsSerialized = serializedObject.FindProperty("Components");
-            var serializedTypeStrings = new List<string>();
-            var count = componentsSerialized.arraySize;
-            for (var i = 0; i < count; i++) {
-                serializedTypeStrings.Add(componentsSerialized.GetArrayElementAtIndex(i).stringValue);
-            }
+            var componentSerialized = serializedObject.FindProperty("Component");
+            var serializedTypeString = componentSerialized.stringValue;
 
             foreach (var type in allTypes) {
                 // Look for a "DisplayName" attribute
@@ -91,15 +87,13 @@ namespace GameplayAbilitySystem.Common.Editor {
                 }
 
                 var button = new Button(() => {
-                    var existingIndex = serializedTypeStrings.FindIndex(x => x == type.AssemblyQualifiedName);
+                    var exists = serializedTypeString == type.AssemblyQualifiedName;
                     // if this already exists in the list, delete it
-                    if (existingIndex >= 0) {
-                        componentsSerialized.DeleteArrayElementAtIndex(existingIndex);
+                    if (exists) {
                         serializedObject.ApplyModifiedProperties();
                     } else {
                         // Add it to list
-                        componentsSerialized.InsertArrayElementAtIndex(0);
-                        componentsSerialized.GetArrayElementAtIndex(0).stringValue = type.AssemblyQualifiedName;
+                        componentSerialized.stringValue = type.AssemblyQualifiedName;
                         serializedObject.ApplyModifiedProperties();
                     }
                     CreateInspectorGUI();
@@ -107,7 +101,7 @@ namespace GameplayAbilitySystem.Common.Editor {
                 { text = displayName == "" ? type.FullName : displayName };
 
                 // If this type is in the list of selected components, mark it enabled
-                if (serializedTypeStrings.Any(x => x == type.AssemblyQualifiedName)) {
+                if (serializedTypeString == type.AssemblyQualifiedName) {
                     button.AddToClassList("enabled-button");
                 }
 

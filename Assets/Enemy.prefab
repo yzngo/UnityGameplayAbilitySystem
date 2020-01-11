@@ -294,8 +294,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 053d43866d0f08a4aaadf9a8535b78dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Attributes: {fileID: 11400000, guid: 5cdd6f896f75eca448b3cf43ed8920dc, type: 2}
-  GrantedAbilities: {fileID: 11400000, guid: ab6d286abd280f9468634e3608ee426c, type: 2}
+  Attributes: {fileID: 11400000, guid: e5777fe241cbcb643b750d06c1313875, type: 2}
+  GrantedAbilities: {fileID: 11400000, guid: 18e6f9642608a0247a57f927f91118e5, type: 2}
 --- !u!114 &4400339242248586328
 MonoBehaviour:
   m_ObjectHideFlags: 0

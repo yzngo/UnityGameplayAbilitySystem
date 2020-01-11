@@ -19,12 +19,11 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.Abilities.Components;
-using GameplayAbilitySystem.Attributes.ScriptableObjects;
+using GameplayAbilitySystem.Abilities.ScriptableObjects;
 using GameplayAbilitySystem.Common.Editor;
 using UnityEditor;
 
-namespace GameplayAbilitySystem.Attributes.Components {
-    [CustomEditor(typeof(GrantedAbilitiesScriptableObject))]
+namespace GameplayAbilitySystem.Abilities.Components {
+    [CustomEditor(typeof(AbilityScriptableObject))]
     public class GrantedAbilitiesComponentEditor : AbstractComponentTypeSelectionEditor<IAbilityTagComponent> { }
 }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Created on Mon Nov 04 2019
  *
  * The MIT License (MIT)
@@ -19,16 +19,12 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System;
-using System.Collections.Generic;
 using GameplayAbilitySystem.Attributes.Components;
 using GameplayAbilitySystem.Common.ScriptableObjects;
-using Unity.Entities;
 using UnityEngine;
 
 namespace GameplayAbilitySystem.Attributes.ScriptableObjects {
-    [CreateAssetMenu(fileName = "ActorAttributes", menuName = "Gameplay Ability System/Attributes/Attributes Prototype")]
-    public class CharacterAttributesScriptableObject : AbstractComponentTypeSelectionScriptableObject<IAttributeComponent> {
-
+    [CreateAssetMenu(fileName = "Actor Attribute", menuName = "Gameplay Ability System/Attributes/Attribute")]
+    public class CharacterAttributeScriptableObject : AbstractComponentTypeSelectionScriptableObject<IAttributeComponent> {
     }
 }

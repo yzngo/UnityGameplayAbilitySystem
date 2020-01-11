@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2084e46442b2b7542ba855d46958a584, type: 3}
-  m_Name: Enemy Granted Abilities
+  m_Script: {fileID: 11500000, guid: 205b05acccc7d064f9799bca76b079d2, type: 3}
+  m_Name: Character Level
   m_EditorClassIdentifier: 
-  Items:
-  - {fileID: 11400000, guid: 3bce4c7f996cb5b47b17291bda34207c, type: 2}
-  - {fileID: 11400000, guid: 46863ede93201c649bbc45dbb8a47a6b, type: 2}
+  Component: GameplayAbilitySystem.Attributes.Components.CharacterLevelAttributeComponent,
+    GameplayAbilitySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null

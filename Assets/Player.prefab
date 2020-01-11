@@ -583,8 +583,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 053d43866d0f08a4aaadf9a8535b78dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Attributes: {fileID: 11400000, guid: 5cdd6f896f75eca448b3cf43ed8920dc, type: 2}
-  GrantedAbilities: {fileID: 11400000, guid: 439bf3d694487a341aad3640dc2d7609, type: 2}
+  Attributes: {fileID: 11400000, guid: e5777fe241cbcb643b750d06c1313875, type: 2}
+  GrantedAbilities: {fileID: 11400000, guid: eb329f9bf486d814a90b18e7e9562f9b, type: 2}
 --- !u!114 &1888591096130298535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -697,6 +697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CastAbilityButtonMap: 
+  Fire1Prefab: {fileID: 0}
 --- !u!1001 &295742051
 PrefabInstance:
   m_ObjectHideFlags: 0

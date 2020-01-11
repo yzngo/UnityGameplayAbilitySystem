@@ -30,20 +30,27 @@ using UnityEngine;
 
 namespace GameplayAbilitySystem.Attributes.ScriptableObjects {
     [CreateAssetMenu(fileName = "BuffsContainer", menuName = "Gameplay Ability System/GameplayEffects/Buffs Container")]
-    public class BuffsContainerScriptableObject : AbstractComponentTypeSelectionScriptableObject<IBuff> {
-        public List<int> CachedBuffIndices = null;
+    public class BuffsContainerScriptableObject : ScriptableObject {
+        public List<BuffsScriptableObject> Buffs;
         public List<int> GetIndices() {
-            // If we have already computed the indices, use those
-            if (CachedBuffIndices != null && CachedBuffIndices.Count > 0) return CachedBuffIndices;
-
             // Get the buff index for each ComponentType.
             // We need to use reflection to create a new type
             // Then cast it as an IBuff, and read the IBuff property.
-            var componentTypes = ComponentTypes;
-            var buffIndices = ComponentTypes.Select(x => ((IBuff)(Activator.CreateInstance(x.GetManagedType()))).BuffIndex).ToList();
-            CachedBuffIndices = buffIndices;
+            var buffIndices = Buffs.Select(x => x.GetIndex()).ToList();
             return buffIndices;
         }
-
     }
+
+    [CreateAssetMenu(fileName = "Buff", menuName = "Gameplay Ability System/GameplayEffects/Buff")]
+    public class BuffsScriptableObject : AbstractComponentTypeSelectionScriptableObject<IBuff> {
+        public int GetIndex() {
+            // Get the buff index for each ComponentType.
+            // We need to use reflection to create a new type
+            // Then cast it as an IBuff, and read the IBuff property.
+            var componentType = ComponentType;
+            var buffIndex = ((IBuff)Activator.CreateInstance(componentType.GetManagedType())).BuffIndex;
+            return buffIndex;
+        }
+    }
+
 }

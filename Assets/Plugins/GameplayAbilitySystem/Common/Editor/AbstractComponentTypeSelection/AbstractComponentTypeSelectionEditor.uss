@@ -2,3 +2,13 @@
     background-color: rgb(0,255,0);
     -unity-font-style: bold;
 }
+
+.label {
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+    font-size:18px;
+    padding-bottom:10px;
+    margin-bottom:10px;
+    border-bottom-width:2px;
+    border-color:black;
+}

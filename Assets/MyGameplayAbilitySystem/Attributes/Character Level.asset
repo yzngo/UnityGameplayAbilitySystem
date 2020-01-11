@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Component: GameplayAbilitySystem.Attributes.Components.CharacterLevelAttributeComponent,
     GameplayAbilitySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  Sprite: {fileID: 0}

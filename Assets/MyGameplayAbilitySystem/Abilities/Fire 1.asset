@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Component: MyGameplayAbilitySystem.Abilities.Fire1.Fire1AbilityTag, Assembly-CSharp,
     Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  Sprite: {fileID: 21300000, guid: 012e223bae53ce3439432cd17309ca89, type: 3}

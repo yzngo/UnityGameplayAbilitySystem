@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using GameplayAbilitySystem.Common.Editor;
 using Unity.Entities;
 using UnityEngine;
 
@@ -30,7 +31,12 @@ namespace GameplayAbilitySystem.Common.ScriptableObjects {
         [HideInInspector]
         public string Component;
 
+        [SerializeField]
+        [HideInInspector]
+        public Sprite Sprite;
+
         public ComponentType ComponentType => ConvertAttributeToTypes();
+
         private ComponentType ConvertAttributeToTypes() {
             return Type.GetType(Component);
         }

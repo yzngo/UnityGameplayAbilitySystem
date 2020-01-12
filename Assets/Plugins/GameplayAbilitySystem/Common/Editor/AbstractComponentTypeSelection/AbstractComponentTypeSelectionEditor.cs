@@ -28,22 +28,17 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace GameplayAbilitySystem.Common.Editor {
-
     public class AbilitySystemDisplayNameAttribute : System.Attribute {
         public string Name { get; set; }
         public AbilitySystemDisplayNameAttribute(string name) {
             this.Name = name;
         }
     }
-
     public abstract class AbstractComponentTypeSelectionEditor<T> : UnityEditor.Editor {
         private VisualElement m_RootElement;
         private VisualTreeAsset m_ModulesVisualTree;
         private List<T> components;
-
         const string baseAssetPath = "Assets/Plugins/GameplayAbilitySystem/Common/Editor/AbstractComponentTypeSelection/";
-
-        // Start is called before the first frame update
         public void OnEnable() {
 
             m_RootElement = new VisualElement();
@@ -57,46 +52,26 @@ namespace GameplayAbilitySystem.Common.Editor {
                 );
             m_RootElement.styleSheets.Add(stylesheet);
 
-            // // Cleanup any strings which correspond to types that no longer exist.
-            // var allTypes = new ComponentCollector().GetAllTypes(System.AppDomain.CurrentDomain);
-            // var serializedTypeStrings = new List<string>();
-            // var componentSerialized = serializedObject.FindProperty("Component");
-            // var count = componentSerialized.arraySize;
-            // for (var i = count - 1; i >= 0; i--) {
-            //     var type = componentSerialized.GetArrayElementAtIndex(i).stringValue;
-            //     if (!allTypes.Any(x => x.AssemblyQualifiedName == type)) {
-            //         componentSerialized.DeleteArrayElementAtIndex(i);
-            //     }
-            // }
             serializedObject.ApplyModifiedProperties();
-            // Go through each item in list and check if it in allTypes.  If it isn't, delete.
         }
-
         public override VisualElement CreateInspectorGUI() {
             var container = m_RootElement;
             container.Clear();
             m_ModulesVisualTree.CloneTree(container);
-            var allTypes = new ComponentCollector().GetAllTypes(System.AppDomain.CurrentDomain).OrderBy(x => x.AssemblyQualifiedName).ToList();
-            var uxmlField = container.Q<ObjectField>("Sprite");
-
-            uxmlField.objectType = typeof(Sprite);
-            uxmlField.Bind(serializedObject);
-
-            var selectedLabel = container.Q<Label>("selected-type");
-
+            Image spritePreview;
+            Sprite sprite;
+            BuildSrpitePreview(container, out spritePreview, out sprite);
+            BuildSpriteSelection(container, spritePreview, sprite);
             var componentSerialized = serializedObject.FindProperty("Component");
             var serializedTypeString = componentSerialized.stringValue;
-
-            var spritePreview = container.Q<Image>("sprite-preview");
-            var sprite = (serializedObject.FindProperty("Sprite").objectReferenceValue as Sprite);
-            if (sprite != null) {
-                spritePreview.image = sprite.texture;
-                spritePreview.scaleMode = ScaleMode.ScaleToFit;
-                spritePreview.RemoveFromClassList("hide");
-            } else {
-                spritePreview.AddToClassList("hide");
-            }
-
+            var selectedLabel = container.Q<Label>("selected-type");
+            BuildTypeList(container, selectedLabel, componentSerialized);
+            return container;
+        }
+        private void BuildSpriteSelection(VisualElement container, Image spritePreview, Sprite sprite) {
+            var uxmlField = container.Q<ObjectField>("Sprite");
+            uxmlField.objectType = typeof(Sprite);
+            uxmlField.Bind(serializedObject);
             uxmlField.RegisterValueChangedCallback(x => {
                 sprite = x.newValue as Sprite;
                 spritePreview.visible = false;
@@ -110,25 +85,39 @@ namespace GameplayAbilitySystem.Common.Editor {
                 }
                 container.MarkDirtyRepaint();
             });
-
+        }
+        private void BuildSrpitePreview(VisualElement container, out Image spritePreview, out Sprite sprite) {
+            spritePreview = container.Q<Image>("sprite-preview");
+            sprite = (serializedObject.FindProperty("Sprite").objectReferenceValue as Sprite);
+            if (sprite != null) {
+                spritePreview.image = sprite.texture;
+                spritePreview.scaleMode = ScaleMode.ScaleToFit;
+                spritePreview.RemoveFromClassList("hide");
+            } else {
+                spritePreview.AddToClassList("hide");
+            }
+        }
+        private void BuildTypeList(VisualElement container, Label selectedLabel, SerializedProperty componentSerialized) {
+            var allTypes = new ComponentCollector().GetAllTypes(System.AppDomain.CurrentDomain).OrderBy(x => x.AssemblyQualifiedName).ToList();
             var listView = new ListView();
-
-
             Func<VisualElement> makeButtons = () => new Button();
             Action<VisualElement, int> bindItem = (e, i) => {
                 var button = (e as Button);
                 var type = allTypes[i];
-                var displayNameAttribute = (AbilitySystemDisplayNameAttribute)System.Attribute.GetCustomAttribute(type, typeof(AbilitySystemDisplayNameAttribute));
-                string displayName = "";
-                if (displayNameAttribute != null) {
-                    displayName = displayNameAttribute.Name;
-                }
+                string displayName = GetDisplayNameForType(type);
                 button.text = displayName == "" ? type.FullName : displayName;
                 button.tooltip = type.FullName;
-                button.clicked += () => listView.selectedIndex = i;
+                button.clicked += () => {
+                    // Do a toggle selection.  If this item is already selecte, deselect it
+                    // If something else is selected, select this one
+                    if (listView.selectedIndex == i) {
+                        listView.selectedIndex = -1;
+                    } else {
+                        listView.selectedIndex = i;
+                    }
+                };
                 button.AddToClassList("type-button");
             };
-
             const int itemHeight = 24;
             listView.itemsSource = allTypes;
             listView.itemHeight = itemHeight;
@@ -136,61 +125,52 @@ namespace GameplayAbilitySystem.Common.Editor {
             listView.bindItem = bindItem;
             listView.style.flexGrow = 1.0f;
             listView.onSelectionChanged += objects => {
-                if (objects.Count < 1) return;
-
-                var type = (objects[0] as Type);
-                componentSerialized.stringValue = type.AssemblyQualifiedName;
-                // listView.selectedIndex = allTypes.FindIndex(x => componentSerialized.stringValue == x.AssemblyQualifiedName);
-                serializedObject.ApplyModifiedProperties();
-                var displayNameAttribute = (AbilitySystemDisplayNameAttribute)System.Attribute.GetCustomAttribute(type, typeof(AbilitySystemDisplayNameAttribute));
-                string displayName = "";
-                if (displayNameAttribute != null) {
-                    displayName = displayNameAttribute.Name;
+                // No object is selected
+                if (objects.Count < 1) {
+                    ClearSelectedTypeLabel(selectedLabel, componentSerialized);
+                    return;
                 }
-                selectedLabel.text = displayName == "" ? type.FullName : displayName;
-                selectedLabel.tooltip = type.FullName;
+                var type = (objects[0] as Type);
+                ApplySerializedStringValue(serializedObject, componentSerialized, type.AssemblyQualifiedName);
+                SetSelectedTypeLabel(selectedLabel, type);
             };
             listView.selectedIndex = allTypes.FindIndex(x => componentSerialized.stringValue == x.AssemblyQualifiedName);
             if (listView.selectedIndex > -1) {
                 var type = allTypes[listView.selectedIndex];
-                var displayNameAttribute = (AbilitySystemDisplayNameAttribute)System.Attribute.GetCustomAttribute(type, typeof(AbilitySystemDisplayNameAttribute));
-                string displayName = "";
-                if (displayNameAttribute != null) {
-                    displayName = displayNameAttribute.Name;
-                }
-                selectedLabel.text = displayName == "" ? type.FullName : displayName;
-                selectedLabel.tooltip = type.FullName;
+                SetSelectedTypeLabel(selectedLabel, type);
+            } else {
+                // If the selected item doesn't exist in parent array, set the serialized value to empty
+                ClearSelectedTypeLabel(selectedLabel, componentSerialized);
             }
-
             listView.selectionType = SelectionType.Single;
             listView.AddToClassList("type-list");
             var listContainer = container.Q<VisualElement>("types-list-container");
             listContainer.Add(listView);
+        }
+        void ClearSelectedTypeLabel(Label selectedLabel, SerializedProperty componentSerialized) {
+            ApplySerializedStringValue(serializedObject, componentSerialized, "");
+            selectedLabel.text = "(No item selected)";
+            selectedLabel.tooltip = "";
+        }
 
-            // foreach (var type in allTypes) {
-            //     // Look for a "DisplayName" attribute
-            //     var displayNameAttribute = (AbilitySystemDisplayNameAttribute)System.Attribute.GetCustomAttribute(type, typeof(AbilitySystemDisplayNameAttribute));
-            //     string displayName = "";
-            //     if (displayNameAttribute != null) {
-            //         displayName = displayNameAttribute.Name;
-            //     }
+        void SetSelectedTypeLabel(Label selectedLabel, Type type) {
+            var displayName = GetDisplayNameForType(type);
+            selectedLabel.text = displayName == "" ? type.FullName : displayName;
+            selectedLabel.tooltip = type.FullName;
+        }
+        private string GetDisplayNameForType(Type type) {
+            var displayNameAttribute = (AbilitySystemDisplayNameAttribute)System.Attribute.GetCustomAttribute(type, typeof(AbilitySystemDisplayNameAttribute));
+            string displayName = "";
+            if (displayNameAttribute != null) {
+                displayName = displayNameAttribute.Name;
+            }
 
-            //     var button = new Button(() => {
-            //         componentSerialized.stringValue = type.AssemblyQualifiedName;
-            //         serializedObject.ApplyModifiedProperties();
-            //         CreateInspectorGUI();
-            //     })
-            //     { text = displayName == "" ? type.FullName : displayName, tooltip = type.FullName };
+            return displayName;
+        }
 
-            //     // If this type is in the list of selected components, mark it enabled
-            //     if (serializedTypeString == type.AssemblyQualifiedName) {
-            //         button.AddToClassList("enabled-button");
-            //     }
-
-            //     container.Add(button);
-            // }
-
-            return container;
+        private void ApplySerializedStringValue(SerializedObject serializedObject, SerializedProperty serializedProperty, string value) {
+            serializedProperty.stringValue = value;
+            serializedObject.ApplyModifiedProperties();
         }
         public class ComponentCollector {
             public IEnumerable<System.Type> GetAllTypes(System.AppDomain domain) {

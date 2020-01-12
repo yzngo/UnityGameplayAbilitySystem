@@ -111,6 +111,9 @@ namespace GameplayAbilitySystem.Common.Editor {
                 container.MarkDirtyRepaint();
             });
 
+            var listView = new ListView();
+
+
             Func<VisualElement> makeButtons = () => new Button();
             Action<VisualElement, int> bindItem = (e, i) => {
                 var button = (e as Button);
@@ -122,16 +125,15 @@ namespace GameplayAbilitySystem.Common.Editor {
                 }
                 button.text = displayName == "" ? type.FullName : displayName;
                 button.tooltip = type.FullName;
-
+                button.clicked += () => listView.selectedIndex = i;
                 button.AddToClassList("type-button");
-                // if (serializedTypeString == type.AssemblyQualifiedName) {
-                //     button.AddToClassList("enabled-button");
-                // }
-                button.pickingMode = PickingMode.Ignore;
             };
 
             const int itemHeight = 24;
-            var listView = new ListView(allTypes, itemHeight, makeButtons, bindItem);
+            listView.itemsSource = allTypes;
+            listView.itemHeight = itemHeight;
+            listView.makeItem = makeButtons;
+            listView.bindItem = bindItem;
             listView.style.flexGrow = 1.0f;
             listView.onSelectionChanged += objects => {
                 if (objects.Count < 1) return;

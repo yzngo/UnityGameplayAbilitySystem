@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Created on Mon Nov 04 2019
  *
  * The MIT License (MIT)
@@ -20,39 +20,8 @@
  */
 
 using System;
-using System.Collections.Generic;
-using GameplayAbilitySystem.Common.Editor;
-using Unity.Entities;
-using UnityEngine;
-
-namespace GameplayAbilitySystem.Common.ScriptableObjects {
-    public abstract class AbstractComponentTypeSelectionScriptableObject<T> : ScriptableObject {
-        [SerializeField]
-        [HideInInspector]
-        public string Component;
-
-        [SerializeField]
-        [HideInInspector]
-        public Sprite Sprite;
-
-        public ComponentType ComponentType => ConvertAttributeToTypes();
-
-        private ComponentType ConvertAttributeToTypes() {
-            return Type.GetType(Component);
-        }
-    }
-
+using GameplayAbilitySystem.Common.ScriptableObjects;
+namespace GameplayAbilitySystem.Attributes.ScriptableObjects {
     [Serializable]
-    public class TypeOf {
-        [SerializeField]
-        public string _type;
-
-
-        public ComponentType ComponentType => ConvertAttributeToTypes();
-
-        private ComponentType ConvertAttributeToTypes() {
-            return Type.GetType(_type);
-        }
-    }
-
+    public class AttributeComponentTypeOf : TypeOf { }
 }

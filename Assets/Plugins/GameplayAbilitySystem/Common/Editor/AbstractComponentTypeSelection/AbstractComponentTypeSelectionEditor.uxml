@@ -1,6 +1,5 @@
 <UXML xmlns:engine="UnityEngine.UIElements" 
     xmlns:editor="UnityEditor.UIElements">
-    <engine:Label text="Type" class="label"/>
     <editor:ObjectField name="Sprite" binding-path="Sprite" class="sprite-field"/>
     <engine:Image name="sprite-preview" class="sprite-preview"/>
     <engine:VisualElement name="types-list-container" />

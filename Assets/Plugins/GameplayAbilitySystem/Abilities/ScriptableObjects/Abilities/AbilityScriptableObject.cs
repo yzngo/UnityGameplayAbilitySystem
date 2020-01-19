@@ -19,12 +19,15 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.Abilities.Components;
-using GameplayAbilitySystem.Common.ScriptableObjects;
 using UnityEngine;
 
 namespace GameplayAbilitySystem.Abilities.ScriptableObjects {
     [CreateAssetMenu(fileName = "Ability", menuName = "Gameplay Ability System/Abilities/Ability")]
-    public class AbilityScriptableObject : AbstractComponentTypeSelectionScriptableObject<IAbilityTagComponent> {
+    public class AbilityScriptableObject : UIElementScriptableObject {
+        [SerializeField]
+        public AbilityTagComponentTypeOf AbilityType;
+        [SerializeField]
+        public SpritePreview Sprite;
+
     }
 }

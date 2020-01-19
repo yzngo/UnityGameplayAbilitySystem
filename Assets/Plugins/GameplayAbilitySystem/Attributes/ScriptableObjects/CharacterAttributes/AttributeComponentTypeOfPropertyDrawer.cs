@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Created on Mon Nov 04 2019
  *
  * The MIT License (MIT)
@@ -19,11 +19,9 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.Attributes.ScriptableObjects;
-using GameplayAbilitySystem.Common.Editor;
+using GameplayAbilitySystem.Attributes.Components;
 using UnityEditor;
-
-namespace GameplayAbilitySystem.Attributes.Components {
-    [CustomEditor(typeof(CharacterAttributeScriptableObject))]
-    public class CharacterAttributesComponentEditor : AbstractComponentTypeSelectionEditor<IAttributeComponent> { }
+namespace GameplayAbilitySystem.Attributes.ScriptableObjects {
+    [CustomPropertyDrawer(typeof(AttributeComponentTypeOf))]
+    public class AttributeComponentTypeOfPropertyDrawer : TypeOfPropertyDrawer<IAttributeComponent> { }
 }

@@ -19,12 +19,13 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.Attributes.Components;
 using GameplayAbilitySystem.Common.ScriptableObjects;
+using UnityEditor;
 using UnityEngine;
 
 namespace GameplayAbilitySystem.Attributes.ScriptableObjects {
     [CreateAssetMenu(fileName = "Actor Attribute", menuName = "Gameplay Ability System/Attributes/Attribute")]
-    public class CharacterAttributeScriptableObject : AbstractComponentTypeSelectionScriptableObject<IAttributeComponent> {
+    public class CharacterAttributeScriptableObject : UIElementScriptableObject {
+        public AttributeComponentTypeOf Attribute;
     }
 }

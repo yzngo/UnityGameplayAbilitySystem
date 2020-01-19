@@ -60,7 +60,7 @@ namespace GameplayAbilitySystem.Common.Editor {
             m_ModulesVisualTree.CloneTree(container);
             Image spritePreview;
             Sprite sprite;
-            BuildSrpitePreview(container, out spritePreview, out sprite);
+            BuildSpritePreview(container, out spritePreview, out sprite);
             BuildSpriteSelection(container, spritePreview, sprite);
             var componentSerialized = serializedObject.FindProperty("Component");
             var serializedTypeString = componentSerialized.stringValue;
@@ -86,7 +86,7 @@ namespace GameplayAbilitySystem.Common.Editor {
                 container.MarkDirtyRepaint();
             });
         }
-        private void BuildSrpitePreview(VisualElement container, out Image spritePreview, out Sprite sprite) {
+        private void BuildSpritePreview(VisualElement container, out Image spritePreview, out Sprite sprite) {
             spritePreview = container.Q<Image>("sprite-preview");
             sprite = (serializedObject.FindProperty("Sprite").objectReferenceValue as Sprite);
             if (sprite != null) {

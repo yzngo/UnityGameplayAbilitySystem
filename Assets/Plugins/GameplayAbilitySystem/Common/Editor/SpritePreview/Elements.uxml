@@ -1,0 +1,8 @@
+<UXML xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements">
+    <engine:Box>
+        <engine:Foldout name="selected-type-foldout" text="Ability Icon" >
+            <editor:ObjectField name="Sprite" binding-path="Sprite.Sprite"/>
+            <engine:Image name="sprite-preview" class="sprite-preview"/>
+        </engine:Foldout>
+    </engine:Box>
+</UXML>

@@ -3,6 +3,27 @@
     -unity-font-style: bold;
 }
 
+.type-list {
+    height:300px;
+    border-bottom:1px;
+    border-color:black;
+}
+
+Button.type-button:checked {
+    color:black;
+    -unity-font-style: bold;
+    background-color: rgb(0,255,0);
+    border-width:2px;
+    border-color:black;
+}
+
+#selected-type {
+    -unity-font-style: bold;
+    font-size:18px;
+    white-space:normal;
+    -unity-text-align: middle-center
+}
+
 .label {
     -unity-text-align: middle-center;
     -unity-font-style: bold;
@@ -29,23 +50,3 @@
     display: none;
 }
 
-.type-list {
-    height:300px;
-    border-bottom:1px;
-    border-color:black;
-}
-
-Button.type-button:checked {
-    color:black;
-    -unity-font-style: bold;
-    background-color: rgb(0,255,0);
-    border-width:2px;
-    border-color:black;
-}
-
-#selected-type {
-    -unity-font-style: bold;
-    font-size:18px;
-    white-space:normal;
-    -unity-text-align: middle-center
-}

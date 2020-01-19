@@ -1,8 +1,8 @@
-﻿/*
- * Created on Mon Nov 04 2019
+/*
+ * Created on Sun Jan 19 2020
  *
  * The MIT License (MIT)
- * Copyright (c) 2019 Sahil Jain
+ * Copyright (c) 2020 Sahil Jain
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,39 +20,10 @@
  */
 
 using System;
-using System.Collections.Generic;
-using GameplayAbilitySystem.Common.Editor;
-using Unity.Entities;
 using UnityEngine;
 
-namespace GameplayAbilitySystem.Common.ScriptableObjects {
-    public abstract class AbstractComponentTypeSelectionScriptableObject<T> : ScriptableObject {
-        [SerializeField]
-        [HideInInspector]
-        public string Component;
-
-        [SerializeField]
-        [HideInInspector]
-        public Sprite Sprite;
-
-        public ComponentType ComponentType => ConvertAttributeToTypes();
-
-        private ComponentType ConvertAttributeToTypes() {
-            return Type.GetType(Component);
-        }
-    }
-
-    [Serializable]
-    public class TypeOf {
-        [SerializeField]
-        public string _type;
-
-
-        public ComponentType ComponentType => ConvertAttributeToTypes();
-
-        private ComponentType ConvertAttributeToTypes() {
-            return Type.GetType(_type);
-        }
-    }
-
+[Serializable]
+public class SpritePreview {
+    [SerializeField]
+    public Sprite Sprite;
 }

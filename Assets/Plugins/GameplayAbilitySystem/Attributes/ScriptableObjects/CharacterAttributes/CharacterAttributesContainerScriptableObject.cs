@@ -28,7 +28,11 @@ using UnityEngine;
 
 namespace GameplayAbilitySystem.Attributes.ScriptableObjects {
     [CreateAssetMenu(fileName = "Actor Attributes Container", menuName = "Gameplay Ability System/Attributes/Attributes Container")]
-    public class CharacterAttributesContainerScriptableObject : AbstractComponentTypeContainerSelectionScriptableObject<CharacterAttributeScriptableObject, IAttributeComponent> {
+    public class CharacterAttributesContainerScriptableObject : ScriptableObject {
+        public List<CharacterAttributeScriptableObject> Attributes;
+
+        public IEnumerable<ComponentType> ComponentTypes => Attributes.Select(x => x.Attribute.ComponentType);
+        public IEnumerable<string> Components => Attributes.Select(x => x.Attribute._type);
 
     }
 }

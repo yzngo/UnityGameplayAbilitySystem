@@ -1,0 +1,8 @@
+<UXML xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements">
+    <engine:Box>
+    <engine:Foldout name="selected-type-foldout">
+            <engine:Label name="selected-type" />
+            <engine:VisualElement name="types-list-container"/>
+    </engine:Foldout>
+    </engine:Box>
+</UXML>

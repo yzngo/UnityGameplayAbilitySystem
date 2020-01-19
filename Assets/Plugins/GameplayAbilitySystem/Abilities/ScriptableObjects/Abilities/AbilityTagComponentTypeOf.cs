@@ -1,8 +1,8 @@
-﻿/*
- * Created on Mon Nov 04 2019
+/*
+ * Created on Sun Jan 19 2020
  *
  * The MIT License (MIT)
- * Copyright (c) 2019 Sahil Jain
+ * Copyright (c) 2020 Sahil Jain
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -19,11 +19,14 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.Abilities.ScriptableObjects;
-using GameplayAbilitySystem.Common.Editor;
+using System;
+using GameplayAbilitySystem.Abilities.Components;
+using GameplayAbilitySystem.Common.ScriptableObjects;
 using UnityEditor;
+using UnityEngine;
 
-namespace GameplayAbilitySystem.Abilities.Components {
-    [CustomEditor(typeof(AbilityScriptableObject))]
-    public class GrantedAbilitiesComponentEditor : AbstractComponentTypeSelectionEditor<IAbilityTagComponent> { }
+namespace GameplayAbilitySystem.Abilities.ScriptableObjects {
+
+    [Serializable]
+    public class AbilityTagComponentTypeOf : TypeOf { }
 }

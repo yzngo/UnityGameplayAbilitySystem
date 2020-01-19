@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2084e46442b2b7542ba855d46958a584, type: 3}
   m_Name: Enemy Granted Abilities
   m_EditorClassIdentifier: 
-  Items:
-  - {fileID: 11400000, guid: 3bce4c7f996cb5b47b17291bda34207c, type: 2}
+  Abilities:
   - {fileID: 11400000, guid: 46863ede93201c649bbc45dbb8a47a6b, type: 2}

@@ -1898,7 +1898,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 6.91e-43, y: 0.00000022802635, z: 6.91e-43, w: 2.1e-44}
+  m_BoundingSphereOverride: {x: 0, y: 3e-45, z: 1.6771e-41, w: 1.04e-43}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -2959,7 +2959,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh20936
+  m_Name: pb_Mesh41016
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

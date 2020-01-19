@@ -1,0 +1,29 @@
+.enabled-button {
+    background-color: rgb(0,255,0);
+    -unity-font-style: bold;
+}
+
+.type-list {
+    margin-top: 10px;
+    height:200px;
+}
+
+Button.type-button:checked {
+    color:black;
+    -unity-font-style: bold;
+    background-color: rgb(0,255,0);
+    border-width:2px;
+    border-color:black;
+}
+
+#selected-type {
+    -unity-font-style: bold;
+    font-size:18px;
+    white-space:normal;
+    -unity-text-align: middle-center;
+}
+
+.parent {
+    margin-top:10px;
+    margin-bottom:10px;
+}

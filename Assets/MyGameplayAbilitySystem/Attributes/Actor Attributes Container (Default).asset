@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7b8b062a7a4c4547a10ac2273109918, type: 3}
   m_Name: Actor Attributes Container (Default)
   m_EditorClassIdentifier: 
-  Items:
+  Attributes:
   - {fileID: 11400000, guid: d6c9be1c7f3f7fe4798d3c8cc271f282, type: 2}
   - {fileID: 11400000, guid: 2d5bb5ff2515b504992c9951c7342175, type: 2}
   - {fileID: 11400000, guid: cc65a65611315284ca16d3208d8ea68e, type: 2}

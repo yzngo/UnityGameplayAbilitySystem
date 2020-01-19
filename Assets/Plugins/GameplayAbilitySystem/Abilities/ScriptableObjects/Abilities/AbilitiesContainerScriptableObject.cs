@@ -28,6 +28,10 @@ using UnityEngine;
 
 namespace GameplayAbilitySystem.Abilities.ScriptableObjects {
     [CreateAssetMenu(fileName = "Abilities Container", menuName = "Gameplay Ability System/Abilities/Abilities Container")]
-    public class AbilitiesContainerScriptableObject : AbstractComponentTypeContainerSelectionScriptableObject<AbilityScriptableObject, IAbilityTagComponent> {
+    public class AbilitiesContainerScriptableObject : ScriptableObject {
+        public List<AbilityScriptableObject> Abilities;
+
+        public IEnumerable<ComponentType> ComponentTypes => Abilities.Select(x => x.AbilityType.ComponentType);
+        public IEnumerable<string> Components => Abilities.Select(x => x.AbilityType._type);
     }
 }

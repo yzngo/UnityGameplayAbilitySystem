@@ -1,8 +1,8 @@
 /*
- * Created on Sat Dec 21 2019
+ * Created on Sun Jan 19 2020
  *
  * The MIT License (MIT)
- * Copyright (c) 2019 Sahil Jain
+ * Copyright (c) 2020 Sahil Jain
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -19,13 +19,31 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
-using GameplayAbilitySystem.Attributes.ScriptableObjects;
-using GameplayAbilitySystem.Common.Editor;
-using GameplayAbilitySystem.GameplayEffects.Interfaces;
+using UnityEngine;
 using UnityEditor;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
 
-namespace GameplayAbilitySystem.Attributes.Components {
-    [CustomEditor(typeof(BuffsContainerScriptableObject))]
-    public class BuffsContainerComponentEditor : AbstractComponentTypeSelectionEditor<IBuff> { }
+[CustomEditor(typeof(UIElementScriptableObject), true, isFallback = true)]
+public class AbilitySystemDefaultEditor : UnityEditor.Editor {
+    public override VisualElement CreateInspectorGUI() {
+        var container = new VisualElement();
+
+        var iterator = serializedObject.GetIterator();
+        if (iterator.NextVisible(true)) {
+            do {
+                var propertyField = new PropertyField(iterator.Copy()) { name = "PropertyField:" + iterator.propertyPath };
+
+                if (iterator.propertyPath == "m_Script" && serializedObject.targetObject != null)
+                    propertyField.SetEnabled(value: false);
+
+                container.Add(propertyField);
+            }
+            while (iterator.NextVisible(false));
+        }
+
+        return container;
+    }
 }
+
+public class UIElementScriptableObject : ScriptableObject {}

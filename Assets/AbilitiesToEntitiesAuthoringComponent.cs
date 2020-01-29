@@ -43,6 +43,7 @@ public class AbilitiesToEntitiesAuthoringComponent : MonoBehaviour, IConvertGame
     }
 
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem) {
+        Entities = new Dictionary<Type, Entity>();
         var archetype = dstManager.CreateArchetype(typeof(GameplayTagsBufferElement<IAbilityTagsBufferElement>));
         for (int i = 0; i < Abilities.Count; i++) {
             // Create entity for each ability type
@@ -51,12 +52,14 @@ public class AbilitiesToEntitiesAuthoringComponent : MonoBehaviour, IConvertGame
             dstManager.AddBuffer<GameplayTagsBufferElement<IAbilityTagsBufferElement>>(abilityEntity);
             var gameplayTagArray = new NativeArray<GameplayTagsBufferElement<IAbilityTagsBufferElement>>(abilitySO.AbilityTags.Count, Allocator.Temp);
             var dBuffer = dstManager.GetBuffer<GameplayTagsBufferElement<IAbilityTagsBufferElement>>(abilityEntity);
+            dBuffer.Capacity = abilitySO.AbilityTags.Count;
             for (var j = 0; j < abilitySO.AbilityTags.Count; j++) {
                 var tag = abilitySO.AbilityTags[j].GameplayTag;
                 var tagComponent = new GameplayTagsBufferElement<IAbilityTagsBufferElement>() { Value = tag.GameplayTagComponent, SourceGameplayEffectEntity = abilityEntity };
                 dBuffer.Add(tagComponent);
             }
             dstManager.SetName(abilityEntity, GetDisplayNameForType(abilitySO.AbilityType.ComponentType.GetManagedType()));
+            Entities.Add(abilitySO.AbilityType.ComponentType.GetManagedType(), abilityEntity);
         }
     }
 

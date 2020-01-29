@@ -29,10 +29,10 @@ namespace GameplayAbilitySystem.GameplayTags.Components {
     [Serializable]
     public struct GameplayTagComponent : IComponentData, IEquatable<GameplayTagComponent> {
         [FieldOffset(0)] public uint TagId;
-        [FieldOffset(0)] public byte TagIdLevel0;
-        [FieldOffset(1)] public byte TagIdLevel1;
-        [FieldOffset(2)] public byte TagIdLevel2;
-        [FieldOffset(3)] public byte TagIdLevel3;
+        [FieldOffset(3)] public byte TagIdLevel0;
+        [FieldOffset(2)] public byte TagIdLevel1;
+        [FieldOffset(1)] public byte TagIdLevel2;
+        [FieldOffset(0)] public byte TagIdLevel3;
 
         public override bool Equals(object other) {
             if (other is GameplayTagComponent) return this.Equals(other);

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0716e02250fe3674f83dfd663d223fc1, type: 3}
-  m_Name: Magic
+  m_Name: Physical
   m_EditorClassIdentifier: 
   GameplayTag:
     Level0Tag: {fileID: 11400000, guid: d8914287ae74bd24f8bab4d66e6d6d52, type: 2}
     Level1Tag: {fileID: 11400000, guid: bf1d1a45efe2ca8439a5f8920939f1ab, type: 2}
-    Level2Tag: {fileID: 11400000, guid: 768227db750d6a84c98874ca50924661, type: 2}
+    Level2Tag: {fileID: 11400000, guid: 137703f4b87091a46b947c23ab9c93de, type: 2}
     Level3Tag: {fileID: 0}

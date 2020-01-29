@@ -1898,7 +1898,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 3e-45, z: 1.6771e-41, w: 1.04e-43}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0.0000000074102324}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -2060,6 +2060,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 768474952}
+  - component: {fileID: 768474953}
+  - component: {fileID: 768474954}
   m_Layer: 0
   m_Name: Abilities
   m_TagString: Untagged
@@ -2081,6 +2083,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &768474953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768474951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7af80ba7b01a5fd43a0f4e45f2be9796, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Abilities:
+  - {fileID: 11400000, guid: 46863ede93201c649bbc45dbb8a47a6b, type: 2}
+  - {fileID: 11400000, guid: 3bce4c7f996cb5b47b17291bda34207c, type: 2}
+--- !u!114 &768474954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768474951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConversionMode: 1
 --- !u!114 &769799382 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4558498789277372632, guid: a5095e4e55136f74b9b9debb65e1356c,

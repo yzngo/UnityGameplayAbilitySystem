@@ -17,3 +17,4 @@ MonoBehaviour:
       Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   Sprite:
     Sprite: {fileID: 21300000, guid: f64054035c823ca40ace8a2e5021f7ec, type: 3}
+  AbilityTags: []

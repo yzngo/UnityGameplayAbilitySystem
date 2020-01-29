@@ -17,3 +17,5 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   Sprite:
     Sprite: {fileID: 21300000, guid: 012e223bae53ce3439432cd17309ca89, type: 3}
+  AbilityTags:
+  - {fileID: 11400000, guid: 26e478723d6b8b040a70d9489e17ceff, type: 2}

@@ -21,6 +21,7 @@
 
 
 using System;
+using GameplayAbilitySystem.GameplayTags.Components;
 using UnityEngine;
 namespace GameplayAbilitySystem.GameplayTags.ScriptableObjects {
     [CreateAssetMenu(fileName = "GameplayTag", menuName = "Gameplay Ability System/Gameplay Tag")]
@@ -34,5 +35,13 @@ namespace GameplayAbilitySystem.GameplayTags.ScriptableObjects {
         public GameplayTagByteScriptableObject Level1Tag;
         public GameplayTagByteScriptableObject Level2Tag;
         public GameplayTagByteScriptableObject Level3Tag;
+
+        public GameplayTagComponent GameplayTagComponent => new GameplayTagComponent
+        {
+            TagIdLevel0 = Level0Tag == null ? (byte)0 : Level0Tag.Tag,
+            TagIdLevel1 = Level1Tag == null ? (byte)0 : Level1Tag.Tag,
+            TagIdLevel2 = Level2Tag == null ? (byte)0 : Level2Tag.Tag,
+            TagIdLevel3 = Level3Tag == null ? (byte)0 : Level3Tag.Tag
+        };
     }
 }

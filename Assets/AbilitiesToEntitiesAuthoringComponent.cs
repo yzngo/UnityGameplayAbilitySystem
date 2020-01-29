@@ -44,25 +44,47 @@ public class AbilitiesToEntitiesAuthoringComponent : MonoBehaviour, IConvertGame
 
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem) {
         Entities = new Dictionary<Type, Entity>();
-        var archetype = dstManager.CreateArchetype(typeof(GameplayTagsBufferElement<IAbilityTagsBufferElement>));
+        var archetype = dstManager.CreateArchetype(
+                typeof(GameplayTagsBufferElement<IAbilityTagsBufferElement>),
+                typeof(GameplayTagsBufferElement<ICancelAbilitiesWithTagsBufferElement>),
+                typeof(GameplayTagsBufferElement<IBlockAbilitiesWithTagsBufferElement>),
+                typeof(GameplayTagsBufferElement<IActivationOwnedTagsBufferElement>),
+                typeof(GameplayTagsBufferElement<IActivationRequiredTagsBufferElement>),
+                typeof(GameplayTagsBufferElement<IActivationBlockedTagsBufferElement>),
+                typeof(GameplayTagsBufferElement<ISourceRequiredTagsBufferElement>),
+                typeof(GameplayTagsBufferElement<ISourceBlockedTagsBufferElement>),
+                typeof(GameplayTagsBufferElement<ITargetRequiredTagsBufferElement>),
+                typeof(GameplayTagsBufferElement<ITargetBlockedTagsBufferElement>)
+            );
         for (int i = 0; i < Abilities.Count; i++) {
             // Create entity for each ability type
             var abilitySO = Abilities[i];
-            var abilityEntity = dstManager.CreateEntity(typeof(GameplayTagsBufferElement<IAbilityTagsBufferElement>));
-            dstManager.AddBuffer<GameplayTagsBufferElement<IAbilityTagsBufferElement>>(abilityEntity);
-            var gameplayTagArray = new NativeArray<GameplayTagsBufferElement<IAbilityTagsBufferElement>>(abilitySO.AbilityTags.Count, Allocator.Temp);
-            var dBuffer = dstManager.GetBuffer<GameplayTagsBufferElement<IAbilityTagsBufferElement>>(abilityEntity);
-            dBuffer.Capacity = abilitySO.AbilityTags.Count;
-            for (var j = 0; j < abilitySO.AbilityTags.Count; j++) {
-                var tag = abilitySO.AbilityTags[j].GameplayTag;
-                var tagComponent = new GameplayTagsBufferElement<IAbilityTagsBufferElement>() { Value = tag.GameplayTagComponent, SourceGameplayEffectEntity = abilityEntity };
-                dBuffer.Add(tagComponent);
-            }
+            var abilityEntity = dstManager.CreateEntity(archetype);
+            PopulateGameplayTagBuffers<IAbilityTagsBufferElement>(dstManager, abilitySO.AbilityTags, abilityEntity);
+            PopulateGameplayTagBuffers<ICancelAbilitiesWithTagsBufferElement>(dstManager, abilitySO.CancelAbilitiesWithTags, abilityEntity);
+            PopulateGameplayTagBuffers<IBlockAbilitiesWithTagsBufferElement>(dstManager, abilitySO.BlockAbilitiesWithTags, abilityEntity);
+            PopulateGameplayTagBuffers<IActivationOwnedTagsBufferElement>(dstManager, abilitySO.ActivationOwnedTags, abilityEntity);
+            PopulateGameplayTagBuffers<IActivationRequiredTagsBufferElement>(dstManager, abilitySO.ActivationRequiredTags, abilityEntity);
+            PopulateGameplayTagBuffers<IActivationBlockedTagsBufferElement>(dstManager, abilitySO.ActivationBlockedTags, abilityEntity);
+            PopulateGameplayTagBuffers<ISourceRequiredTagsBufferElement>(dstManager, abilitySO.SourceRequiredTags, abilityEntity);
+            PopulateGameplayTagBuffers<ISourceBlockedTagsBufferElement>(dstManager, abilitySO.SourceBlockedTags, abilityEntity);
+            PopulateGameplayTagBuffers<ITargetRequiredTagsBufferElement>(dstManager, abilitySO.TargetRequiredTags, abilityEntity);
+            PopulateGameplayTagBuffers<ITargetBlockedTagsBufferElement>(dstManager, abilitySO.TargetBlockedTags, abilityEntity);
             dstManager.SetName(abilityEntity, GetDisplayNameForType(abilitySO.AbilityType.ComponentType.GetManagedType()));
             Entities.Add(abilitySO.AbilityType.ComponentType.GetManagedType(), abilityEntity);
         }
     }
 
+    private static void PopulateGameplayTagBuffers<T>(EntityManager dstManager, List<GameplayTagScriptableObject> gameplayTags, Entity abilityEntity)
+    where T : IGameplayTagBufferElement {
+        var dBuffer = dstManager.GetBuffer<GameplayTagsBufferElement<T>>(abilityEntity);
+        dBuffer.Capacity = gameplayTags.Count;
+        for (var j = 0; j < gameplayTags.Count; j++) {
+            var tag = gameplayTags[j].GameplayTag;
+            var tagComponent = new GameplayTagsBufferElement<T>() { Value = tag.GameplayTagComponent };
+            dBuffer.Add(tagComponent);
+        }
+    }
     private string GetDisplayNameForType(Type type) {
         var displayNameAttribute = (AbilitySystemDisplayNameAttribute)System.Attribute.GetCustomAttribute(type, typeof(AbilitySystemDisplayNameAttribute));
         string displayName = "";

@@ -22,8 +22,7 @@
 
 using UnityEngine;
 namespace GameplayAbilitySystem.GameplayTags.ScriptableObjects {
-    [CreateAssetMenu(fileName = "GameplayTag", menuName = "Gameplay Ability System/Gameplay Tag Byte")]
-    public class GameplayTagByteScriptableObject : ScriptableObject {
+    public abstract class GameplayTagByteScriptableObject : ScriptableObject {
         public byte Tag;
     }
 }

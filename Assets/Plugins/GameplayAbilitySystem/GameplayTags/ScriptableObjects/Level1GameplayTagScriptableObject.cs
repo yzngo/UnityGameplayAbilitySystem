@@ -1,5 +1,5 @@
 /*
- * Created on Tue Jan 07 2020
+ * Created on Mon Feb 03 2020
  *
  * The MIT License (MIT)
  * Copyright (c) 2020 Sahil Jain
@@ -19,29 +19,8 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
-using System;
-using GameplayAbilitySystem.GameplayTags.Components;
 using UnityEngine;
 namespace GameplayAbilitySystem.GameplayTags.ScriptableObjects {
-    [CreateAssetMenu(fileName = "GameplayTag", menuName = "Gameplay Ability System/Gameplay Tag")]
-    public class GameplayTagScriptableObject : ScriptableObject {
-        public GameplayTagBuilder GameplayTag;
-    }
-
-    [Serializable]
-    public struct GameplayTagBuilder {
-        public Level0GameplayTagScriptableObject Level0Tag;
-        public Level1GameplayTagScriptableObject Level1Tag;
-        public Level2GameplayTagScriptableObject Level2Tag;
-        public Level3GameplayTagScriptableObject Level3Tag;
-
-        public GameplayTagComponent GameplayTagComponent => new GameplayTagComponent
-        {
-            TagIdLevel0 = Level0Tag == null ? (byte)0 : Level0Tag.Tag,
-            TagIdLevel1 = Level1Tag == null ? (byte)0 : Level1Tag.Tag,
-            TagIdLevel2 = Level2Tag == null ? (byte)0 : Level2Tag.Tag,
-            TagIdLevel3 = Level3Tag == null ? (byte)0 : Level3Tag.Tag
-        };
-    }
+    [CreateAssetMenu(fileName = "GameplayTag", menuName = "Gameplay Ability System/Gameplay Tag Byte/Level 1")]
+    public class Level1GameplayTagScriptableObject : GameplayTagByteScriptableObject {     }
 }

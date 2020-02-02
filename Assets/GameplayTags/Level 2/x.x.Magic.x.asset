@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d98780df593e0954fa15cffc83f803f7, type: 3}
-  m_Name: x.x.Magic
+  m_Script: {fileID: 11500000, guid: e007576a49e3afb4aa63fa200e4f05d6, type: 3}
+  m_Name: x.x.Magic.x
   m_EditorClassIdentifier: 
   Tag: 2

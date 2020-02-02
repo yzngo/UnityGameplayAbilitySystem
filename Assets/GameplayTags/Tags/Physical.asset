@@ -15,5 +15,5 @@ MonoBehaviour:
   GameplayTag:
     Level0Tag: {fileID: 11400000, guid: d8914287ae74bd24f8bab4d66e6d6d52, type: 2}
     Level1Tag: {fileID: 11400000, guid: bf1d1a45efe2ca8439a5f8920939f1ab, type: 2}
-    Level2Tag: {fileID: 11400000, guid: 137703f4b87091a46b947c23ab9c93de, type: 2}
+    Level2Tag: {fileID: 11400000, guid: 20a12f02e36b10f4aaad0a8124c10274, type: 2}
     Level3Tag: {fileID: 0}

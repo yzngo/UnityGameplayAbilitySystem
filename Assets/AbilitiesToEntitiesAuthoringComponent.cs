@@ -60,23 +60,26 @@ public class AbilitiesToEntitiesAuthoringComponent : MonoBehaviour, IConvertGame
             // Create entity for each ability type
             var abilitySO = Abilities[i];
             var abilityEntity = dstManager.CreateEntity(archetype);
-            PopulateGameplayTagBuffers<IAbilityTagsBufferElement>(dstManager, abilitySO.AbilityTags.AssetTags, abilityEntity);
-            PopulateGameplayTagBuffers<ICancelAbilitiesWithTagsBufferElement>(dstManager, abilitySO.CancelAbilitiesWithTags.AssetTags, abilityEntity);
-            PopulateGameplayTagBuffers<IBlockAbilitiesWithTagsBufferElement>(dstManager, abilitySO.BlockAbilitiesWithTags.AssetTags, abilityEntity);
-            PopulateGameplayTagBuffers<IActivationOwnedTagsBufferElement>(dstManager, abilitySO.ActivationOwnedTags.AssetTags, abilityEntity);
-            PopulateGameplayTagBuffers<IActivationRequiredTagsBufferElement>(dstManager, abilitySO.ActivationRequiredTags.AssetTags, abilityEntity);
-            PopulateGameplayTagBuffers<IActivationBlockedTagsBufferElement>(dstManager, abilitySO.ActivationBlockedTags.AssetTags, abilityEntity);
-            PopulateGameplayTagBuffers<ISourceRequiredTagsBufferElement>(dstManager, abilitySO.SourceRequiredTags.AssetTags, abilityEntity);
-            PopulateGameplayTagBuffers<ISourceBlockedTagsBufferElement>(dstManager, abilitySO.SourceBlockedTags.AssetTags, abilityEntity);
-            PopulateGameplayTagBuffers<ITargetRequiredTagsBufferElement>(dstManager, abilitySO.TargetRequiredTags.AssetTags, abilityEntity);
-            PopulateGameplayTagBuffers<ITargetBlockedTagsBufferElement>(dstManager, abilitySO.TargetBlockedTags.AssetTags, abilityEntity);
+            PopulateGameplayTagBuffers<IAbilityTagsBufferElement>(dstManager, abilitySO.AbilityTags, abilityEntity);
+            PopulateGameplayTagBuffers<ICancelAbilitiesWithTagsBufferElement>(dstManager, abilitySO.CancelAbilitiesWithTags, abilityEntity);
+            PopulateGameplayTagBuffers<IBlockAbilitiesWithTagsBufferElement>(dstManager, abilitySO.BlockAbilitiesWithTags, abilityEntity);
+            PopulateGameplayTagBuffers<IActivationOwnedTagsBufferElement>(dstManager, abilitySO.ActivationOwnedTags, abilityEntity);
+            PopulateGameplayTagBuffers<IActivationRequiredTagsBufferElement>(dstManager, abilitySO.ActivationRequiredTags, abilityEntity);
+            PopulateGameplayTagBuffers<IActivationBlockedTagsBufferElement>(dstManager, abilitySO.ActivationBlockedTags, abilityEntity);
+            PopulateGameplayTagBuffers<ISourceRequiredTagsBufferElement>(dstManager, abilitySO.SourceRequiredTags, abilityEntity);
+            PopulateGameplayTagBuffers<ISourceBlockedTagsBufferElement>(dstManager, abilitySO.SourceBlockedTags, abilityEntity);
+            PopulateGameplayTagBuffers<ITargetRequiredTagsBufferElement>(dstManager, abilitySO.TargetRequiredTags, abilityEntity);
+            PopulateGameplayTagBuffers<ITargetBlockedTagsBufferElement>(dstManager, abilitySO.TargetBlockedTags, abilityEntity);
             dstManager.SetName(abilityEntity, GetDisplayNameForType(abilitySO.AbilityType.ComponentType.GetManagedType()));
             Entities.Add(abilitySO.AbilityType.ComponentType.GetManagedType(), abilityEntity);
         }
     }
 
-    private static void PopulateGameplayTagBuffers<T>(EntityManager dstManager, List<GameplayTagScriptableObject> gameplayTags, Entity abilityEntity)
+    private static void PopulateGameplayTagBuffers<T>(EntityManager dstManager, GameplayTagsContainerScriptableObject gameplayTagsContainer, Entity abilityEntity)
     where T : IGameplayTagBufferElement {
+        if (gameplayTagsContainer == null) return;
+        if (gameplayTagsContainer.AssetTags == null) return;
+        var gameplayTags = gameplayTagsContainer.AssetTags;
         var dBuffer = dstManager.GetBuffer<GameplayTagsBufferElement<T>>(abilityEntity);
         dBuffer.Capacity = gameplayTags.Count;
         for (var j = 0; j < gameplayTags.Count; j++) {

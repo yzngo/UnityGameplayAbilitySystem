@@ -92,9 +92,9 @@ namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
             //     this.m_Query = GetEntityQuery(ComponentType.ReadOnly<DefaultAttackAbilityActive>(), ComponentType.ReadWrite<AbilityStateComponent>());
             // }
 
-            [RequireComponentTag(typeof(DefaultAttackAbilityActive))]
-            struct SystemJob : IJobForEach<AbilityStateComponent> {
-                public void Execute(ref AbilityStateComponent abilityState) {
+            [RequireComponentTag(typeof(AbilityIsActive))]
+            struct SystemJob : IJobForEach<AbilityStateComponent, DefaultAttackAbilityTag> {
+                public void Execute(ref AbilityStateComponent abilityState, [ReadOnly] ref DefaultAttackAbilityTag _) {
                     abilityState |= (int)AbilityStates.ACTIVE;
                 }
             }

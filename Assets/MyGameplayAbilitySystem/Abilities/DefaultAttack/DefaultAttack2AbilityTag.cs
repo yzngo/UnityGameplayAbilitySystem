@@ -99,18 +99,18 @@ namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
 
         public void BeginActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity) {
             // Check if entity already has the "Active" component - return if existing
-            if (dstManager.HasComponent<DefaultAttackAbilityActive>(grantedAbilityEntity)) return;
+            if (dstManager.HasComponent<AbilityIsActive>(grantedAbilityEntity)) return;
 
             // Add component to entity
-            dstManager.AddComponentData<DefaultAttackAbilityActive>(grantedAbilityEntity, new DefaultAttackAbilityActive());
+            dstManager.AddComponentData<AbilityIsActive>(grantedAbilityEntity, new AbilityIsActive());
         }
 
         public void EndActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity) {
             // Check if entity already has the "Active" component - return if not existing
-            if (!dstManager.HasComponent<DefaultAttackAbilityActive>(grantedAbilityEntity)) return;
+            if (!dstManager.HasComponent<AbilityIsActive>(grantedAbilityEntity)) return;
 
             // Remove component from entity
-            dstManager.RemoveComponent<DefaultAttackAbilityActive>(grantedAbilityEntity);
+            dstManager.RemoveComponent<AbilityIsActive>(grantedAbilityEntity);
         }
 
         public IEnumerator CheckAbilityHit(EntityManager EntityManager, Entity sourceEntity, Entity targetEntity) {

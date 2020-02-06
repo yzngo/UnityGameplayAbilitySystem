@@ -46,10 +46,10 @@ namespace MyGameplayAbilitySystem.Abilities.Fire1 {
 
         public void BeginActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity) {
             // Check if entity already has the "Active" component - return if existing
-            if (dstManager.HasComponent<Fire1AbilityActive>(grantedAbilityEntity)) return;
+            if (dstManager.HasComponent<AbilityIsActive>(grantedAbilityEntity)) return;
 
             // Add component to entity
-            dstManager.AddComponentData<Fire1AbilityActive>(grantedAbilityEntity, new Fire1AbilityActive());
+            dstManager.AddComponentData<AbilityIsActive>(grantedAbilityEntity, new AbilityIsActive());
         }
 
         public void CommitAbility(EntityManager dstManager, Entity actorEntity) {
@@ -184,10 +184,10 @@ namespace MyGameplayAbilitySystem.Abilities.Fire1 {
 
         public void EndActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity) {
             // Check if entity already has the "Active" component - return if not existing
-            if (!dstManager.HasComponent<Fire1AbilityActive>(grantedAbilityEntity)) return;
+            if (!dstManager.HasComponent<AbilityIsActive>(grantedAbilityEntity)) return;
 
             // Remove component from entity
-            dstManager.RemoveComponent<Fire1AbilityActive>(grantedAbilityEntity);
+            dstManager.RemoveComponent<AbilityIsActive>(grantedAbilityEntity);
         }
 
         AnimatorStateInfo GetAnimatorStateInfo(Animator animator, int layerIndex, string animatorStateName) {

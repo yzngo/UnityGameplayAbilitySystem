@@ -26,6 +26,7 @@ using GameplayAbilitySystem.AbilitySystem.Enums;
 using GameplayAbilitySystem.ExtensionMethods;
 using GameplayAbilitySystem.GameplayEffects.Components;
 using MyGameplayAbilitySystem.GameplayEffects.Components;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -95,9 +96,9 @@ namespace MyGameplayAbilitySystem.Abilities.Fire1 {
         }
 
         public class AbilityAvailabilitySystem : AbilityAvailabilitySystem<Fire1AbilityTag> {
-            [RequireComponentTag(typeof(Fire1AbilityActive))]
-            struct SystemJob : IJobForEach<AbilityStateComponent> {
-                public void Execute(ref AbilityStateComponent abilityState) {
+            [RequireComponentTag(typeof(AbilityIsActive))]
+            struct SystemJob : IJobForEach<AbilityStateComponent, Fire1AbilityTag> {
+                public void Execute(ref AbilityStateComponent abilityState, [ReadOnly] ref Fire1AbilityTag _) {
                     abilityState |= (int)AbilityStates.ACTIVE;
                 }
             }

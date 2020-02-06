@@ -1,5 +1,5 @@
-/*
- * Created on Sun Dec 15 2019
+﻿/*
+ * Created on Tue Dec 03 2019
  *
  * The MIT License (MIT)
  * Copyright (c) 2019 Sahil Jain
@@ -23,7 +23,7 @@ using GameplayAbilitySystem.GameplayEffects.Interfaces;
 using Unity.Entities;
 
 namespace MyGameplayAbilitySystem.GameplayEffects.Components {
-    public struct Fire1AbilityActive : IGameplayEffectTagComponent, IComponentData {
+    public struct AbilityIsActive : IGameplayEffectTagComponent, IComponentData {
         public Entity Instantiate(EntityManager dstManager, Entity actorEntity, float duration) {
             throw new System.NotImplementedException();
         }

@@ -1,8 +1,8 @@
 /*
- * Created on Tue Dec 03 2019
+ * Created on Fri Feb 07 2020
  *
  * The MIT License (MIT)
- * Copyright (c) 2019 Sahil Jain
+ * Copyright (c) 2020 Sahil Jain
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -19,17 +19,18 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.GameplayEffects.Interfaces;
 using Unity.Entities;
+using Unity.Jobs;
 
-namespace MyGameplayAbilitySystem.GameplayEffects.Components {
-    public struct DefaultAttackAbilityActive : IGameplayEffectTagComponent, IComponentData {
-        public Entity Instantiate(EntityManager dstManager, Entity actorEntity, float duration) {
-            throw new System.NotImplementedException();
-        }
+/// <summary>
+/// This system cancels active abilities on an actor when a new ability is activated by that actor
+/// 
+/// An "active ability" is one where the "Granted Ability" entity for that actor/ability has the "Ability Active" tag
+/// </summary>
+public class CancelAbilitiesWithTagsSystem : JobComponentSystem {
 
-        public Entity Instantiate(int jobIndex, EntityCommandBuffer.Concurrent Ecb, Entity actorEntity, float duration) {
-            throw new System.NotImplementedException();
-        }
+    protected override JobHandle OnUpdate(JobHandle inputDeps) {
+        return inputDeps;
+        // throw new System.NotImplementedException();
     }
 }

@@ -30,15 +30,15 @@ namespace GameplayAbilitySystem.Abilities.ScriptableObjects {
         public AbilityTagComponentTypeOf AbilityType;
         [SerializeField]
         public SpritePreview Sprite;
-        public List<GameplayTagScriptableObject> AbilityTags;
-        public List<GameplayTagScriptableObject> CancelAbilitiesWithTags;
-        public List<GameplayTagScriptableObject> BlockAbilitiesWithTags;
-        public List<GameplayTagScriptableObject> ActivationOwnedTags;
-        public List<GameplayTagScriptableObject> ActivationRequiredTags;
-        public List<GameplayTagScriptableObject> ActivationBlockedTags;
-        public List<GameplayTagScriptableObject> SourceRequiredTags;
-        public List<GameplayTagScriptableObject> SourceBlockedTags;
-        public List<GameplayTagScriptableObject> TargetRequiredTags;
-        public List<GameplayTagScriptableObject> TargetBlockedTags;
+        public GameplayTagsContainerScriptableObject AbilityTags;
+        public GameplayTagsContainerScriptableObject CancelAbilitiesWithTags;
+        public GameplayTagsContainerScriptableObject BlockAbilitiesWithTags;
+        public GameplayTagsContainerScriptableObject ActivationOwnedTags;
+        public GameplayTagsContainerScriptableObject ActivationRequiredTags;
+        public GameplayTagsContainerScriptableObject ActivationBlockedTags;
+        public GameplayTagsContainerScriptableObject SourceRequiredTags;
+        public GameplayTagsContainerScriptableObject SourceBlockedTags;
+        public GameplayTagsContainerScriptableObject TargetRequiredTags;
+        public GameplayTagsContainerScriptableObject TargetBlockedTags;
     }
 }

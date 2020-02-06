@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 208d23a6d1ac447498f623e1e931caba, type: 3}
-  m_Name: Asset Tags
+  m_Script: {fileID: 11500000, guid: d70f65f36ae82974096cdca180266af8, type: 3}
+  m_Name: Default Attack
   m_EditorClassIdentifier: 
-  AssetTags:
-  - {fileID: 11400000, guid: 26e478723d6b8b040a70d9489e17ceff, type: 2}
+  Tag: 1

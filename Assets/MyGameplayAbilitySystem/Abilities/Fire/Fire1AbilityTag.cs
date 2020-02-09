@@ -48,6 +48,9 @@ namespace MyGameplayAbilitySystem.Abilities.Fire1 {
             // Check if entity already has the "Active" component - return if existing
             if (dstManager.HasComponent<AbilityIsActive>(grantedAbilityEntity)) return;
 
+            var abilityTagFlags = dstManager.GetComponentData<AbilityTagFlags>(grantedAbilityEntity);
+            dstManager.SetComponentData<AbilityTagFlags>(grantedAbilityEntity, abilityTagFlags | AbilityTagFlag.AbilityCancellable);
+
             // Add component to entity
             dstManager.AddComponentData<AbilityIsActive>(grantedAbilityEntity, new AbilityIsActive());
         }
@@ -180,11 +183,12 @@ namespace MyGameplayAbilitySystem.Abilities.Fire1 {
 
         }
 
-
-
         public void EndActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity) {
             // Check if entity already has the "Active" component - return if not existing
             if (!dstManager.HasComponent<AbilityIsActive>(grantedAbilityEntity)) return;
+
+            var abilityTagFlags = dstManager.GetComponentData<AbilityTagFlags>(grantedAbilityEntity);
+            dstManager.SetComponentData<AbilityTagFlags>(grantedAbilityEntity, abilityTagFlags | AbilityTagFlag.AbilityCancellable);
 
             // Remove component from entity
             dstManager.RemoveComponent<AbilityIsActive>(grantedAbilityEntity);

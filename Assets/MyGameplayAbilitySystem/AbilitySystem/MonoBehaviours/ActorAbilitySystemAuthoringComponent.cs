@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameplayAbilitySystem.Abilities.Components;
+using GameplayAbilitySystem.Abilities.Components.Authoring;
 using GameplayAbilitySystem.Abilities.ScriptableObjects;
 using GameplayAbilitySystem.Abilities.Systems;
 using GameplayAbilitySystem.AbilitySystem.Components;
@@ -100,7 +101,8 @@ namespace MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours {
 
             for (var i = 0; i < grantedAbilities.Count; i++) {
                 var abilityType = grantedAbilities[i];
-                var grantedAbilityArchetype = dstManager.CreateArchetype(typeof(AbilitySystemActorTransformComponent), abilityType, typeof(AbilityOwnerComponent), typeof(AbilityCooldownComponent), typeof(AbilityStateFlags), typeof(AbilityTagFlags));
+                var abilityEntity = AbilitiesToEntitiesAuthoringComponent.GetEntityForAbilityType(abilityType.GetManagedType());
+                var grantedAbilityArchetype = dstManager.CreateArchetype(typeof(AbilityReferenceComponent), typeof(AbilitySystemActorTransformComponent), abilityType, typeof(AbilityOwnerComponent), typeof(AbilityCooldownComponent), typeof(AbilityStateFlags), typeof(AbilityTagFlags));
                 var abilitySystemGrantedAbilityEntity = dstManager.CreateEntity(grantedAbilityArchetype);
 
                 dstManager.SetComponentData(abilitySystemGrantedAbilityEntity, new AbilitySystemActorTransformComponent
@@ -110,6 +112,10 @@ namespace MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours {
                 dstManager.SetComponentData(abilitySystemGrantedAbilityEntity, new AbilityOwnerComponent
                 {
                     Value = abilitySystemAttributesEntity
+                });
+                dstManager.SetComponentData(abilitySystemGrantedAbilityEntity, new AbilityReferenceComponent
+                {
+                    Value = abilityEntity
                 });
                 dstManager.SetName(abilitySystemGrantedAbilityEntity, this.gameObject.name + " - Granted Ability - " + abilityType.GetManagedType().Name);
                 entities.Add(abilitySystemGrantedAbilityEntity);

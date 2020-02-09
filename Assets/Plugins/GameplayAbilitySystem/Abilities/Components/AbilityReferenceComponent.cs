@@ -1,5 +1,5 @@
 /*
- * Created on Fri Feb 07 2020
+ * Created on Sun Feb 09 2020
  *
  * The MIT License (MIT)
  * Copyright (c) 2020 Sahil Jain
@@ -20,23 +20,10 @@
  */
 
 using Unity.Entities;
-using Unity.Jobs;
 
-/// <summary>
-/// This system cancels active abilities on an actor when a new ability is activated by that actor.
-/// The Gameplay Tags to check for are defined in the "Cancel Abilities With Tags", and the comparison
-/// is done on the abilities that are currently marked as active (with the "AbilityIsActive" component tag).
-/// </summary>
-public class CancelAbilitiesWithTagsSystem : JobComponentSystem {
-    protected override void OnCreate() {
+public struct AbilityReferenceComponent : IComponentData {
+    public Entity Value;
+    public static implicit operator Entity(AbilityReferenceComponent e) { return e.Value; }
+    public static implicit operator AbilityReferenceComponent(Entity e) { return new AbilityReferenceComponent { Value = e }; }
 
-    }
-
-    protected override JobHandle OnUpdate(JobHandle inputDeps) {
-        // Iterate through each granted active ability, and collect list of tags that need to be cancelled for each actor.
-        
-        // 
-        return inputDeps;
-        // throw new System.NotImplementedException();
-    }
 }

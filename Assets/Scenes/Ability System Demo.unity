@@ -275,6 +275,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2068465677}
     m_Modifications:
+    - target: {fileID: 396651187017546649, guid: 87613a41b93a7d44a9290c82c0dd98c2,
+        type: 3}
+      propertyPath: AbilityAuthoringComponent
+      value: 
+      objectReference: {fileID: 768474953}
     - target: {fileID: 5555714685437361602, guid: 87613a41b93a7d44a9290c82c0dd98c2,
         type: 3}
       propertyPath: m_Name
@@ -363,6 +368,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2068465677}
     m_Modifications:
+    - target: {fileID: 396651187017546649, guid: 87613a41b93a7d44a9290c82c0dd98c2,
+        type: 3}
+      propertyPath: AbilityAuthoringComponent
+      value: 
+      objectReference: {fileID: 768474953}
     - target: {fileID: 5555714685437361602, guid: 87613a41b93a7d44a9290c82c0dd98c2,
         type: 3}
       propertyPath: m_Name
@@ -463,6 +473,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2068465677}
     m_Modifications:
+    - target: {fileID: 396651187017546649, guid: 87613a41b93a7d44a9290c82c0dd98c2,
+        type: 3}
+      propertyPath: AbilityAuthoringComponent
+      value: 
+      objectReference: {fileID: 768474953}
     - target: {fileID: 5555714685437361602, guid: 87613a41b93a7d44a9290c82c0dd98c2,
         type: 3}
       propertyPath: m_Name
@@ -539,6 +554,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2068465677}
     m_Modifications:
+    - target: {fileID: 396651187017546649, guid: 87613a41b93a7d44a9290c82c0dd98c2,
+        type: 3}
+      propertyPath: AbilityAuthoringComponent
+      value: 
+      objectReference: {fileID: 768474953}
     - target: {fileID: 5555714685437361602, guid: 87613a41b93a7d44a9290c82c0dd98c2,
         type: 3}
       propertyPath: m_Name
@@ -1898,7 +1918,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0.0000000074102324}
+  m_BoundingSphereOverride: {x: 7.96e-43, y: NaN, z: 7.96e-43, w: -5.296319e-16}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -2051,66 +2071,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 766764832}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &768474951
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 768474952}
-  - component: {fileID: 768474953}
-  - component: {fileID: 768474954}
-  m_Layer: 0
-  m_Name: Abilities
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &768474952
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 768474951}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &768474953
+--- !u!114 &768474953 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 1865321814904318033, guid: 3e8b06995faf30644a6d26b9573074ef,
+    type: 3}
+  m_PrefabInstance: {fileID: 1865321815369668376}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 768474951}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7af80ba7b01a5fd43a0f4e45f2be9796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Abilities:
-  - {fileID: 11400000, guid: 46863ede93201c649bbc45dbb8a47a6b, type: 2}
-  - {fileID: 11400000, guid: 3bce4c7f996cb5b47b17291bda34207c, type: 2}
---- !u!114 &768474954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 768474951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConversionMode: 1
 --- !u!114 &769799382 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4558498789277372632, guid: a5095e4e55136f74b9b9debb65e1356c,
@@ -2237,6 +2209,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2068465677}
     m_Modifications:
+    - target: {fileID: 396651187017546649, guid: 87613a41b93a7d44a9290c82c0dd98c2,
+        type: 3}
+      propertyPath: AbilityAuthoringComponent
+      value: 
+      objectReference: {fileID: 768474953}
     - target: {fileID: 5555714685437361602, guid: 87613a41b93a7d44a9290c82c0dd98c2,
         type: 3}
       propertyPath: m_Name
@@ -2914,6 +2891,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2068465677}
     m_Modifications:
+    - target: {fileID: 396651187017546649, guid: 87613a41b93a7d44a9290c82c0dd98c2,
+        type: 3}
+      propertyPath: AbilityAuthoringComponent
+      value: 
+      objectReference: {fileID: 768474953}
     - target: {fileID: 5555714685437361602, guid: 87613a41b93a7d44a9290c82c0dd98c2,
         type: 3}
       propertyPath: m_Name
@@ -2989,7 +2971,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh41016
+  m_Name: pb_Mesh20758
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3498,6 +3480,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2068465677}
     m_Modifications:
+    - target: {fileID: 396651187017546649, guid: 87613a41b93a7d44a9290c82c0dd98c2,
+        type: 3}
+      propertyPath: AbilityAuthoringComponent
+      value: 
+      objectReference: {fileID: 768474953}
     - target: {fileID: 5555714685437361602, guid: 87613a41b93a7d44a9290c82c0dd98c2,
         type: 3}
       propertyPath: m_Name
@@ -3803,6 +3790,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2068465677}
     m_Modifications:
+    - target: {fileID: 396651187017546649, guid: 87613a41b93a7d44a9290c82c0dd98c2,
+        type: 3}
+      propertyPath: AbilityAuthoringComponent
+      value: 
+      objectReference: {fileID: 768474953}
     - target: {fileID: 5555714685437361602, guid: 87613a41b93a7d44a9290c82c0dd98c2,
         type: 3}
       propertyPath: m_Name
@@ -4743,6 +4735,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2068465677}
     m_Modifications:
+    - target: {fileID: 396651187017546649, guid: 87613a41b93a7d44a9290c82c0dd98c2,
+        type: 3}
+      propertyPath: AbilityAuthoringComponent
+      value: 
+      objectReference: {fileID: 768474953}
     - target: {fileID: 5555714685437361602, guid: 87613a41b93a7d44a9290c82c0dd98c2,
         type: 3}
       propertyPath: m_Name
@@ -5217,6 +5214,75 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3623a9ed510ba4eb4b7c05b1b04619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1865321815369668376
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1865321814904318032, guid: 3e8b06995faf30644a6d26b9573074ef,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1865321814904318032, guid: 3e8b06995faf30644a6d26b9573074ef,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1865321814904318032, guid: 3e8b06995faf30644a6d26b9573074ef,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1865321814904318032, guid: 3e8b06995faf30644a6d26b9573074ef,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1865321814904318032, guid: 3e8b06995faf30644a6d26b9573074ef,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1865321814904318032, guid: 3e8b06995faf30644a6d26b9573074ef,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1865321814904318032, guid: 3e8b06995faf30644a6d26b9573074ef,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1865321814904318032, guid: 3e8b06995faf30644a6d26b9573074ef,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1865321814904318032, guid: 3e8b06995faf30644a6d26b9573074ef,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1865321814904318032, guid: 3e8b06995faf30644a6d26b9573074ef,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1865321814904318032, guid: 3e8b06995faf30644a6d26b9573074ef,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1865321814904318047, guid: 3e8b06995faf30644a6d26b9573074ef,
+        type: 3}
+      propertyPath: m_Name
+      value: Abilities
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3e8b06995faf30644a6d26b9573074ef, type: 3}
 --- !u!1001 &2343628200546972114
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5224,6 +5290,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2068465677}
     m_Modifications:
+    - target: {fileID: 396651187017546649, guid: 87613a41b93a7d44a9290c82c0dd98c2,
+        type: 3}
+      propertyPath: AbilityAuthoringComponent
+      value: 
+      objectReference: {fileID: 768474953}
     - target: {fileID: 5555714685437361602, guid: 87613a41b93a7d44a9290c82c0dd98c2,
         type: 3}
       propertyPath: m_Name

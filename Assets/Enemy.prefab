@@ -296,6 +296,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Attributes: {fileID: 11400000, guid: e5777fe241cbcb643b750d06c1313875, type: 2}
   GrantedAbilities: {fileID: 11400000, guid: 18e6f9642608a0247a57f927f91118e5, type: 2}
+  AbilityAuthoringComponent: {fileID: 1865321814904318033, guid: 3e8b06995faf30644a6d26b9573074ef,
+    type: 3}
 --- !u!114 &4400339242248586328
 MonoBehaviour:
   m_ObjectHideFlags: 0

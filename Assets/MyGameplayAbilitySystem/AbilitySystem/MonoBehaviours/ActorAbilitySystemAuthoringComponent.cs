@@ -100,7 +100,7 @@ namespace MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours {
 
             for (var i = 0; i < grantedAbilities.Count; i++) {
                 var abilityType = grantedAbilities[i];
-                var grantedAbilityArchetype = dstManager.CreateArchetype(typeof(AbilitySystemActorTransformComponent), abilityType, typeof(AbilityOwnerComponent), typeof(AbilityCooldownComponent), typeof(AbilityStateComponent));
+                var grantedAbilityArchetype = dstManager.CreateArchetype(typeof(AbilitySystemActorTransformComponent), abilityType, typeof(AbilityOwnerComponent), typeof(AbilityCooldownComponent), typeof(AbilityStateFlags));
                 var abilitySystemGrantedAbilityEntity = dstManager.CreateEntity(grantedAbilityArchetype);
 
                 dstManager.SetComponentData(abilitySystemGrantedAbilityEntity, new AbilitySystemActorTransformComponent

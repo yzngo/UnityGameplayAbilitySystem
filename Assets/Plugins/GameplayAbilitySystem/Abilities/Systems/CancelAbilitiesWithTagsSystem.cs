@@ -23,13 +23,16 @@ using Unity.Entities;
 using Unity.Jobs;
 
 /// <summary>
-/// This system cancels active abilities on an actor when a new ability is activated by that actor
-/// 
-/// An "active ability" is one where the "Granted Ability" entity for that actor/ability has the "Ability Active" tag
+/// This system cancels active abilities on an actor when a new ability is activated by that actor.
+/// The Gameplay Tags to check for are defined in the "Cancel Abilities With Tags", and the comparison
+/// is done on the abilities that are currently marked as active (with the "AbilityIsActive" component tag)
 /// </summary>
 public class CancelAbilitiesWithTagsSystem : JobComponentSystem {
 
     protected override JobHandle OnUpdate(JobHandle inputDeps) {
+        // Iterate through each active ability, and collect list of tags that need to be cancelled.
+
+        // 
         return inputDeps;
         // throw new System.NotImplementedException();
     }

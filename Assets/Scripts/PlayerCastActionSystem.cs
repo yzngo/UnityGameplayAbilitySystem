@@ -45,7 +45,7 @@ public class PlayerCastActionSystem : ComponentSystem {
 
         // Check if player can use ability (the GrantedAbility entity contains this information)
         Entities
-            .WithAllReadOnly<AbilityOwnerComponent, AbilityStateComponent, DefaultAttackAbilityTag>().ForEach((Entity grantedAbilityEntity, ref AbilityStateComponent abilityState, ref AbilityOwnerComponent abilityOwner) => {
+            .WithAllReadOnly<AbilityOwnerComponent, AbilityStateFlags, DefaultAttackAbilityTag>().ForEach((Entity grantedAbilityEntity, ref AbilityStateFlags abilityState, ref AbilityOwnerComponent abilityOwner) => {
                 if (abilityOwner == actorAbilitySystem.AbilityOwnerEntity) {
                     AbilityState = abilityState;
                     GrantedAbilityEntity = grantedAbilityEntity;

@@ -65,10 +65,10 @@ namespace GameplayAbilitySystem.Abilities.Components {
         public static implicit operator AbilityCooldownComponent(TimeRemainingComponent e) { return new AbilityCooldownComponent { Value = e }; }
     }
 
-    public struct AbilityStateComponent : IComponentData {
+    public struct AbilityStateFlags : IComponentData {
         public int Value;
-        public static implicit operator int(AbilityStateComponent e) { return e.Value; }
-        public static implicit operator AbilityStateComponent(int e) { return new AbilityStateComponent { Value = e }; }
+        public static implicit operator int(AbilityStateFlags e) { return e.Value; }
+        public static implicit operator AbilityStateFlags(int e) { return new AbilityStateFlags { Value = e }; }
 
     }
 

@@ -91,7 +91,7 @@ namespace MyGameplayAbilitySystem.Abilities.Fire1 {
             var actorAbilitySystem = payload.ActorAbilitySystem;
             var grantedAbilityEntity = payload.GrantedAbilityEntity;
 
-            var abilityStateComponent = entityManager.GetComponentData<AbilityStateComponent>(grantedAbilityEntity);
+            var abilityStateComponent = entityManager.GetComponentData<AbilityStateFlags>(grantedAbilityEntity);
 
             if (abilityStateComponent.Value != 0) yield break;
             var animator = actorAbilitySystem.GetComponent<Animator>();

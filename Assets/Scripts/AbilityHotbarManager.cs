@@ -78,7 +78,7 @@ public class AbilityHotbarUpdateSystem : ComponentSystem {
 
             if (World.DefaultGameObjectInjectionWorld.EntityManager.HasComponent<AbilityCooldownComponent>(GrantedAbilityEntities[i])) {
                 var abilityCooldown = World.DefaultGameObjectInjectionWorld.EntityManager.GetComponentData<AbilityCooldownComponent>(GrantedAbilityEntities[i]);
-                var abilityState = World.DefaultGameObjectInjectionWorld.EntityManager.GetComponentData<AbilityStateComponent>(GrantedAbilityEntities[i]);
+                var abilityState = World.DefaultGameObjectInjectionWorld.EntityManager.GetComponentData<AbilityStateFlags>(GrantedAbilityEntities[i]);
                 UpdateButton(i, abilityCooldown.Value.NominalDuration, abilityCooldown.Value.RemainingTime, abilityState > 0);
             }
 
@@ -93,7 +93,7 @@ public class AbilityHotbarUpdateSystem : ComponentSystem {
         }
 
         Entities
-        .ForEach<AbilityOwnerComponent, AbilityCooldownComponent, AbilityStateComponent, AbilityIdentifierComponent>((Entity entity, ref AbilityOwnerComponent abilityOwner, ref AbilityCooldownComponent abilityCooldown, ref AbilityStateComponent state, ref AbilityIdentifierComponent identifier) => {
+        .ForEach<AbilityOwnerComponent, AbilityCooldownComponent, AbilityStateFlags, AbilityIdentifierComponent>((Entity entity, ref AbilityOwnerComponent abilityOwner, ref AbilityCooldownComponent abilityCooldown, ref AbilityStateFlags state, ref AbilityIdentifierComponent identifier) => {
             // Only do this for the appropriate actor
             if (abilityOwner.Value == AbilityOwnerEntity) {
                 // Check our list to see if this ability is defined

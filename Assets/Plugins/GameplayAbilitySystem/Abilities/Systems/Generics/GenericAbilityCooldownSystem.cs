@@ -39,7 +39,7 @@ namespace GameplayAbilitySystem.Abilities.Systems.Generic {
     [UpdateInGroup(typeof(AbilityUpdateEndSystemGroup))]
     public class AbilityCooldownStateUpdate : JobComponentSystem {
         protected override JobHandle OnUpdate(JobHandle inputDeps) {
-            inputDeps = Entities.ForEach((ref AbilityStateComponent state, in AbilityCooldownComponent cooldown) => {
+            inputDeps = Entities.ForEach((ref AbilityStateFlags state, in AbilityCooldownComponent cooldown) => {
                 int flag = math.select(0, (int)AbilityStates.ON_COOLDOWN, cooldown.Value.RemainingTime > 0);
                 state |= flag;
             })

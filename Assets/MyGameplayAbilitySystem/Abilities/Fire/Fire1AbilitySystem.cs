@@ -97,8 +97,8 @@ namespace MyGameplayAbilitySystem.Abilities.Fire1 {
 
         public class AbilityAvailabilitySystem : AbilityAvailabilitySystem<Fire1AbilityTag> {
             [RequireComponentTag(typeof(AbilityIsActive))]
-            struct SystemJob : IJobForEach<AbilityStateComponent, Fire1AbilityTag> {
-                public void Execute(ref AbilityStateComponent abilityState, [ReadOnly] ref Fire1AbilityTag _) {
+            struct SystemJob : IJobForEach<AbilityStateFlags, Fire1AbilityTag> {
+                public void Execute(ref AbilityStateFlags abilityState, [ReadOnly] ref Fire1AbilityTag _) {
                     abilityState |= (int)AbilityStates.ACTIVE;
                 }
             }

@@ -93,8 +93,8 @@ namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
             // }
 
             [RequireComponentTag(typeof(AbilityIsActive))]
-            struct SystemJob : IJobForEach<AbilityStateComponent, DefaultAttackAbilityTag> {
-                public void Execute(ref AbilityStateComponent abilityState, [ReadOnly] ref DefaultAttackAbilityTag _) {
+            struct SystemJob : IJobForEach<AbilityStateFlags, DefaultAttackAbilityTag> {
+                public void Execute(ref AbilityStateFlags abilityState, [ReadOnly] ref DefaultAttackAbilityTag _) {
                     abilityState |= (int)AbilityStates.ACTIVE;
                 }
             }

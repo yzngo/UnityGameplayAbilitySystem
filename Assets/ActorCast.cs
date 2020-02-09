@@ -115,7 +115,7 @@ public class ActorCast : MonoBehaviour, ICastActions {
         MethodInfo methodInfo = typeof(EntityManager).GetMethod("GetComponentData");
         if (GrantedAbilities == null) GrantedAbilities = new List<(IAbilityTagComponent AbilityTag, ComponentType ComponentType, Entity GrantedAbilityEntity)>();
 
-        grantedAbilityQuery = entityManager.CreateEntityQuery(ComponentType.ReadOnly<AbilityOwnerComponent>(), ComponentType.ReadOnly<AbilityStateComponent>());
+        grantedAbilityQuery = entityManager.CreateEntityQuery(ComponentType.ReadOnly<AbilityOwnerComponent>(), ComponentType.ReadOnly<AbilityStateFlags>());
         var grantedAbilityEntities = grantedAbilityQuery.ToEntityArray(Allocator.TempJob, out var jobHandle);
         jobHandle.Complete();
         var abilities = AbilityManager.AbilityComponentTypes().ToList();
@@ -124,7 +124,7 @@ public class ActorCast : MonoBehaviour, ICastActions {
             // We need to do this only for abilities that have been granted to the actor that has this script.  Others should be ignored
             if (abilityOwner != actorAbilitySystem.AbilityOwnerEntity) continue;
 
-            var abilityState = entityManager.GetComponentData<AbilityStateComponent>(grantedAbilityEntities[i]);
+            var abilityState = entityManager.GetComponentData<AbilityStateFlags>(grantedAbilityEntities[i]);
             var grantedAbilityEntity = grantedAbilityEntities[i];
 
             for (var iComponentType = 0; iComponentType < abilities.Count; iComponentType++) {

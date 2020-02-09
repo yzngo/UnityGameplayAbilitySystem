@@ -35,7 +35,7 @@ namespace GameplayAbilitySystem.Abilities.Systems.Generic {
             abilityQuery = GetEntityQuery(ComponentType.ReadOnly<T>(),
                                             ComponentType.ReadOnly<AbilityOwnerComponent>(),
                                             ComponentType.ReadOnly<AbilityCooldownComponent>(),
-                                            ComponentType.ReadWrite<AbilityStateComponent>()
+                                            ComponentType.ReadWrite<AbilityStateFlags>()
                                             );
         }
         protected override JobHandle OnUpdate(JobHandle inputDeps) {

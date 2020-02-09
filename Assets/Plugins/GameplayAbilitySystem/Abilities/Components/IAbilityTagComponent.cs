@@ -73,11 +73,16 @@ namespace GameplayAbilitySystem.Abilities.Components {
     }
 
     public struct AbilityTagFlags : IComponentData {
-        public int Value;
-        public static implicit operator int(AbilityTagFlags e) { return e.Value; }
-        public static implicit operator AbilityTagFlags(int e) { return new AbilityTagFlags { Value = e }; }
+        public AbilityTagFlag Value;
 
+        [Flags]
+        public enum AbilityTagFlag {
+            None = 0x0,AbilityTagFlag = 0x1
+        }
+        public static implicit operator AbilityTagFlag(AbilityTagFlags e) { return e.Value; }
+        public static implicit operator AbilityTagFlags(AbilityTagFlag e) { return new AbilityTagFlags { Value = e }; }
     }
+
 
     public struct AbilityIdentifierComponent : IComponentData {
         public int Value;

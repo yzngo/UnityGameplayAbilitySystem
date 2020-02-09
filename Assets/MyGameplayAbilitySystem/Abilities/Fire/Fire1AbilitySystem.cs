@@ -99,7 +99,7 @@ namespace MyGameplayAbilitySystem.Abilities.Fire1 {
             [RequireComponentTag(typeof(AbilityIsActive))]
             struct SystemJob : IJobForEach<AbilityStateFlags, Fire1AbilityTag> {
                 public void Execute(ref AbilityStateFlags abilityState, [ReadOnly] ref Fire1AbilityTag _) {
-                    abilityState |= (int)AbilityStates.ACTIVE;
+                    abilityState |= AbilityStates.ACTIVE;
                 }
             }
             protected override JobHandle UpdateAbilityAvailability(JobHandle inputDeps) {

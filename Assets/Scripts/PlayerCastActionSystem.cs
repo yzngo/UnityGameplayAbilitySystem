@@ -47,7 +47,7 @@ public class PlayerCastActionSystem : ComponentSystem {
         Entities
             .WithAllReadOnly<AbilityOwnerComponent, AbilityStateFlags, DefaultAttackAbilityTag>().ForEach((Entity grantedAbilityEntity, ref AbilityStateFlags abilityState, ref AbilityOwnerComponent abilityOwner) => {
                 if (abilityOwner == actorAbilitySystem.AbilityOwnerEntity) {
-                    AbilityState = abilityState;
+                    AbilityState = (int)abilityState.Value;
                     GrantedAbilityEntity = grantedAbilityEntity;
                 }
             });

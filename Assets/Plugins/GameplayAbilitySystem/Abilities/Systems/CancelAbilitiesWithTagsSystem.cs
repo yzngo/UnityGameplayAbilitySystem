@@ -25,9 +25,14 @@ using Unity.Jobs;
 /// <summary>
 /// This system cancels active abilities on an actor when a new ability is activated by that actor.
 /// The Gameplay Tags to check for are defined in the "Cancel Abilities With Tags", and the comparison
-/// is done on the abilities that are currently marked as active (with the "AbilityIsActive" component tag)
+/// is done on the abilities that are currently marked as active (with the "AbilityIsActive" component tag).
+/// 
+/// This system will only run on abilities that are recently activated
 /// </summary>
 public class CancelAbilitiesWithTagsSystem : JobComponentSystem {
+    protected override void OnCreate() {
+
+    }
 
     protected override JobHandle OnUpdate(JobHandle inputDeps) {
         // Iterate through each active ability, and collect list of tags that need to be cancelled.

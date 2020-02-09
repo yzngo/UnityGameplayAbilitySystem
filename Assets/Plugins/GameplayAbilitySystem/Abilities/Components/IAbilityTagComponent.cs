@@ -23,6 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GameplayAbilitySystem.AbilitySystem.Enums;
 using GameplayAbilitySystem.Common.Components;
 using GameplayAbilitySystem.GameplayEffects.Components;
 using Unity.Entities;
@@ -66,10 +67,9 @@ namespace GameplayAbilitySystem.Abilities.Components {
     }
 
     public struct AbilityStateFlags : IComponentData {
-        public int Value;
-        public static implicit operator int(AbilityStateFlags e) { return e.Value; }
-        public static implicit operator AbilityStateFlags(int e) { return new AbilityStateFlags { Value = e }; }
-
+        public AbilityStates Value;
+        public static implicit operator AbilityStates(AbilityStateFlags e) { return e.Value; }
+        public static implicit operator AbilityStateFlags(AbilityStates e) { return new AbilityStateFlags { Value = e }; }
     }
 
     public struct AbilityTagFlags : IComponentData {

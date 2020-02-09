@@ -1,10 +1,10 @@
 ﻿namespace GameplayAbilitySystem.AbilitySystem.Enums {
     [System.Flags]
     public enum AbilityStates {
-        READY = 0b_0000_0000_0000_0000,
-        ACTIVE = 0b_0000_0000_0000_0010,
-        ON_COOLDOWN = 0b_0000_0000_0000_0100,
-        SOURCE_NOT_READY = 0b_0000_0000_0000_1000,
-
-    };
+        READY = 0,
+        ACTIVE = 2 << 0,
+        ACTIVATED_THIS_FRAME = 2 << 1,
+        ON_COOLDOWN = 2 << 2,
+        SOURCE_NOT_READY = 2 << 3
+    }
 }

@@ -43,7 +43,7 @@ namespace GameplayAbilitySystem.Abilities.Systems {
 
         struct SystemJob : IJobForEach<AbilityStateFlags> {
             public void Execute(ref AbilityStateFlags state) {
-                state = (int)AbilityStates.READY;
+                state = AbilityStates.READY;
             }
         }
         protected override JobHandle OnUpdate(JobHandle inputDeps) {

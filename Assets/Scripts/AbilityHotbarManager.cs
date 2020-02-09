@@ -26,6 +26,7 @@ using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
 using GameplayAbilitySystem.AbilitySystem.Components;
 using GameplayAbilitySystem.Abilities.Components;
 using MyGameplayAbilitySystem.Common.ScriptableObjects;
+using GameplayAbilitySystem.AbilitySystem.Enums;
 
 public class AbilityHotbarManager : MonoBehaviour {
     public ActorAbilitySystem AbilityCharacter;
@@ -79,7 +80,7 @@ public class AbilityHotbarUpdateSystem : ComponentSystem {
             if (World.DefaultGameObjectInjectionWorld.EntityManager.HasComponent<AbilityCooldownComponent>(GrantedAbilityEntities[i])) {
                 var abilityCooldown = World.DefaultGameObjectInjectionWorld.EntityManager.GetComponentData<AbilityCooldownComponent>(GrantedAbilityEntities[i]);
                 var abilityState = World.DefaultGameObjectInjectionWorld.EntityManager.GetComponentData<AbilityStateFlags>(GrantedAbilityEntities[i]);
-                UpdateButton(i, abilityCooldown.Value.NominalDuration, abilityCooldown.Value.RemainingTime, abilityState > 0);
+                UpdateButton(i, abilityCooldown.Value.NominalDuration, abilityCooldown.Value.RemainingTime, abilityState != AbilityStates.READY);
             }
 
         }

@@ -95,7 +95,7 @@ namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
             [RequireComponentTag(typeof(AbilityIsActive))]
             struct SystemJob : IJobForEach<AbilityStateFlags, DefaultAttackAbilityTag> {
                 public void Execute(ref AbilityStateFlags abilityState, [ReadOnly] ref DefaultAttackAbilityTag _) {
-                    abilityState |= (int)AbilityStates.ACTIVE;
+                    abilityState |= AbilityStates.ACTIVE;
                 }
             }
             protected override JobHandle UpdateAbilityAvailability(JobHandle inputDeps) {

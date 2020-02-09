@@ -36,7 +36,7 @@ namespace GameplayAbilitySystem.Abilities.Components {
         void CreateSourceAttributeModifiers(EntityManager dstManager, Entity actorEntity);
         void CreateTargetAttributeModifiers(EntityManager dstManager, Entity actorEntity);
 
-        void BeginActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity);
+        void BeginActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity, Entity abilityOwnerEntity);
         void EndActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity);
         object EmptyPayload { get; }
 

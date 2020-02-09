@@ -34,6 +34,7 @@ using GameplayAbilitySystem.Common.Components;
 using System;
 using GameplayAbilitySystem.GameplayTags.Components;
 using GameplayAbilitySystem.GameplayTags.Interfaces;
+using GameplayAbilitySystem.Abilities.Common;
 
 namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
     [AbilitySystemDisplayName("Default Attack Ability")]
@@ -101,21 +102,21 @@ namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
             dstManager.SetComponentData<ParentGameplayEffectEntity>(tickEntity, new ParentGameplayEffectEntity(poisonEffectEntity));
         }
 
-        public void BeginActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity) {
+        public void BeginActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity, Entity abilityOwnerEntity) {
             // Check if entity already has the "Active" component - return if existing
             if (dstManager.HasComponent<AbilityIsActive>(grantedAbilityEntity)) return;
 
             // Add component to entity
             dstManager.AddComponentData<AbilityIsActive>(grantedAbilityEntity, new AbilityIsActive());
-            var abilityTagFlags = dstManager.GetComponentData<AbilityTagFlags>(grantedAbilityEntity);
-            dstManager.SetComponentData<AbilityTagFlags>(grantedAbilityEntity, abilityTagFlags | AbilityTagFlag.AbilityCancellable);
+            var abilityReferenceEntity = dstManager.GetComponentData<AbilityReferenceComponent>(grantedAbilityEntity);
+            var cancelAbilitiesWithTags = dstManager.GetBuffer<GameplayTagsBufferElement<ICancelAbilitiesWithTagsBufferElement>>(abilityReferenceEntity);
+            this.CancelAbilitiesWithTags(grantedAbilityEntity, cancelAbilitiesWithTags);
+
         }
 
         public void EndActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity) {
             // Check if entity already has the "Active" component - return if not existing
             if (!dstManager.HasComponent<AbilityIsActive>(grantedAbilityEntity)) return;
-            var abilityTagFlags = dstManager.GetComponentData<AbilityTagFlags>(grantedAbilityEntity);
-            dstManager.SetComponentData<AbilityTagFlags>(grantedAbilityEntity, abilityTagFlags &  ~AbilityTagFlag.AbilityCancellable);
 
             // Remove component from entity
             dstManager.RemoveComponent<AbilityIsActive>(grantedAbilityEntity);
@@ -146,7 +147,7 @@ namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
             var actorTags = entityManager
                                         .GetBuffer<GameplayTagsBufferElement<IActorOwnedGameplayTags>>(payload.ActorAbilitySystem.AbilityOwnerEntity);
 
-            
+
 
             // Check ability state
             var abilityStateComponent = entityManager.GetComponentData<AbilityStateFlags>(grantedAbilityEntity);
@@ -160,7 +161,7 @@ namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
 
             // If we aren't in idle, then do nothing
             if (!animator.GetCurrentAnimatorStateInfo(animatorLayerIndex).IsName("Idle")) yield break;
-            BeginActivateAbility(entityManager, grantedAbilityEntity);
+            BeginActivateAbility(entityManager, grantedAbilityEntity, actorAbilitySystem.AbilityOwnerEntity);
             CreateSourceAttributeModifiers(entityManager, actorAbilitySystem.AbilityOwnerEntity);
             // Get animator state info
             var weaponLayerAnimatorStateInfo = GetAnimatorStateInfo(animator, animatorLayerIndex, swingStateName);

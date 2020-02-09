@@ -44,7 +44,7 @@ namespace MyGameplayAbilitySystem.Abilities.Fire1 {
         public object EmptyPayload => new BasicRangeAbilityPayload();
 
 
-        public void BeginActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity) {
+        public void BeginActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity, Entity abilityOwnerEntity) {
             // Check if entity already has the "Active" component - return if existing
             if (dstManager.HasComponent<AbilityIsActive>(grantedAbilityEntity)) return;
 
@@ -104,7 +104,7 @@ namespace MyGameplayAbilitySystem.Abilities.Fire1 {
             var animatorLayerIndex = animator.GetLayerIndex(animatorLayerName);
 
             if (!animator.GetCurrentAnimatorStateInfo(animatorLayerIndex).IsName("Idle")) yield break;
-            BeginActivateAbility(entityManager, grantedAbilityEntity);
+            BeginActivateAbility(entityManager, grantedAbilityEntity, actorAbilitySystem.AbilityOwnerEntity);
             CreateSourceAttributeModifiers(entityManager, actorAbilitySystem.AbilityOwnerEntity);
             // Get animator state info
             var weaponLayerAnimatorStateInfo = GetAnimatorStateInfo(animator, animatorLayerIndex, magicStateName);

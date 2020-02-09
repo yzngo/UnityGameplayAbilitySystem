@@ -81,7 +81,7 @@ public class PlayerCastActionSystem : ComponentSystem {
             }
         }
 
-        new DefaultAttackAbilityTag().BeginActivateAbility(EntityManager, GrantedAbilityEntity);
+        new DefaultAttackAbilityTag().BeginActivateAbility(EntityManager, GrantedAbilityEntity, actorAbilitySystem.AbilityOwnerEntity);
 
         playerCastHelper.PlaySwingAnimation();
         yield return playerCastHelper.StartCoroutine(playerCastHelper.CheckForSwingHit(wasHit, EntityManager, targetEntity));

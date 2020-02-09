@@ -20,6 +20,7 @@
  */
 
 using System.Collections.Generic;
+using GameplayAbilitySystem.Abilities.Components;
 using GameplayAbilitySystem.GameplayTags.ScriptableObjects;
 using UnityEngine;
 
@@ -28,8 +29,10 @@ namespace GameplayAbilitySystem.Abilities.ScriptableObjects {
     public class AbilityScriptableObject : UIElementScriptableObject {
         [SerializeField]
         public AbilityTagComponentTypeOf AbilityType;
+        
         [SerializeField]
         public SpritePreview Sprite;
+        // public AbilityTagFlag AbilityDefaultFlags;
         public GameplayTagsContainerScriptableObject AbilityTags;
         public GameplayTagsContainerScriptableObject CancelAbilitiesWithTags;
         public GameplayTagsContainerScriptableObject BlockAbilitiesWithTags;

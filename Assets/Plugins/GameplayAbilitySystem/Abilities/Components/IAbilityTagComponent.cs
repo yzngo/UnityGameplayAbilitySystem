@@ -80,7 +80,7 @@ namespace GameplayAbilitySystem.Abilities.Components {
 
     [Flags]
     public enum AbilityTagFlag {
-        None = 0x0, AbilityCancellable = 0x1
+        None = 0x0, AbilityCancellable = 0x1, AbilityCancellable_Test = 0x2
     }
 
     public struct AbilityIdentifierComponent : IComponentData {

@@ -37,7 +37,7 @@ namespace GameplayAbilitySystem.Abilities.Components {
 
         void BeginActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity);
         void EndActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity);
-        object EmptyPayload {get;}
+        object EmptyPayload { get; }
 
         IEnumerator DoAbility(object Payload);
 
@@ -69,6 +69,13 @@ namespace GameplayAbilitySystem.Abilities.Components {
         public int Value;
         public static implicit operator int(AbilityStateFlags e) { return e.Value; }
         public static implicit operator AbilityStateFlags(int e) { return new AbilityStateFlags { Value = e }; }
+
+    }
+
+    public struct AbilityTagFlags : IComponentData {
+        public int Value;
+        public static implicit operator int(AbilityTagFlags e) { return e.Value; }
+        public static implicit operator AbilityTagFlags(int e) { return new AbilityTagFlags { Value = e }; }
 
     }
 

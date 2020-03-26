@@ -19,29 +19,30 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.Abilities.Components;
-using GameplayAbilitySystem.AbilitySystem.Components;
+using System;
 using GameplayAbilitySystem.Common.Components;
-using GameplayAbilitySystem.GameplayEffects._Components;
-using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
-using Unity.Jobs;
+namespace GameplayAbilitySystem.GameplayEffects._Components {
 
-namespace GameplayAbilitySystem.Abilities.Systems {
+    [Serializable]
+    public struct GameplayEffectDurationComponent : IComponentData {
+        public TimeRemainingComponent Value;
+        public float PercentRemaining { get => Value.RemainingTime / Value.NominalDuration; }
 
-    /// <summary>
-    /// Defines the system for handling ability parameters, such as
-    /// current cooldown for each actor.
-    /// 
-    /// </summary>
-    /// <typeparam name="T">The Ability</typeparam>
-    public abstract class AbilityCooldownSystem<T> : JobComponentSystem
-    where T : struct, IAbilityTagComponent, IComponentData {
-        protected abstract JobHandle CooldownJobs(JobHandle inputDeps);
-        protected override JobHandle OnUpdate(JobHandle inputDeps) {
-            inputDeps = CooldownJobs(inputDeps);
-            return inputDeps;
+        public static implicit operator TimeRemainingComponent(GameplayEffectDurationComponent e) { return e.Value; }
+        public static implicit operator GameplayEffectDurationComponent(TimeRemainingComponent e) { return new GameplayEffectDurationComponent { Value = e }; }
+
+        public static GameplayEffectDurationComponent Initialise(float duration, float startWorldTime) {
+            return new GameplayEffectDurationComponent
+            {
+                Value = new TimeRemainingComponent
+                {
+                    NominalDuration = duration,
+                    RemainingTime = duration,
+                    WorldStartTime = startWorldTime
+                }
+            };
         }
+
     }
 }

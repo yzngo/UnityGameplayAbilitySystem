@@ -24,7 +24,7 @@ using GameplayAbilitySystem.Abilities.Systems;
 using GameplayAbilitySystem.Abilities.Systems.Generic;
 using GameplayAbilitySystem.AbilitySystem.Enums;
 using GameplayAbilitySystem.ExtensionMethods;
-using GameplayAbilitySystem.GameplayEffects.Components;
+using GameplayAbilitySystem.GameplayEffects._Components;
 using MyGameplayAbilitySystem.GameplayEffects.Components;
 using Unity.Collections;
 using Unity.Entities;

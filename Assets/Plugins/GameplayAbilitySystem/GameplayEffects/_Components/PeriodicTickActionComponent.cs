@@ -24,7 +24,7 @@ using GameplayAbilitySystem.Common.Components;
 using Unity.Burst;
 using Unity.Entities;
 
-namespace GameplayAbilitySystem.GameplayEffects.Components {
+namespace GameplayAbilitySystem.GameplayEffects._Components {
     public struct PeriodicTickActionComponent<T> : IComponentData
     where T : System.Delegate {
         public FunctionPointer<T> Tick;

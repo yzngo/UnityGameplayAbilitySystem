@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Created on Mon Nov 04 2019
  *
  * The MIT License (MIT)
@@ -20,29 +20,12 @@
  */
 
 using System;
-using GameplayAbilitySystem.Common.Components;
 using Unity.Entities;
-namespace GameplayAbilitySystem.GameplayEffects.Components {
-
+namespace GameplayAbilitySystem.GameplayEffects._Components {
     [Serializable]
-    public struct GameplayEffectDurationComponent : IComponentData {
-        public TimeRemainingComponent Value;
-        public float PercentRemaining { get => Value.RemainingTime / Value.NominalDuration; }
-
-        public static implicit operator TimeRemainingComponent(GameplayEffectDurationComponent e) { return e.Value; }
-        public static implicit operator GameplayEffectDurationComponent(TimeRemainingComponent e) { return new GameplayEffectDurationComponent { Value = e }; }
-
-        public static GameplayEffectDurationComponent Initialise(float duration, float startWorldTime) {
-            return new GameplayEffectDurationComponent
-            {
-                Value = new TimeRemainingComponent
-                {
-                    NominalDuration = duration,
-                    RemainingTime = duration,
-                    WorldStartTime = startWorldTime
-                }
-            };
-        }
-
+    public struct GameplayEffectTargetComponent : IComponentData {
+        public Entity Value;
+        public static implicit operator Entity(GameplayEffectTargetComponent e) { return e.Value; }
+        public static implicit operator GameplayEffectTargetComponent(Entity e) { return new GameplayEffectTargetComponent { Value = e }; }
     }
 }

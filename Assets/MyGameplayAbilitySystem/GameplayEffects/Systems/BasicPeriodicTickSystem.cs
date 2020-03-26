@@ -21,7 +21,7 @@
 
 using System.Runtime.InteropServices;
 using GameplayAbilitySystem.Common.Components;
-using GameplayAbilitySystem.GameplayEffects.Components;
+using GameplayAbilitySystem.GameplayEffects._Components;
 using GameplayAbilitySystem.GameplayEffects.Systems;
 using MyGameplayAbilitySystem.GameplayEffects.Systems;
 using Unity.Burst;

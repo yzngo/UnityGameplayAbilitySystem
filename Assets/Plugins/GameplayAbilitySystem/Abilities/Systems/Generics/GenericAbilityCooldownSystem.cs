@@ -25,7 +25,7 @@ using GameplayAbilitySystem.AbilitySystem.Components;
 using GameplayAbilitySystem.AbilitySystem.Enums;
 using GameplayAbilitySystem.Common.Components;
 using GameplayAbilitySystem.ExtensionMethods;
-using GameplayAbilitySystem.GameplayEffects.Components;
+using GameplayAbilitySystem.GameplayEffects._Components;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;

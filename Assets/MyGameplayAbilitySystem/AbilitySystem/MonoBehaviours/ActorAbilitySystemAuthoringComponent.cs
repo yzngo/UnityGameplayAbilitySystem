@@ -30,7 +30,7 @@ using GameplayAbilitySystem.AbilitySystem.Components;
 using GameplayAbilitySystem.Attributes.Components;
 using GameplayAbilitySystem.Attributes.ScriptableObjects;
 using GameplayAbilitySystem.Common.Components;
-using GameplayAbilitySystem.GameplayEffects.Components;
+using GameplayAbilitySystem.GameplayEffects._Components;
 using GameplayAbilitySystem.GameplayTags.Components;
 using GameplayAbilitySystem.GameplayTags.Interfaces;
 using MyGameplayAbilitySystem.Abilities.DefaultAttack;

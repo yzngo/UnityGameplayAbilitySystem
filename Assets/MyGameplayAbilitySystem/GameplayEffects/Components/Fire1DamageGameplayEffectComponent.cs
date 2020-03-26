@@ -21,7 +21,7 @@
 
 using GameplayAbilitySystem.Attributes.Components;
 using GameplayAbilitySystem.Attributes.Components.Operators;
-using GameplayAbilitySystem.GameplayEffects.Components;
+using GameplayAbilitySystem.GameplayEffects._Components;
 using GameplayAbilitySystem.GameplayEffects.Interfaces;
 using Unity.Entities;
 

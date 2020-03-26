@@ -116,7 +116,7 @@ public class ActorCast : MonoBehaviour, ICastActions {
         if (GrantedAbilities == null) GrantedAbilities = new List<(IAbilityTagComponent AbilityTag, ComponentType ComponentType, Entity GrantedAbilityEntity)>();
 
         grantedAbilityQuery = entityManager.CreateEntityQuery(ComponentType.ReadOnly<AbilityOwnerComponent>(), ComponentType.ReadOnly<AbilityStateFlags>());
-        var grantedAbilityEntities = grantedAbilityQuery.ToEntityArray(Allocator.TempJob, out var jobHandle);
+        var grantedAbilityEntities = grantedAbilityQuery.ToEntityArrayAsync(Allocator.TempJob, out var jobHandle);
         jobHandle.Complete();
         var abilities = AbilityManager.AbilityComponentTypes().ToList();
         for (var i = 0; i < grantedAbilityEntities.Length; i++) {

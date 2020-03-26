@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Created on Mon Nov 04 2019
  *
  * The MIT License (MIT)
@@ -19,29 +19,13 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.Abilities.Components;
-using GameplayAbilitySystem.AbilitySystem.Components;
-using GameplayAbilitySystem.Common.Components;
-using GameplayAbilitySystem.GameplayEffects._Components;
-using Unity.Burst;
-using Unity.Collections;
+using System;
 using Unity.Entities;
-using Unity.Jobs;
-
-namespace GameplayAbilitySystem.Abilities.Systems {
-
-    /// <summary>
-    /// Defines the system for handling ability parameters, such as
-    /// current cooldown for each actor.
-    /// 
-    /// </summary>
-    /// <typeparam name="T">The Ability</typeparam>
-    public abstract class AbilityCooldownSystem<T> : JobComponentSystem
-    where T : struct, IAbilityTagComponent, IComponentData {
-        protected abstract JobHandle CooldownJobs(JobHandle inputDeps);
-        protected override JobHandle OnUpdate(JobHandle inputDeps) {
-            inputDeps = CooldownJobs(inputDeps);
-            return inputDeps;
-        }
+namespace GameplayAbilitySystem.GameplayEffects._Components {
+    [Serializable]
+    public struct GameplayEffectSourceComponent : IComponentData {
+        public Entity Value;
+        public static implicit operator Entity(GameplayEffectSourceComponent e) { return e.Value; }
+        public static implicit operator GameplayEffectSourceComponent(Entity e) { return new GameplayEffectSourceComponent { Value = e }; }
     }
 }

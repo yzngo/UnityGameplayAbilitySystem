@@ -33,7 +33,7 @@ using Unity.Entities;
 using Unity.Burst;
 using Unity.Jobs;
 using UnityEngine;
-using GameplayAbilitySystem.GameplayEffects.Components;
+using GameplayAbilitySystem.GameplayEffects._Components;
 using Unity.Mathematics;
 using Unity.Collections;
 using GameplayAbilitySystem.Common.Components;

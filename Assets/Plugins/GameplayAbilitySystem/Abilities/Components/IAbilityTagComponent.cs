@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameplayAbilitySystem.AbilitySystem.Enums;
 using GameplayAbilitySystem.Common.Components;
-using GameplayAbilitySystem.GameplayEffects.Components;
+using GameplayAbilitySystem.GameplayEffects._Components;
 using Unity.Entities;
 
 namespace GameplayAbilitySystem.Abilities.Components {

@@ -21,7 +21,7 @@
 
 using System;
 using System.Collections.Generic;
-using GameplayAbilitySystem.GameplayEffects.Components;
+using GameplayAbilitySystem.GameplayEffects._Components;
 using GameplayAbilitySystem.GameplayEffects.Systems;
 using Unity.Burst;
 using Unity.Collections;

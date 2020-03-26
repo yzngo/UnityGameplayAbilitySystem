@@ -21,7 +21,7 @@
 
 using System;
 using Unity.Entities;
-namespace GameplayAbilitySystem.GameplayEffects.Components {
+namespace GameplayAbilitySystem.GameplayEffects._Components {
     [Serializable]
     public struct GameplayEffectBuffIndex : IComponentData {
         public int Value;

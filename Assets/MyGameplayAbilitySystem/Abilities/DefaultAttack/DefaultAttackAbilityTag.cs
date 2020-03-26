@@ -23,7 +23,7 @@ using System.Collections;
 using GameplayAbilitySystem.Abilities.Components;
 using GameplayAbilitySystem.Attributes.Components;
 using GameplayAbilitySystem.Common.Editor;
-using GameplayAbilitySystem.GameplayEffects.Components;
+using GameplayAbilitySystem.GameplayEffects._Components;
 using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
 using MyGameplayAbilitySystem.GameplayEffects.Components;
 using MyGameplayAbilitySystem.GameplayEffects.Systems;
@@ -145,7 +145,7 @@ namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
                             Check for gameplay tag interactions
             ***************************************************************/
             var actorTags = entityManager
-                                        .GetBuffer<GameplayTagsBufferElement<IActorOwnedGameplayTags>>(payload.ActorAbilitySystem.AbilityOwnerEntity);
+                            .GetBuffer<GameplayTagsBufferElement<IActorOwnedGameplayTags>>(payload.ActorAbilitySystem.AbilityOwnerEntity);
 
 
 

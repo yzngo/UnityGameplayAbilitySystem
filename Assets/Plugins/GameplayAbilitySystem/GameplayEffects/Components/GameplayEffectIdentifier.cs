@@ -1,8 +1,8 @@
 /*
- * Created on Thu Dec 12 2019
+ * Created on Thu Mar 26 2020
  *
  * The MIT License (MIT)
- * Copyright (c) 2019 Sahil Jain
+ * Copyright (c) 2020 Sahil Jain
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -19,15 +19,11 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.Common.Components;
 using Unity.Entities;
 
 namespace GameplayAbilitySystem.GameplayEffects.Components {
-    public struct PeriodicTickTargetComponent : IComponentData {
-        public Entity Value;
-        public static implicit operator Entity(PeriodicTickTargetComponent e) { return e.Value; }
-        public static implicit operator PeriodicTickTargetComponent(Entity e) { return new PeriodicTickTargetComponent { Value = e }; }
 
-
+    public struct GameplayEffectIdentifier : IComponentData {
+        public int Id;
     }
 }

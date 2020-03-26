@@ -29,4 +29,4 @@ public struct BasicRangeAbilityPayload {
     public ActorAbilitySystem ActorAbilitySystem;
     public Entity GrantedAbilityEntity;
     public GameObject AbilityPrefab;
-}
+} 

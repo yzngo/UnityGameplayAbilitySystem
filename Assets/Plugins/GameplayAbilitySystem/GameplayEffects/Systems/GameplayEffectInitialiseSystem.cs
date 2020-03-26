@@ -20,7 +20,7 @@
  */
 
 
-using GameplayAbilitySystem.GameplayEffects.Components;
+using GameplayAbilitySystem.GameplayEffects._Components;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;

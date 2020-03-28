@@ -25,7 +25,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 
-namespace GameplayAbilitySystem.GameplayEffects.Systems {
+namespace GameplayAbilitySystem.GameplayEffects._Systems {
     [UpdateInGroup(typeof(GameplayEffectGroupUpdateEndSystem))]
     public class GameplayEffectCleanupSystem : JobComponentSystem {
 

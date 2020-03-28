@@ -22,7 +22,7 @@
 using System;
 using System.Collections.Generic;
 using GameplayAbilitySystem.GameplayEffects._Components;
-using GameplayAbilitySystem.GameplayEffects.Systems;
+using GameplayAbilitySystem.GameplayEffects._Systems;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -40,6 +40,8 @@ public class BuffBarUpdateSystem : ComponentSystem {
     }
 
     protected override void OnUpdate() {
+        //TODO: Remove Return
+        return;
         var GEBufferFromEntity = GetBufferFromEntity<GameplayEffectBufferElement>(true);
         var DurationComponents = GetComponentDataFromEntity<GameplayEffectDurationComponent>(true);
         var BuffIndexComponents = GetComponentDataFromEntity<GameplayEffectBuffIndex>(true);

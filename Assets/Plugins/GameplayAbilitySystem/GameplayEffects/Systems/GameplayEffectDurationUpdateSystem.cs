@@ -19,8 +19,10 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.GameplayEffects._Components;
-using Unity.Burst;
+using System;
+using System.Collections.Generic;
+using GameplayAbilitySystem.GameplayEffects._Systems;
+using GameplayAbilitySystem.GameplayEffects.Components;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
@@ -28,26 +30,149 @@ using Unity.Mathematics;
 using UnityEngine;
 
 namespace GameplayAbilitySystem.GameplayEffects.Systems {
+    public delegate void GameplayEffectExpiredEventHandler(object sender, GameplayEffectExpiredEventArgs e);
+    public struct GameplayEffectExpiredEventArgs {
+        public Entity GameplayEffectEntity;
+        public GameplayEffectDurationSpec Spec;
+        public GameplayEffectIdentifier Id;
+    }
 
-    [UpdateInGroup(typeof(GameplayEffectGroupUpdateBeginSystem))]
-    public class GameplayEffectDurationUpdateSystem : JobComponentSystem {
-        [BurstCompile]
-        struct GameplayEffectDurationUpdateSystemJob : IJobForEach<GameplayEffectDurationComponent> {
-            public float deltaTime;
-            public void Execute(ref GameplayEffectDurationComponent duration) {
-                duration.Value.RemainingTime -= deltaTime;
-                duration.Value.RemainingTime = math.max(0, duration.Value.RemainingTime);
+    /// <summary>
+    /// This class is used to manage raising events for GameplayEffects with specific IDs.
+    /// Subscribers can subscribe to individual IDs, or all GameplayEffects (using index -1)
+    /// 
+    /// To listen to events: GameplayEffectExpired[*GE ID*].OnGameplayEffectExpired += (o, e) => {}
+    /// Code was inspired by https://stackoverflow.com/questions/2237927/is-there-any-way-to-create-indexed-events-in-c-sharp-or-some-workaround
+    /// </summary>
+    public class GameplayEffectExpiredEventManager {
+        public class GameplayEffectExpired {
+            public event GameplayEffectExpiredEventHandler OnGameplayEffectExpired;
+            internal void RaiseGameplayEffectExpired(ref GameplayEffectExpiredEventArgs e) {
+                OnGameplayEffectExpired?.Invoke(this, e);
             }
         }
 
-        protected override JobHandle OnUpdate(JobHandle inputDependencies) {
-            var job = new GameplayEffectDurationUpdateSystemJob
-            {
-                deltaTime = Time.DeltaTime
-            };
+        private Dictionary<int, GameplayEffectExpired> m_objects = new Dictionary<int, GameplayEffectExpired>();
+        public GameplayEffectExpired this[int id] {
+            get {
+                if (!m_objects.ContainsKey(id))
+                    m_objects.Add(id, new GameplayEffectExpired());
 
-            // Now that the job is set up, schedule it to be run. 
-            return job.Schedule(this, inputDependencies);
+                return m_objects[id];
+            }
+        }
+
+        private void RaiseGameplayEffectExpired(GameplayEffectExpiredEventArgs e) {
+            GameplayEffectExpired manager;
+            if (m_objects.TryGetValue(e.Id.Value, out manager))
+                manager.RaiseGameplayEffectExpired(ref e);
+        }
+    }
+
+    [UpdateInGroup(typeof(GameplayEffectGroupUpdateBeginSystem))]
+    public class GameplayEffectDurationUpdateSystem : SystemBase {
+        public GameplayEffectExpiredEventManager GameplayEffectExpired;
+        private EntityQuery query;
+        /// Using event system based on Code Monkey tutorial on ECS events https://youtu.be/fkJ-7pqnRGo
+        private NativeQueue<GameplayEffectExpiredEventArgs> gameplayEffectExpiredQueue;
+
+        private EndSimulationEntityCommandBufferSystem m_EndSimulationEcbSystem;
+        private void Test() {
+            var em = this.EntityManager;
+            var archetype = em.CreateArchetype(
+                typeof(GameplayEffectIdentifier),
+                typeof(GameplayEffectDurationRemaining),
+                typeof(GameplayEffectDurationSpec),
+                typeof(Tag.GameplayEffectTickWithTime)
+            );
+
+            var entityCount = 500;
+
+            var entities = new NativeArray<Entity>(entityCount, Allocator.Temp);
+            em.CreateEntity(archetype, entities);
+            var startWorldTime = Time.ElapsedTime;
+            Unity.Mathematics.Random random = new Unity.Mathematics.Random(1);
+            for (int i = 0; i < entities.Length; i++) {
+                var duration = random.NextFloat(0, 30);
+                var id = random.NextInt(1, 10);
+                if (i < entityCount / 4) duration = 0.01f;
+                em.SetComponentData(entities[i], new GameplayEffectDurationSpec() { StartWorldTime = startWorldTime, Duration = duration });
+                em.SetComponentData(entities[i], new GameplayEffectDurationRemaining() { Value = duration });
+                em.SetComponentData(entities[i], new GameplayEffectIdentifier() { Value = id });
+            }
+            GameplayEffectExpired[5].OnGameplayEffectExpired += (o, e) => {
+                Debug.Log("GE with ID: " + e.Id.Value + " expired.");
+            };
+        }
+
+        protected override void OnCreate() {
+            m_EndSimulationEcbSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+            gameplayEffectExpiredQueue = new NativeQueue<GameplayEffectExpiredEventArgs>(Allocator.Persistent);
+            GameplayEffectExpired = new GameplayEffectExpiredEventManager();
+            Test();
+        }
+
+        protected override void OnUpdate() {
+            var gameplayEffectsArray = new NativeArray<GameplayEffectExpiredEventArgs>(query.CalculateEntityCount(), Allocator.TempJob);
+            var gameplayEffectExpiredQueueLocal = gameplayEffectExpiredQueue;
+            var gameplayEffectExpiredQueueLocalConcurrent = gameplayEffectExpiredQueue.AsParallelWriter();
+            var deltaTime = Time.DeltaTime;
+            // Substract time from duration remaining, and get a list of all GameplayEffects that have expired.
+            Entities
+                .WithName("DurationUpdate")
+                .WithAll<Tag.GameplayEffectTickWithTime>()
+                .ForEach(
+                        (Entity entity, int entityInQueryIndex, ref GameplayEffectDurationRemaining durationRemaining, in GameplayEffectDurationSpec durationSpec, in GameplayEffectIdentifier id) => {
+                            durationRemaining.Value -= deltaTime;
+
+                            if (durationRemaining.Value <= 0) {
+                                gameplayEffectsArray[entityInQueryIndex] = new GameplayEffectExpiredEventArgs() { GameplayEffectEntity = entity, Id = id, Spec = durationSpec };
+                            } else {
+                                gameplayEffectsArray[entityInQueryIndex] = new GameplayEffectExpiredEventArgs() { GameplayEffectEntity = Entity.Null };
+                            }
+                        }
+                )
+                .WithStoreEntityQueryInField(ref query)
+                .ScheduleParallel();
+
+
+            var ecb = m_EndSimulationEcbSystem.CreateCommandBuffer();
+
+            // Remove entity
+            Job
+                .WithName("DestroyEntity")
+                .WithCode(() => {
+                    for (var i = 0; i < gameplayEffectsArray.Length; i++) {
+                        var args = gameplayEffectsArray[i];
+                        if (args.GameplayEffectEntity != Entity.Null) {
+                            ecb.DestroyEntity(args.GameplayEffectEntity);
+                            gameplayEffectExpiredQueueLocalConcurrent.Enqueue(args);
+                        }
+                    }
+
+                })
+                .Schedule();
+
+            // Raise event
+            Job
+                .WithoutBurst()
+                .WithCode(() => {
+                    while (gameplayEffectExpiredQueueLocal.TryDequeue(out var e)) {
+                        // GE specific event
+                        GameplayEffectExpired[e.Id.Value].RaiseGameplayEffectExpired(ref e);
+
+                        // General GE event
+                        GameplayEffectExpired[-1].RaiseGameplayEffectExpired(ref e);
+                    }
+                })
+                .Run();
+
+            gameplayEffectsArray.Dispose(this.Dependency);
+            m_EndSimulationEcbSystem.AddJobHandleForProducer(this.Dependency);
+        }
+
+        protected override void OnDestroy() {
+            gameplayEffectExpiredQueue.Dispose();
         }
     }
 }

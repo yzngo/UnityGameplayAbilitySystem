@@ -28,9 +28,9 @@ using Unity.Entities;
 using Unity.Jobs;
 using UnityEngine;
 
-namespace GameplayAbilitySystem.GameplayEffects.Systems {
+namespace GameplayAbilitySystem.GameplayEffects._Systems {
     [UpdateInGroup(typeof(GameplayEffectGroupUpdateEndSystem))]
-    public class GameplayEffectChildCleanupSystem : JobComponentSystem {
+    public class GameplayEffectChildCleanupSystem : SystemBase {
         EntityQuery gameplayEffectsPendingRemovalQuery;
         BeginInitializationEntityCommandBufferSystem m_EntityCommandBuffer;
 
@@ -38,19 +38,19 @@ namespace GameplayAbilitySystem.GameplayEffects.Systems {
             m_EntityCommandBuffer = World.GetOrCreateSystem<BeginInitializationEntityCommandBufferSystem>();
         }
 
-        protected override JobHandle OnUpdate(JobHandle inputDeps) {
+        protected override void OnUpdate() {
             var Ecb = m_EntityCommandBuffer.CreateCommandBuffer().ToConcurrent();
             var GameplayEffectTargetComponents = GetComponentDataFromEntity<GameplayEffectTargetComponent>(true);
-            inputDeps = Entities
+            Entities
                 .WithNone<GameplayEffectTargetComponent>()
                 .ForEach((Entity entity, int entityInQueryIndex, in GameplayEffectActivatedSystemStateComponent _) => {
                     Ecb.DestroyEntity(entityInQueryIndex, entity);
                 })
                 .WithStoreEntityQueryInField(ref gameplayEffectsPendingRemovalQuery)
-                .Schedule(inputDeps);
+                .ScheduleParallel(Dependency);
 
 
-            inputDeps = Entities
+            Entities
                 .ForEach((Entity entity, int entityInQueryIndex, in ParentGameplayEffectEntity parentGE) => {
                     // If the parent gameplay effect no longer exists (because it doesn't have a GameplayEffectTargetComponent),
                     // then delete this
@@ -60,10 +60,10 @@ namespace GameplayAbilitySystem.GameplayEffects.Systems {
 
                 })
                 .WithReadOnly(GameplayEffectTargetComponents)
-                .Schedule(inputDeps);
-            m_EntityCommandBuffer.AddJobHandleForProducer(inputDeps);
-            return inputDeps;
+                .ScheduleParallel(Dependency);
 
+
+            m_EntityCommandBuffer.AddJobHandleForProducer(Dependency);
         }
     }
 }

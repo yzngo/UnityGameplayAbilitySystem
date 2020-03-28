@@ -21,7 +21,7 @@
 
 using Unity.Entities;
 
-namespace GameplayAbilitySystem.GameplayEffects.Systems {
+namespace GameplayAbilitySystem.GameplayEffects._Systems {
 
     [UpdateInGroup(typeof(InitializationSystemGroup))]
     public class GameplayEffectGroup : ComponentSystemGroup { }

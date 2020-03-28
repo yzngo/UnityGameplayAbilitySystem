@@ -24,6 +24,6 @@ using Unity.Entities;
 namespace GameplayAbilitySystem.GameplayEffects.Components {
 
     public struct GameplayEffectDurationRemaining : IComponentData {
-        public float Remaining;
+        public float Value;
     }
 }

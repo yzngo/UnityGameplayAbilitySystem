@@ -25,8 +25,6 @@ namespace GameplayAbilitySystem.GameplayEffects.Components {
 
     public struct GameplayEffectDurationSpec : IComponentData {
         public float Duration;
-        public float StartWorldTime;
-        public float RemainingTime;
-        
+        public double StartWorldTime;
     }
 }

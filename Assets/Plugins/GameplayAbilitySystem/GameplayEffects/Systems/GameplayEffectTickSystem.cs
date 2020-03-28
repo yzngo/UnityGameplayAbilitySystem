@@ -25,7 +25,7 @@ using Unity.Entities;
 using Unity.Jobs;
 using UnityEngine;
 
-namespace GameplayAbilitySystem.GameplayEffects.Systems {
+namespace GameplayAbilitySystem.GameplayEffects._Systems {
     [UpdateInGroup(typeof(GameplayEffectGroupUpdateEndSystem))]
     public abstract class GameplayEffectTickSystem : JobComponentSystem {
         protected BeginInitializationEntityCommandBufferSystem m_EntityCommandBuffer;

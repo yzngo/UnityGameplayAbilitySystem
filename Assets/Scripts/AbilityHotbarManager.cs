@@ -57,6 +57,8 @@ public class AbilityHotbarUpdateSystem : ComponentSystem {
     public Entity[] GrantedAbilityEntities = new Entity[8];
 
     protected override void OnUpdate() {
+        //TODO: REMOVE RETURN
+        return;
         // We need to store list of entities corresponding to the player's granted abilities
         // If the first ability is still null, then update the granted abilities list
         if (GrantedAbilityEntities[0] == default(Entity)) {

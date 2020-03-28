@@ -1,5 +1,5 @@
 /*
- * Created on Thu Mar 26 2020
+ * Created on Sat Mar 28 2020
  *
  * The MIT License (MIT)
  * Copyright (c) 2020 Sahil Jain
@@ -19,11 +19,13 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
 using Unity.Entities;
 
 namespace GameplayAbilitySystem.GameplayEffects.Components {
 
-    public struct GameplayEffectIdentifier : IComponentData {
-        public int Value;
+    public partial class Tag {
+        public struct GameplayEffectTickWithTime : IComponentData { }
+
     }
 }

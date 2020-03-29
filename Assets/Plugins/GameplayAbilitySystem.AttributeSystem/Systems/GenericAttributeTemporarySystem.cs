@@ -19,7 +19,7 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.AttributeSystem.Components;
+using GameplayAbilitySystem.AttributeSystem._Components;
 using GameplayAbilitySystem.Common.Components;
 using Unity.Burst;
 using Unity.Collections;
@@ -52,11 +52,11 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
         [BurstCompile]
         struct AttributeCombinerJob2 : IJobForEachWithEntity_EBC<AttributeBufferElement<TemporaryAttributeModifierTag, TAttributeTag>, TAttributeTag> {
             [ReadOnly]
-            public ComponentDataFromEntity<AttributeModifier<Components.Operators.Add, TAttributeTag>> Add_CDFE;
+            public ComponentDataFromEntity<AttributeModifier<_Components.Operators.Add, TAttributeTag>> Add_CDFE;
             [ReadOnly]
-            public ComponentDataFromEntity<AttributeModifier<Components.Operators.Multiply, TAttributeTag>> Mul_CDFE;
+            public ComponentDataFromEntity<AttributeModifier<_Components.Operators.Multiply, TAttributeTag>> Mul_CDFE;
             [ReadOnly]
-            public ComponentDataFromEntity<AttributeModifier<Components.Operators.Divide, TAttributeTag>> Div_CDFE;
+            public ComponentDataFromEntity<AttributeModifier<_Components.Operators.Divide, TAttributeTag>> Div_CDFE;
 
             public void Execute(Entity entity, int index, [ReadOnly] DynamicBuffer<AttributeBufferElement<TemporaryAttributeModifierTag, TAttributeTag>> attributeBuffer, ref TAttributeTag attribute) {
                 var added = 0f;
@@ -89,9 +89,9 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
             // }.Schedule(this.actorsWithAttributesQuery, inputDeps);
             inputDeps = new AttributeCombinerJob2
             {
-                Add_CDFE = GetComponentDataFromEntity<AttributeModifier<Components.Operators.Add, TAttributeTag>>(true),
-                Mul_CDFE = GetComponentDataFromEntity<AttributeModifier<Components.Operators.Multiply, TAttributeTag>>(true),
-                Div_CDFE = GetComponentDataFromEntity<AttributeModifier<Components.Operators.Divide, TAttributeTag>>(true)
+                Add_CDFE = GetComponentDataFromEntity<AttributeModifier<_Components.Operators.Add, TAttributeTag>>(true),
+                Mul_CDFE = GetComponentDataFromEntity<AttributeModifier<_Components.Operators.Multiply, TAttributeTag>>(true),
+                Div_CDFE = GetComponentDataFromEntity<AttributeModifier<_Components.Operators.Divide, TAttributeTag>>(true)
             }.Schedule(this, inputDeps);
             return inputDeps;
         }

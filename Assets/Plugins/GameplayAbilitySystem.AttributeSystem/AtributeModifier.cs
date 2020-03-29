@@ -21,7 +21,7 @@
  
  using Unity.Entities;
 
-namespace GameplayAbilitySystem.AttributeSystem.Components {
+namespace GameplayAbilitySystem.AttributeSystem._Components {
     /// <summary>
     /// Attribute modification struct.  By adding this struct
     /// to an entity, you are declaring that the attribute

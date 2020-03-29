@@ -19,7 +19,7 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.AttributeSystem.Components;
+using GameplayAbilitySystem.AttributeSystem._Components;
 using GameplayAbilitySystem.AttributeSystem.Jobs;
 using GameplayAbilitySystem.Common.Components;
 using Unity.Burst;
@@ -62,13 +62,13 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
             base.OnCreate();
             var attributeModifierTag = new PermanentAttributeModifierTag();
             this.Queries[0] = GetEntityQuery(
-                  attributeModifierTag.AttributeOperatorQueryComponents<TAttributeTag, Components.Operators.Add>()
+                  attributeModifierTag.AttributeOperatorQueryComponents<TAttributeTag, _Components.Operators.Add>()
               );
             this.Queries[1] = GetEntityQuery(
-                attributeModifierTag.AttributeOperatorQueryComponents<TAttributeTag, Components.Operators.Multiply>()
+                attributeModifierTag.AttributeOperatorQueryComponents<TAttributeTag, _Components.Operators.Multiply>()
             );
             this.Queries[2] = GetEntityQuery(
-                attributeModifierTag.AttributeOperatorQueryComponents<TAttributeTag, Components.Operators.Divide>()
+                attributeModifierTag.AttributeOperatorQueryComponents<TAttributeTag, _Components.Operators.Divide>()
             );
 
             this.actorsWithAttributesQuery = GetEntityQuery(
@@ -161,9 +161,9 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
 
         protected override JobHandle ScheduleJobs(JobHandle inputDependencies) {
             if (!RunSystemThisFrame()) return inputDependencies;
-            ScheduleAttributeJob<Components.Operators.Add>(ref inputDependencies, ref this.Queries[0], ref AttributeHashAdd, out var addJob);
-            ScheduleAttributeJob<Components.Operators.Multiply>(ref inputDependencies, ref this.Queries[1], ref AttributeHashMultiply, out var mulJob);
-            ScheduleAttributeJob<Components.Operators.Divide>(ref inputDependencies, ref this.Queries[2], ref AttributeHashDivide, out var divideJob);
+            ScheduleAttributeJob<_Components.Operators.Add>(ref inputDependencies, ref this.Queries[0], ref AttributeHashAdd, out var addJob);
+            ScheduleAttributeJob<_Components.Operators.Multiply>(ref inputDependencies, ref this.Queries[1], ref AttributeHashMultiply, out var mulJob);
+            ScheduleAttributeJob<_Components.Operators.Divide>(ref inputDependencies, ref this.Queries[2], ref AttributeHashDivide, out var divideJob);
             inputDependencies = JobHandle.CombineDependencies(addJob, divideJob, mulJob);
             inputDependencies = ScheduleAttributeCombinerJob(inputDependencies);
             inputDependencies = CleanupJob(inputDependencies);

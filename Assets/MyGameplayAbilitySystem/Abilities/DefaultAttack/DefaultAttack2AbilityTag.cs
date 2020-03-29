@@ -21,13 +21,13 @@
 
 using System.Collections;
 using GameplayAbilitySystem.Abilities.Components;
-using GameplayAbilitySystem.AttributeSystem.Components;
+using GameplayAbilitySystem.AttributeSystem._Components;
 using GameplayAbilitySystem.Common.Editor;
 using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
 using MyGameplayAbilitySystem.GameplayEffects.Components;
 using Unity.Entities;
 using UnityEngine;
-using Components = GameplayAbilitySystem.AttributeSystem.Components;
+using _Components = GameplayAbilitySystem.AttributeSystem._Components;
 using GameplayAbilitySystem.Common.Components;
 using GameplayAbilitySystem.AbilitySystem.GameplayEffects._Components;
 
@@ -65,7 +65,7 @@ namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
 
         public void CreateSourceAttributeModifiers(EntityManager dstManager, Entity actorEntity) {
             var entity = new PermanentAttributeModifierTag()
-                    .CreateAttributeModifier<ManaAttributeComponent, Components.Operators.Add>(dstManager, actorEntity, -1);
+                    .CreateAttributeModifier<ManaAttributeComponent, _Components.Operators.Add>(dstManager, actorEntity, -1);
         }
 
         public void CommitAbility(EntityManager dstManager, Entity actorEntity) {
@@ -74,7 +74,7 @@ namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
         }
         public void CreateTargetAttributeModifiers(EntityManager dstManager, Entity actorEntity) {
             var attributeEntity = new PermanentAttributeModifierTag()
-                                .CreateAttributeModifier<HealthAttributeComponent, Components.Operators.Add>(dstManager, actorEntity, -5f);
+                                .CreateAttributeModifier<HealthAttributeComponent, _Components.Operators.Add>(dstManager, actorEntity, -5f);
             // Create a "poison" effect
             Entity poisonEffectEntity = new PoisonGameplayEffectComponent().Instantiate(dstManager, actorEntity, 25f);
 

@@ -21,7 +21,7 @@
 
 using System.Collections;
 using GameplayAbilitySystem.Abilities.Components;
-using GameplayAbilitySystem.AttributeSystem.Components;
+using GameplayAbilitySystem.AttributeSystem._Components;
 using GameplayAbilitySystem.Common.Editor;
 using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
 using MyGameplayAbilitySystem.GameplayEffects.Components;
@@ -67,7 +67,7 @@ namespace MyGameplayAbilitySystem.Abilities.Fire1 {
         }
 
         public void CreateSourceAttributeModifiers(EntityManager dstManager, Entity actorEntity) {
-            new PermanentAttributeModifierTag().CreateAttributeModifier<ManaAttributeComponent, GameplayAbilitySystem.AttributeSystem.Components.Operators.Add>(dstManager, actorEntity, -5f);
+            new PermanentAttributeModifierTag().CreateAttributeModifier<ManaAttributeComponent, GameplayAbilitySystem.AttributeSystem._Components.Operators.Add>(dstManager, actorEntity, -5f);
         }
 
         public void CreateTargetAttributeModifiers(EntityManager dstManager, Entity actorEntity) {

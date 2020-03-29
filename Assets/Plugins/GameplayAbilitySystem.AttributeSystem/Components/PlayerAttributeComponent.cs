@@ -20,8 +20,8 @@
  */
 
 using Unity.Entities;
-using GameplayAbilitySystem.AttributeSystem.Components;
-using Operators = GameplayAbilitySystem.AttributeSystem.Components.Operators;
+using GameplayAbilitySystem.AttributeSystem._Components;
+using Operators = GameplayAbilitySystem.AttributeSystem._Components.Operators;
 using GameplayAbilitySystem.Common.Editor;
 
 [assembly: RegisterGenericComponentType(typeof(AttributeComponentTag<CharacterLevelAttributeComponent>))]
@@ -29,7 +29,7 @@ using GameplayAbilitySystem.Common.Editor;
 [assembly: RegisterGenericComponentType(typeof(AttributeModifier<Operators.Multiply, CharacterLevelAttributeComponent>))]
 [assembly: RegisterGenericComponentType(typeof(AttributeModifier<Operators.Divide, CharacterLevelAttributeComponent>))]
 
-namespace GameplayAbilitySystem.AttributeSystem.Components {
+namespace GameplayAbilitySystem.AttributeSystem._Components {
     [AbilitySystemDisplayName("Level")]
     public struct CharacterLevelAttributeComponent : IComponentData, IAttributeComponent {
         public float _baseValue;

@@ -20,8 +20,8 @@
  */
 
 using Unity.Entities;
-using GameplayAbilitySystem.AttributeSystem.Components;
-using Operators = GameplayAbilitySystem.AttributeSystem.Components.Operators;
+using GameplayAbilitySystem.AttributeSystem._Components;
+using Operators = GameplayAbilitySystem.AttributeSystem._Components.Operators;
 using GameplayAbilitySystem.Common.Editor;
 
 [assembly: RegisterGenericComponentType(typeof(AttributeComponentTag<MaxHealthAttributeComponent>))]
@@ -29,7 +29,7 @@ using GameplayAbilitySystem.Common.Editor;
 [assembly: RegisterGenericComponentType(typeof(AttributeModifier<Operators.Multiply, MaxHealthAttributeComponent>))]
 [assembly: RegisterGenericComponentType(typeof(AttributeModifier<Operators.Divide, MaxHealthAttributeComponent>))]
 
-namespace GameplayAbilitySystem.AttributeSystem.Components {
+namespace GameplayAbilitySystem.AttributeSystem._Components {
     [AbilitySystemDisplayName("Max Health")]
     public struct MaxHealthAttributeComponent : IComponentData, IAttributeComponent {
         public float _baseValue;

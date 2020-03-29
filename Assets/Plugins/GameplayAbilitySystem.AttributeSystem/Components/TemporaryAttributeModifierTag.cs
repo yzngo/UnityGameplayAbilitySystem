@@ -25,7 +25,7 @@ using GameplayAbilitySystem.Common.Components;
 using Unity.Entities;
 using UnityEngine;
 
-namespace GameplayAbilitySystem.AttributeSystem.Components {
+namespace GameplayAbilitySystem.AttributeSystem._Components {
     public struct TemporaryAttributeModifierTag : IComponentData, IAttributeModifierTag {
         public Entity ParentGameplayEffectEntity;
         public EntityArchetype AttributeModifierArchetype<TAttribute, TOperator>(EntityManager entityManager)

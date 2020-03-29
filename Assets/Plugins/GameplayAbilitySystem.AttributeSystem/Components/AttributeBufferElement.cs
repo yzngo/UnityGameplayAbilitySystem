@@ -21,7 +21,7 @@
 
 using Unity.Entities;
 
-namespace GameplayAbilitySystem.AttributeSystem.Components {
+namespace GameplayAbilitySystem.AttributeSystem._Components {
     public struct AttributeBufferElement<TModifierTag, TAttribute> : IBufferElementData
     where TModifierTag : struct, IAttributeModifierTag, IComponentData
     where TAttribute : struct, IAttributeComponent, IComponentData {

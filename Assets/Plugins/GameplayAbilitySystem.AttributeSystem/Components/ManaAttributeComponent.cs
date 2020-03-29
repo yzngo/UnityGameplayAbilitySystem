@@ -20,8 +20,8 @@
  */
 
 using Unity.Entities;
-using GameplayAbilitySystem.AttributeSystem.Components;
-using Operators = GameplayAbilitySystem.AttributeSystem.Components.Operators;
+using GameplayAbilitySystem.AttributeSystem._Components;
+using Operators = GameplayAbilitySystem.AttributeSystem._Components.Operators;
 using GameplayAbilitySystem.Common.Editor;
 
 [assembly: RegisterGenericComponentType(typeof(AttributeComponentTag<ManaAttributeComponent>))]
@@ -29,7 +29,7 @@ using GameplayAbilitySystem.Common.Editor;
 [assembly: RegisterGenericComponentType(typeof(AttributeModifier<Operators.Multiply, ManaAttributeComponent>))]
 [assembly: RegisterGenericComponentType(typeof(AttributeModifier<Operators.Divide, ManaAttributeComponent>))]
 
-namespace GameplayAbilitySystem.AttributeSystem.Components {
+namespace GameplayAbilitySystem.AttributeSystem._Components {
     [AbilitySystemDisplayName("Mana")]
     public struct ManaAttributeComponent : IComponentData, IAttributeComponent {
         public float _baseValue;

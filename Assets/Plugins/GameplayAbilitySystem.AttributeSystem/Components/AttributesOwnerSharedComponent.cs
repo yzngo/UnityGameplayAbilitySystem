@@ -22,7 +22,7 @@
 using System;
 using Unity.Entities;
 
-namespace GameplayAbilitySystem.AttributeSystem.Components {
+namespace GameplayAbilitySystem.AttributeSystem._Components {
     [Serializable]
     public struct AttributesOwnerSharedComponent : ISharedComponentData {
         public Entity Value;

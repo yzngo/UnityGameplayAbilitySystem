@@ -21,7 +21,7 @@
 
 using Unity.Entities;
 
-namespace GameplayAbilitySystem.AttributeSystem.Components {
+namespace GameplayAbilitySystem.AttributeSystem._Components {
     public struct PermanentAttributeModifierTag : IComponentData, IAttributeModifierTag {
 
         public EntityArchetype AttributeModifierArchetype<TAttribute, TOperator>(EntityManager entityManager)

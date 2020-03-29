@@ -20,8 +20,8 @@
  */
 
 using Unity.Entities;
-using GameplayAbilitySystem.AttributeSystem.Components;
-using Operators = GameplayAbilitySystem.AttributeSystem.Components.Operators;
+using GameplayAbilitySystem.AttributeSystem._Components;
+using Operators = GameplayAbilitySystem.AttributeSystem._Components.Operators;
 using UnityEngine;
 using GameplayAbilitySystem.Common.Editor;
 
@@ -30,7 +30,7 @@ using GameplayAbilitySystem.Common.Editor;
 [assembly: RegisterGenericComponentType(typeof(AttributeModifier<Operators.Multiply, HealthAttributeComponent>))]
 [assembly: RegisterGenericComponentType(typeof(AttributeModifier<Operators.Divide, HealthAttributeComponent>))]
 
-namespace GameplayAbilitySystem.AttributeSystem.Components {
+namespace GameplayAbilitySystem.AttributeSystem._Components {
     [AbilitySystemDisplayName("Health")]
     public struct HealthAttributeComponent : IComponentData, IAttributeComponent {
         public float _baseValue;

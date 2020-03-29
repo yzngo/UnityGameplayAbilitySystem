@@ -21,8 +21,8 @@
 
 using GameplayAbilitySystem.AbilitySystem.GameplayEffects._Components;
 using GameplayAbilitySystem.AbilitySystem.GameplayEffects.Interfaces;
-using GameplayAbilitySystem.AttributeSystem.Components;
-using GameplayAbilitySystem.AttributeSystem.Components.Operators;
+using GameplayAbilitySystem.AttributeSystem._Components;
+using GameplayAbilitySystem.AttributeSystem._Components.Operators;
 using Unity.Entities;
 
 namespace MyGameplayAbilitySystem.GameplayEffects.Components {

@@ -19,15 +19,15 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.AttributeSystem.Components;
+using GameplayAbilitySystem.AttributeSystem._Components;
 using Unity.Entities;
 
-namespace GameplayAbilitySystem.AttributeSystem.Components {
+namespace GameplayAbilitySystem.AttributeSystem._Components {
 
     /// <summary>
     /// Attribute types should implement this interface.
     /// <para>
-    /// See <see cref="GameplayAbilitySystem.AttributeSystem.Components.AttributeModifier{TOper, TAttribute}"/>
+    /// See <see cref="GameplayAbilitySystem.AttributeSystem._Components.AttributeModifier{TOper, TAttribute}"/>
     /// for details on specifying how the attribute will affect attribute values.
     /// </para>
     /// <para>
@@ -62,7 +62,7 @@ namespace GameplayAbilitySystem.AttributeSystem.Components {
 
 }
 
-namespace GameplayAbilitySystem.AttributeSystem.Components.Operators {
+namespace GameplayAbilitySystem.AttributeSystem._Components.Operators {
 
     /// <summary>
     /// The Add operator is used to indicate that these modifiers should be added to the attribute

@@ -19,8 +19,8 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.Attributes.Components;
-using GameplayAbilitySystem.Attributes.Systems;
+using GameplayAbilitySystem.AttributeSystem.Components;
+using GameplayAbilitySystem.AttributeSystem.Systems;
 using Unity.Entities;
 
 [assembly: RegisterGenericComponentType(typeof(AttributeModificationActivatedSystemStateComponent<TemporaryAttributeModifierTag, HealthAttributeComponent>))]

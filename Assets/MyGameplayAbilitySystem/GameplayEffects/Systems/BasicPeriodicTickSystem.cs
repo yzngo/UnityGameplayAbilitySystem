@@ -20,9 +20,9 @@
  */
 
 using System.Runtime.InteropServices;
+using GameplayAbilitySystem.AbilitySystem.GameplayEffects._Components;
+using GameplayAbilitySystem.AbilitySystem.GameplayEffects._Systems;
 using GameplayAbilitySystem.Common.Components;
-using GameplayAbilitySystem.GameplayEffects._Components;
-using GameplayAbilitySystem.GameplayEffects._Systems;
 using MyGameplayAbilitySystem.GameplayEffects.Systems;
 using Unity.Burst;
 using Unity.Entities;

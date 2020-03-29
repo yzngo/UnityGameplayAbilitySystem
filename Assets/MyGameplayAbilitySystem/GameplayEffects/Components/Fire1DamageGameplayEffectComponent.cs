@@ -19,10 +19,10 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.Attributes.Components;
-using GameplayAbilitySystem.Attributes.Components.Operators;
-using GameplayAbilitySystem.GameplayEffects._Components;
-using GameplayAbilitySystem.GameplayEffects.Interfaces;
+using GameplayAbilitySystem.AbilitySystem.GameplayEffects._Components;
+using GameplayAbilitySystem.AbilitySystem.GameplayEffects.Interfaces;
+using GameplayAbilitySystem.AttributeSystem.Components;
+using GameplayAbilitySystem.AttributeSystem.Components.Operators;
 using Unity.Entities;
 
 namespace MyGameplayAbilitySystem.GameplayEffects.Components {

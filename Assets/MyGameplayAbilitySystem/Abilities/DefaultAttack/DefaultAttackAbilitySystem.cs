@@ -19,24 +19,17 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System;
-using System.Collections;
-using System.Runtime.InteropServices;
 using GameplayAbilitySystem.Abilities.Components;
-using GameplayAbilitySystem.Abilities.Systems;
-using GameplayAbilitySystem.Abilities.Systems.Generic;
 using GameplayAbilitySystem.AbilitySystem.Enums;
-using GameplayAbilitySystem.ExtensionMethods;
-using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
 using MyGameplayAbilitySystem.GameplayEffects.Components;
 using Unity.Entities;
-using Unity.Burst;
 using Unity.Jobs;
-using UnityEngine;
-using GameplayAbilitySystem.GameplayEffects._Components;
 using Unity.Mathematics;
 using Unity.Collections;
-using GameplayAbilitySystem.Common.Components;
+using GameplayAbilitySystem.AbilitySystem.Abilities.Systems;
+using GameplayAbilitySystem.AbilitySystem.GameplayEffects._Components;
+using GameplayAbilitySystem.AbilitySystem.ExtensionMethods;
+using GameplayAbilitySystem.AbilitySystem.Abilities.Systems.Generic;
 
 namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
 

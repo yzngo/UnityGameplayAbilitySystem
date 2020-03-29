@@ -19,21 +19,6 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System;
-using System.Collections;
-using System.Runtime.InteropServices;
-using GameplayAbilitySystem.Abilities.Components;
-using GameplayAbilitySystem.Abilities.Systems;
-using GameplayAbilitySystem.Abilities.Systems.Generic;
-using GameplayAbilitySystem.AbilitySystem.Enums;
-using GameplayAbilitySystem.ExtensionMethods;
-using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
-using MyGameplayAbilitySystem.GameplayEffects.Components;
-using Unity.Entities;
-using Unity.Burst;
-using Unity.Jobs;
-using UnityEngine;
-
 namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
 
     public class DefaultAttack2AbilitySystem {

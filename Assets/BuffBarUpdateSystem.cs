@@ -20,13 +20,9 @@
  */
 
 using System;
-using System.Collections.Generic;
-using GameplayAbilitySystem.GameplayEffects._Components;
-using GameplayAbilitySystem.GameplayEffects._Systems;
-using Unity.Burst;
+using GameplayAbilitySystem.AbilitySystem.GameplayEffects._Components;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Jobs;
 using UnityEngine;
 
 public class BuffBarUpdateSystem : ComponentSystem {

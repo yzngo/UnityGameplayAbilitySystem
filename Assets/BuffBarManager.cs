@@ -22,7 +22,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using GameplayAbilitySystem.Attributes.ScriptableObjects;
+using GameplayAbilitySystem.AbilitySystem.GameplayEffects.ScriptableObjects;
 using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
 using MyGameplayAbilitySystem.Common.ScriptableObjects;
 using Unity.Entities;

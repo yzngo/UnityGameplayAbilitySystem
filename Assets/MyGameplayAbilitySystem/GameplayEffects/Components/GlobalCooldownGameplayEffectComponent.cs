@@ -19,9 +19,9 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+using GameplayAbilitySystem.AbilitySystem.GameplayEffects._Components;
+using GameplayAbilitySystem.AbilitySystem.GameplayEffects.Interfaces;
 using GameplayAbilitySystem.Common.Editor;
-using GameplayAbilitySystem.GameplayEffects._Components;
-using GameplayAbilitySystem.GameplayEffects.Interfaces;
 using Unity.Entities;
 
 namespace MyGameplayAbilitySystem.GameplayEffects.Components {

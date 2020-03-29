@@ -23,16 +23,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameplayAbilitySystem.Abilities.Components;
-using GameplayAbilitySystem.Abilities.Components.Authoring;
-using GameplayAbilitySystem.Abilities.ScriptableObjects;
-using GameplayAbilitySystem.Abilities.Systems;
+using GameplayAbilitySystem.AbilitySystem.Abilities.Components.Authoring;
+using GameplayAbilitySystem.AbilitySystem.Abilities.ScriptableObjects;
+using GameplayAbilitySystem.AbilitySystem.Abilities.Systems;
 using GameplayAbilitySystem.AbilitySystem.Components;
-using GameplayAbilitySystem.Attributes.Components;
-using GameplayAbilitySystem.Attributes.ScriptableObjects;
+using GameplayAbilitySystem.AbilitySystem.GameplayEffects._Components;
+using GameplayAbilitySystem.AbilitySystem.GameplayTags.Components;
+using GameplayAbilitySystem.AbilitySystem.GameplayTags.Interfaces;
+using GameplayAbilitySystem.AttributeSystem.Components;
+using GameplayAbilitySystem.AttributeSystem.ScriptableObjects;
 using GameplayAbilitySystem.Common.Components;
-using GameplayAbilitySystem.GameplayEffects._Components;
-using GameplayAbilitySystem.GameplayTags.Components;
-using GameplayAbilitySystem.GameplayTags.Interfaces;
 using MyGameplayAbilitySystem.Abilities.DefaultAttack;
 using MyGameplayAbilitySystem.Abilities.Fire1;
 using Unity.Entities;
@@ -69,17 +69,16 @@ namespace MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours {
             actorAbilitySystem.AbilityOwnerEntity = abilityOwnerEntity;
             actorAbilitySystem.AbilitySystemActorTransformEntity = entity;
             // Create some dummy health attributes to simulate a scenario where there are many modifiers for an attribute active in the world
-            CreateEntities<GameplayAbilitySystem.Attributes.Components.Operators.Add, HealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.Attributes.Components.Operators.Multiply, HealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.Attributes.Components.Operators.Divide, HealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.Attributes.Components.Operators.Add, MaxHealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.Attributes.Components.Operators.Multiply, MaxHealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-
-            CreateEntities<GameplayAbilitySystem.Attributes.Components.Operators.Add, ManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.Attributes.Components.Operators.Multiply, ManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.Attributes.Components.Operators.Divide, ManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.Attributes.Components.Operators.Add, MaxManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.Attributes.Components.Operators.Multiply, MaxManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            CreateEntities<GameplayAbilitySystem.AttributeSystem.Components.Operators.Add, HealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            CreateEntities<GameplayAbilitySystem.AttributeSystem.Components.Operators.Multiply, HealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            CreateEntities<GameplayAbilitySystem.AttributeSystem.Components.Operators.Divide, HealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            CreateEntities<GameplayAbilitySystem.AttributeSystem.Components.Operators.Add, MaxHealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            CreateEntities<GameplayAbilitySystem.AttributeSystem.Components.Operators.Multiply, MaxHealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            CreateEntities<GameplayAbilitySystem.AttributeSystem.Components.Operators.Add, ManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            CreateEntities<GameplayAbilitySystem.AttributeSystem.Components.Operators.Multiply, ManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            CreateEntities<GameplayAbilitySystem.AttributeSystem.Components.Operators.Divide, ManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            CreateEntities<GameplayAbilitySystem.AttributeSystem.Components.Operators.Add, MaxManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            CreateEntities<GameplayAbilitySystem.AttributeSystem.Components.Operators.Multiply, MaxManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
 
 
             // Create some dummy cooldown gameplay effects to simulate a scenario where an ability is on cooldown due to a gameplay effect

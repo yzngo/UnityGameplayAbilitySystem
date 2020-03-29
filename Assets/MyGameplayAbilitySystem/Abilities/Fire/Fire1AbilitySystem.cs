@@ -20,17 +20,16 @@
  */
 
 using GameplayAbilitySystem.Abilities.Components;
-using GameplayAbilitySystem.Abilities.Systems;
-using GameplayAbilitySystem.Abilities.Systems.Generic;
+using GameplayAbilitySystem.AbilitySystem.Abilities.Systems;
+using GameplayAbilitySystem.AbilitySystem.Abilities.Systems.Generic;
 using GameplayAbilitySystem.AbilitySystem.Enums;
-using GameplayAbilitySystem.ExtensionMethods;
-using GameplayAbilitySystem.GameplayEffects._Components;
+using GameplayAbilitySystem.AbilitySystem.ExtensionMethods;
+using GameplayAbilitySystem.AbilitySystem.GameplayEffects._Components;
 using MyGameplayAbilitySystem.GameplayEffects.Components;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
-using UnityEngine;
 
 namespace MyGameplayAbilitySystem.Abilities.Fire1 {
     public class Fire1AbilitySystem {

@@ -19,12 +19,10 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System;
 using System.Collections;
 using GameplayAbilitySystem.Abilities.Components;
-using GameplayAbilitySystem.Attributes.Components;
+using GameplayAbilitySystem.AttributeSystem.Components;
 using GameplayAbilitySystem.Common.Editor;
-using GameplayAbilitySystem.GameplayEffects._Components;
 using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
 using MyGameplayAbilitySystem.GameplayEffects.Components;
 using Unity.Entities;
@@ -69,7 +67,7 @@ namespace MyGameplayAbilitySystem.Abilities.Fire1 {
         }
 
         public void CreateSourceAttributeModifiers(EntityManager dstManager, Entity actorEntity) {
-            new PermanentAttributeModifierTag().CreateAttributeModifier<ManaAttributeComponent, GameplayAbilitySystem.Attributes.Components.Operators.Add>(dstManager, actorEntity, -5f);
+            new PermanentAttributeModifierTag().CreateAttributeModifier<ManaAttributeComponent, GameplayAbilitySystem.AttributeSystem.Components.Operators.Add>(dstManager, actorEntity, -5f);
         }
 
         public void CreateTargetAttributeModifiers(EntityManager dstManager, Entity actorEntity) {

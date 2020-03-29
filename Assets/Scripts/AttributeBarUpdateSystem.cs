@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GameplayAbilitySystem.Attributes.Components;
+using GameplayAbilitySystem.AttributeSystem.Components;
 using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
 using Unity.Burst;
 using Unity.Collections;

@@ -21,20 +21,19 @@
 
 using System.Collections;
 using GameplayAbilitySystem.Abilities.Components;
-using GameplayAbilitySystem.Attributes.Components;
+using GameplayAbilitySystem.AttributeSystem.Components;
 using GameplayAbilitySystem.Common.Editor;
-using GameplayAbilitySystem.GameplayEffects._Components;
 using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
 using MyGameplayAbilitySystem.GameplayEffects.Components;
 using MyGameplayAbilitySystem.GameplayEffects.Systems;
 using Unity.Entities;
 using UnityEngine;
-using Components = GameplayAbilitySystem.Attributes.Components;
+using Components = GameplayAbilitySystem.AttributeSystem.Components;
 using GameplayAbilitySystem.Common.Components;
-using System;
-using GameplayAbilitySystem.GameplayTags.Components;
-using GameplayAbilitySystem.GameplayTags.Interfaces;
-using GameplayAbilitySystem.Abilities.Common;
+using GameplayAbilitySystem.AbilitySystem.GameplayEffects._Components;
+using GameplayAbilitySystem.AbilitySystem.GameplayTags.Components;
+using GameplayAbilitySystem.AbilitySystem.Abilities.Common;
+using GameplayAbilitySystem.AbilitySystem.GameplayTags.Interfaces;
 
 namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
     [AbilitySystemDisplayName("Default Attack Ability")]

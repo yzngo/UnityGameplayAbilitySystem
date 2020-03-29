@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameplayAbilitySystem;
-using GameplayAbilitySystem.Attributes.Components;
+using GameplayAbilitySystem.AttributeSystem.Components;
 using UnityEngine;
 
 public class UIAttributeUpdater : MonoBehaviour, IUpdateAttributeValue {

@@ -37,35 +37,9 @@ namespace GameplayAbilitySystem.GameplayEffects.Systems {
         public GameplayEffectIdentifier Id;
     }
 
-    /// <summary>
-    /// This class is used to manage raising events for GameplayEffects with specific IDs.
-    /// Subscribers can subscribe to individual IDs, or all GameplayEffects (using index -1)
-    /// 
-    /// To listen to events: GameplayEffectExpired[*GE ID*].OnGameplayEffectExpired += (o, e) => {}
-    /// Code was inspired by https://stackoverflow.com/questions/2237927/is-there-any-way-to-create-indexed-events-in-c-sharp-or-some-workaround
-    /// </summary>
-    public class GameplayEffectExpiredEventManager {
-        public class GameplayEffectExpired {
-            public event GameplayEffectExpiredEventHandler OnGameplayEffectExpired;
-            internal void RaiseGameplayEffectExpired(ref GameplayEffectExpiredEventArgs e) {
-                OnGameplayEffectExpired?.Invoke(this, e);
-            }
-        }
-
-        private Dictionary<int, GameplayEffectExpired> m_objects = new Dictionary<int, GameplayEffectExpired>();
-        public GameplayEffectExpired this[int id] {
-            get {
-                if (!m_objects.ContainsKey(id))
-                    m_objects.Add(id, new GameplayEffectExpired());
-
-                return m_objects[id];
-            }
-        }
-
-        private void RaiseGameplayEffectExpired(GameplayEffectExpiredEventArgs e) {
-            GameplayEffectExpired manager;
-            if (m_objects.TryGetValue(e.Id.Value, out manager))
-                manager.RaiseGameplayEffectExpired(ref e);
+    public class GameplayEffectExpiredEventManager : AbilitySystemEventManager<int, GameplayEffectExpiredEventArgs> {
+        public override int KeyFromArgs(GameplayEffectExpiredEventArgs e) {
+            return e.Id.Value;
         }
     }
 
@@ -100,7 +74,7 @@ namespace GameplayAbilitySystem.GameplayEffects.Systems {
                 em.SetComponentData(entities[i], new GameplayEffectDurationRemaining() { Value = duration });
                 em.SetComponentData(entities[i], new GameplayEffectIdentifier() { Value = id });
             }
-            GameplayEffectExpired[5].OnGameplayEffectExpired += (o, e) => {
+            GameplayEffectExpired[5].OnEvent += (o, e) => {
                 Debug.Log("GE with ID: " + e.Id.Value + " expired.");
             };
         }
@@ -159,10 +133,10 @@ namespace GameplayAbilitySystem.GameplayEffects.Systems {
                 .WithCode(() => {
                     while (gameplayEffectExpiredQueueLocal.TryDequeue(out var e)) {
                         // GE specific event
-                        GameplayEffectExpired[e.Id.Value].RaiseGameplayEffectExpired(ref e);
+                        GameplayEffectExpired[e.Id.Value].RaiseEvent(ref e);
 
                         // General GE event
-                        GameplayEffectExpired[-1].RaiseGameplayEffectExpired(ref e);
+                        GameplayEffectExpired[-1].RaiseEvent(ref e);
                     }
                 })
                 .Run();

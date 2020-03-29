@@ -86,9 +86,9 @@ namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Systems {
                 em.SetComponentData(entities[i], new GameplayEffectDurationRemaining() { Value = duration });
                 em.SetComponentData(entities[i], new GameplayEffectIdentifier() { Value = id });
             }
-            GameplayEffectExpired[5].OnEvent += (o, e) => {
-                Debug.Log("GE with ID: " + e.Id.Value + " expired.");
-            };
+            // GameplayEffectExpired[5].OnEvent += (o, e) => {
+            //     Debug.Log("GE with ID: " + e.Id.Value + " expired.");
+            // };
         }
 
         protected override void OnCreate() {
@@ -97,7 +97,7 @@ namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Systems {
             GameplayEffectExpired = new GameplayEffectExpiredEventManager();
             GameplayEffectExpiredOnSource = new GameplayEffectExpiredOnSourceEventManager();
             GameplayEffectExpiredOnTarget = new GameplayEffectExpiredOnTargetEventManager();
-            Test();
+           // Test();
         }
 
         protected override void OnUpdate() {
@@ -140,7 +140,6 @@ namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Systems {
             //     .WithStoreEntityQueryInField(ref query)
             //     .ScheduleParallel();
 
-
             var ecb = m_EndSimulationEcbSystem.CreateCommandBuffer();
 
             // Remove entity
@@ -157,7 +156,6 @@ namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Systems {
                 })
                 .Schedule();
 
-            m_EndSimulationEcbSystem.AddJobHandleForProducer(this.Dependency);
 
             // Raise event
             Job
@@ -180,6 +178,8 @@ namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Systems {
 
             //gameplayEffectsExpiredArray.Dispose(this.Dependency);
             gameplayEffectsExpiredList.Dispose(this.Dependency);
+            
+            m_EndSimulationEcbSystem.AddJobHandleForProducer(this.Dependency);
         }
 
         protected override void OnDestroy() {

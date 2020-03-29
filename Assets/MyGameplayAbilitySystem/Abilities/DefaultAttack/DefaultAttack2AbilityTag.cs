@@ -25,7 +25,6 @@ using GameplayAbilitySystem.AttributeSystem.Components;
 using GameplayAbilitySystem.Common.Editor;
 using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
 using MyGameplayAbilitySystem.GameplayEffects.Components;
-using MyGameplayAbilitySystem.GameplayEffects.Systems;
 using Unity.Entities;
 using UnityEngine;
 using Components = GameplayAbilitySystem.AttributeSystem.Components;
@@ -45,23 +44,23 @@ namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
         public void CreateCooldownEntities(EntityManager dstManager, Entity actorEntity) {
 
 
-            var tickEntity = new PeriodicTickActionComponent<PeriodicTickDelegate>()
-                                .SetTickFunction(
-                                    ((index, Ecb, entity, parentGameplayEffectEntity) => {
-                                        new PermanentAttributeModifierTag() { }.CreateAttributeModifier<ManaAttributeComponent, Components.Operators.Add>(index, Ecb, entity, -5);
-                                    })
-                                )
-                                .CreateEntity(dstManager);
+            // var tickEntity = new PeriodicTickActionComponent<PeriodicTickDelegate>()
+            //                     .SetTickFunction(
+            //                         ((index, Ecb, entity, parentGameplayEffectEntity) => {
+            //                             new PermanentAttributeModifierTag() { }.CreateAttributeModifier<ManaAttributeComponent, Components.Operators.Add>(index, Ecb, entity, -5);
+            //                         })
+            //                     )
+            //                     .CreateEntity(dstManager);
 
-            dstManager.SetComponentData<PeriodicTickComponent>(tickEntity, new PeriodicTickComponent()
-            {
-                TickPeriod = 1,
-                TickDurationLeft = 1
-            });
-            dstManager.SetComponentData<PeriodicTickTargetComponent>(tickEntity, actorEntity);
+            // dstManager.SetComponentData<PeriodicTickComponent>(tickEntity, new PeriodicTickComponent()
+            // {
+            //     TickPeriod = 1,
+            //     TickDurationLeft = 1
+            // });
+            // dstManager.SetComponentData<PeriodicTickTargetComponent>(tickEntity, actorEntity);
 
-            Entity cooldownEntity1 = new GlobalCooldownGameplayEffectComponent().Instantiate(dstManager, actorEntity, 1f);
-            dstManager.SetComponentData<ParentGameplayEffectEntity>(tickEntity, new ParentGameplayEffectEntity(cooldownEntity1));
+            // Entity cooldownEntity1 = new GlobalCooldownGameplayEffectComponent().Instantiate(dstManager, actorEntity, 1f);
+            // dstManager.SetComponentData<ParentGameplayEffectEntity>(tickEntity, new ParentGameplayEffectEntity(cooldownEntity1));
         }
 
         public void CreateSourceAttributeModifiers(EntityManager dstManager, Entity actorEntity) {
@@ -79,21 +78,21 @@ namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
             // Create a "poison" effect
             Entity poisonEffectEntity = new PoisonGameplayEffectComponent().Instantiate(dstManager, actorEntity, 25f);
 
-            var tickEntity = new PeriodicTickActionComponent<PeriodicTickDelegate>()
-                                .SetTickFunction(
-                                    ((index, Ecb, entity, parentGameplayEffectEntity) => {
-                                        new PoisonTickGameplayEffectComponent() { Damage = -1f }.Instantiate(index, Ecb, entity, -1f);
-                                    })
-                                )
-                                .CreateEntity(dstManager);
+            // var tickEntity = new PeriodicTickActionComponent<PeriodicTickDelegate>()
+            //                     .SetTickFunction(
+            //                         ((index, Ecb, entity, parentGameplayEffectEntity) => {
+            //                             new PoisonTickGameplayEffectComponent() { Damage = -1f }.Instantiate(index, Ecb, entity, -1f);
+            //                         })
+            //                     )
+            //                     .CreateEntity(dstManager);
 
-            dstManager.SetComponentData<PeriodicTickComponent>(tickEntity, new PeriodicTickComponent()
-            {
-                TickPeriod = 0.9f,
-                TickDurationLeft = 1
-            });
-            dstManager.SetComponentData<PeriodicTickTargetComponent>(tickEntity, actorEntity);
-            dstManager.SetComponentData<ParentGameplayEffectEntity>(tickEntity, new ParentGameplayEffectEntity(poisonEffectEntity));
+            // dstManager.SetComponentData<PeriodicTickComponent>(tickEntity, new PeriodicTickComponent()
+            // {
+            //     TickPeriod = 0.9f,
+            //     TickDurationLeft = 1
+            // });
+            // dstManager.SetComponentData<PeriodicTickTargetComponent>(tickEntity, actorEntity);
+            // dstManager.SetComponentData<ParentGameplayEffectEntity>(tickEntity, new ParentGameplayEffectEntity(poisonEffectEntity));
         }
 
         public void BeginActivateAbility(EntityManager dstManager, Entity grantedAbilityEntity, Entity abilityOwnerEntity) {

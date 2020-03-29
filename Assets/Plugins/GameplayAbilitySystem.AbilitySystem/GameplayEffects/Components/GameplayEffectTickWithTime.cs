@@ -26,6 +26,7 @@ namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Components {
 
     public partial class Tag {
         public struct GameplayEffectTickWithTime : IComponentData { }
+        public struct GameplayEffectTickWithCustom : IComponentData { }
 
     }
 }

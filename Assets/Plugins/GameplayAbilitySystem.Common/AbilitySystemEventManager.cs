@@ -37,6 +37,10 @@ where TEventArgs : struct {
         public void RaiseEvent(ref TEventArgs e) {
             OnEvent?.Invoke(this, e);
         }
+
+        public void Dispose() {
+            OnEvent = null;
+        }
     }
 
     private Dictionary<T1, AbilitySystemEvent> m_objects = new Dictionary<T1, AbilitySystemEvent>();
@@ -50,9 +54,17 @@ where TEventArgs : struct {
         }
     }
 
-    private void RaiseEvent(ref TEventArgs e) {
-        AbilitySystemEvent @event;
-        if (m_objects.TryGetValue(KeyFromArgs(e), out @event))
-            @event.RaiseEvent(ref e);
+    /// <summary>
+    /// Clean up after itself
+    /// </summary>
+    public void Dispose() {
+        // Go through dict and clear all event indices
+        foreach (KeyValuePair<T1, AbilitySystemEvent> item in m_objects) {
+            item.Value.Dispose();
+        }
+        
+        // Clear dictionary
+        m_objects.Clear();
     }
+
 }

@@ -1,8 +1,8 @@
 /*
- * Created on Sun Mar 29 2020
+ * Created on Sun Dec 29 2019
  *
  * The MIT License (MIT)
- * Copyright (c) 2020 Sahil Jain
+ * Copyright (c) 2019 Sahil Jain
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -21,10 +21,12 @@
 
 using Unity.Entities;
 
-namespace GameplayAbilitySystem.AttributeSystem.Components {
-    [InternalBufferCapacity(8)]
-    public struct AttributeBufferElement : IBufferElementData {
-        public float BaseValue;
-        public float CurrentValue;
+namespace GameplayAbilitySystem.AttributeSystem._Components {
+    public struct AttributeBufferElement<TModifierTag, TAttribute> : IBufferElementData
+    where TModifierTag : struct, IAttributeModifierTag, IComponentData
+    where TAttribute : struct, IAttributeComponent, IComponentData {
+        public Entity Value;
+        public static implicit operator Entity(AttributeBufferElement<TModifierTag, TAttribute> e) { return e.Value; }
+        public static implicit operator AttributeBufferElement<TModifierTag, TAttribute>(Entity e) { return new AttributeBufferElement<TModifierTag, TAttribute> { Value = e }; }
     }
 }

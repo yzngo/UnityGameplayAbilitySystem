@@ -22,9 +22,10 @@
 using Unity.Entities;
 
 namespace GameplayAbilitySystem.AttributeSystem.Components {
-    [InternalBufferCapacity(8)]
-    public struct AttributeBufferElement : IBufferElementData {
-        public float BaseValue;
-        public float CurrentValue;
+    [InternalBufferCapacity(64)]
+    public struct AttributeModifierBufferElement : IBufferElementData {
+        public int OperatorId;
+        public int AttributeId;
+        public float ModifierValue;
     }
 }

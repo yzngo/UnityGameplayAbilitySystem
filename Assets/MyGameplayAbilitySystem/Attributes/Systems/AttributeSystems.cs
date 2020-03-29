@@ -20,7 +20,7 @@
  */
 
 using GameplayAbilitySystem.AttributeSystem._Components;
-using GameplayAbilitySystem.AttributeSystem.Systems;
+using GameplayAbilitySystem.AttributeSystem._Systems;
 using Unity.Entities;
 
 [assembly: RegisterGenericComponentType(typeof(AttributeModificationActivatedSystemStateComponent<TemporaryAttributeModifierTag, HealthAttributeComponent>))]

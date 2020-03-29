@@ -27,7 +27,7 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 
-namespace GameplayAbilitySystem.AttributeSystem.Systems {
+namespace GameplayAbilitySystem.AttributeSystem._Systems {
     /// <summary>
     /// This is a generic attribute temporary modification system which can be used
     /// out of the box, and supports single attribute modifications, using 

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Created on Mon Nov 04 2019
  *
  * The MIT License (MIT)
@@ -19,20 +19,30 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+using GameplayAbilitySystem.AttributeSystem._Components;
 using Unity.Entities;
+using Unity.Jobs;
 
-namespace GameplayAbilitySystem.AttributeSystem.Systems {
-    [UpdateInGroup(typeof(InitializationSystemGroup))]
-    public class AttributeSystemGroup : ComponentSystemGroup { }
-    [UpdateInGroup(typeof(AttributeSystemGroup))]
-    public class AttributeGroupUpdateBeginSystem : ComponentSystemGroup { }
+namespace GameplayAbilitySystem.AttributeSystem._Systems {
 
-    [UpdateInGroup(typeof(AttributeSystemGroup))]
-    [UpdateAfter(typeof(AttributeGroupUpdateBeginSystem))]
-    public class AttributeBaseValueGroup : ComponentSystemGroup { }
+    /// <summary>
+    /// This is the base for all attribute modification systems.  
+    /// Custom attribute modification types should inherit from this class
+    /// and modify as necessary.
+    /// 
+    /// See <see cref="GenericAttributeTemporarySystem{TAttributeTag}"> for a sample modifier system
+    /// </summary>
+    /// <typeparam name="TAttribute">The attribute this system modifies</typeparam>
+    public abstract class AttributeModificationSystem<TAttribute> : JobComponentSystem
+    where TAttribute : struct, IAttributeComponent, IComponentData {
 
+        protected override JobHandle OnUpdate(JobHandle inputDependencies) {
+            inputDependencies = ScheduleJobs(inputDependencies);
+            return inputDependencies;
+        }
+        protected abstract JobHandle ScheduleJobs(JobHandle inputDependencies);
+    }
 
-    [UpdateInGroup(typeof(AttributeSystemGroup))]
-    [UpdateAfter(typeof(AttributeBaseValueGroup))]
-    public class AttributeCurrentValueGroup : ComponentSystemGroup { }
 }
+
+

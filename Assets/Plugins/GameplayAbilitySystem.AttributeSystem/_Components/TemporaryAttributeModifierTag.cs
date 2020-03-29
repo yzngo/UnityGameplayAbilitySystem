@@ -20,7 +20,7 @@
  */
 
 
-using GameplayAbilitySystem.AttributeSystem.Systems;
+using GameplayAbilitySystem.AttributeSystem._Systems;
 using GameplayAbilitySystem.Common.Components;
 using Unity.Entities;
 using UnityEngine;

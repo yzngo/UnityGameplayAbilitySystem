@@ -24,7 +24,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 
-namespace GameplayAbilitySystem.AttributeSystem.Systems {
+namespace GameplayAbilitySystem.AttributeSystem._Systems {
     public struct AttributeModificationActivatedSystemStateComponent<TModifierTag, TAttribute> : ISystemStateComponentData {
         public Entity TargetEntity;
     }

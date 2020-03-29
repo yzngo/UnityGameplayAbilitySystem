@@ -27,7 +27,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 
-namespace GameplayAbilitySystem.AttributeSystem.Systems {
+namespace GameplayAbilitySystem.AttributeSystem._Systems {
     /// <summary>
     /// This is a generic attribute permanent modification system which can be used
     /// out of the box, and supports single attribute modifications, using 

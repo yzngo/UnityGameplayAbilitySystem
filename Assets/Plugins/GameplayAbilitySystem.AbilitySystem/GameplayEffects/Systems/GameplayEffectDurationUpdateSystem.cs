@@ -29,7 +29,6 @@ using Unity.Jobs;
 using UnityEngine;
 
 namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Systems {
-    public delegate void GameplayEffectExpiredEventHandler(object sender, GameplayEffectExpiredEventArgs e);
     public struct GameplayEffectExpiredEventArgs {
         public Entity GameplayEffectEntity;
         public GameplayEffectDurationSpec Spec;
@@ -79,7 +78,7 @@ namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Systems {
                 typeof(Tag.GameplayEffectTickWithTime)
             );
 
-            var entityCount = 500;
+            var entityCount = 50000;
 
             var entities = new NativeArray<Entity>(entityCount, Allocator.Temp);
             em.CreateEntity(archetype, entities);
@@ -123,34 +122,7 @@ namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Systems {
             var ecb = m_EntityCommandBufferSystem.CreateCommandBuffer().ToConcurrent();
             // Substract time from duration remaining, and get a list of all GameplayEffects that have expired.
             // This only operates on entities which need to tick with time
-            Entities
-                .WithName("DurationUpdate_Tick")
-                .WithAll<Tag.GameplayEffectTickWithTime>()
-                .ForEach
-                    ((Entity entity, int entityInQueryIndex, ref GameplayEffectDurationRemaining durationRemaining, in GameplayEffectDurationSpec durationSpec, in GameplayEffectIdentifier id) => {
-                        durationRemaining.Value -= deltaTime;
-                        if (durationRemaining.Value <= 0) {
-                            gameplayEffectsExpiredListParallel.AddNoResize(new GameplayEffectExpiredEventArgs() { GameplayEffectEntity = entity, Id = id, Spec = durationSpec });
-                        }
-                    }
-                    )
-                .WithStoreEntityQueryInField(ref query)
-                .ScheduleParallel();
-
-
-            // Remove entity
-            Job
-                .WithName("DestroyEntity")
-                .WithCode(() => {
-                    for (var i = 0; i < gameplayEffectsExpiredList.Length; i++) {
-                        var args = gameplayEffectsExpiredList[i];
-                        if (args.GameplayEffectEntity != Entity.Null) {
-                            ecb.DestroyEntity(i, args.GameplayEffectEntity);
-                        }
-                    }
-
-                })
-                .Schedule();
+            DurationUpdateTickAndRemoveJob(gameplayEffectsExpiredListParallel, deltaTime, ecb);
 
             if (this.EnableEvents) {
                 RaiseGameplayEffectEventsJob(gameplayEffectsExpiredList);
@@ -160,6 +132,23 @@ namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Systems {
             gameplayEffectsExpiredList.Dispose(this.Dependency);
             m_EntityCommandBufferSystem.AddJobHandleForProducer(this.Dependency);
 
+        }
+
+        private void DurationUpdateTickAndRemoveJob(NativeList<GameplayEffectExpiredEventArgs>.ParallelWriter gameplayEffectsExpiredListParallel, float deltaTime, EntityCommandBuffer.Concurrent ecb) {
+            Entities
+                .WithName("DurationUpdate_Tick")
+                .WithAll<Tag.GameplayEffectTickWithTime>()
+                .ForEach
+                    ((Entity entity, int entityInQueryIndex, ref GameplayEffectDurationRemaining durationRemaining, in GameplayEffectDurationSpec durationSpec, in GameplayEffectIdentifier id) => {
+                        durationRemaining.Value -= deltaTime;
+                        if (durationRemaining.Value <= 0) {
+                            gameplayEffectsExpiredListParallel.AddNoResize(new GameplayEffectExpiredEventArgs() { GameplayEffectEntity = entity, Id = id, Spec = durationSpec });
+                            ecb.DestroyEntity(entityInQueryIndex, entity);
+                        }
+                    }
+                    )
+                .WithStoreEntityQueryInField(ref query)
+                .ScheduleParallel();
         }
 
         private void RaiseGameplayEffectEventsJob(NativeList<GameplayEffectExpiredEventArgs> gameplayEffectsExpiredList) {

@@ -219,6 +219,39 @@ namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Systems {
             }
         }
 
+        private void _RaiseEvent(NativeMultiHashMap<int, GameplayEffectExpiredEventArgs> eventsPerGameplayEffectId) {
+            (var gameplayEffectIdKey, var gameplayEffectIdKeyLength) = eventsPerGameplayEffectId.GetUniqueKeyArray(Allocator.Temp);
+            for (var i = 0; i < gameplayEffectIdKeyLength; i++) {
+                var key = gameplayEffectIdKey[i];
+                var values = eventsPerGameplayEffectId.GetValuesForKey(key);
+                var size = eventsPerGameplayEffectId.CountValuesForKey(key);
+                var groupedArray = new List<GameplayEffectExpiredEventArgs>(size);
+                while (values.MoveNext()) {
+                    var current = values.Current;
+                    groupedArray.Add(current);
+                }
+                GameplayEffectExpired[key].RaiseEvent(groupedArray);
+            }
+        }
+
+        private void RaiseEvents<T1, T2, T3>(NativeMultiHashMap<T1, T2> eventsToRaise, T3 eventManager)
+        where T1 : struct, IEquatable<T1>, IComparable<T1>
+        where T2 : struct
+        where T3 : AbilitySystemEventManager<T1, T2, IEnumerable<T2>> {
+            (var gameplayEffectIdKey, var gameplayEffectIdKeyLength) = eventsToRaise.GetUniqueKeyArray(Allocator.Temp);
+            for (var i = 0; i < gameplayEffectIdKeyLength; i++) {
+                var key = gameplayEffectIdKey[i];
+                var values = eventsToRaise.GetValuesForKey(key);
+                var size = eventsToRaise.CountValuesForKey(key);
+                var groupedArray = new List<T2>(size);
+                while (values.MoveNext()) {
+                    var current = values.Current;
+                    groupedArray.Add(current);
+                }
+                eventManager[key].RaiseEvent(groupedArray);
+            }
+        }
+
         protected override void OnDestroy() {
             gameplayEffectExpiredQueue.Dispose();
             GameplayEffectExpired.Reset();

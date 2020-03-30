@@ -78,7 +78,7 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
             var maxArrayLength = _nAttributes * nOperators * m_Query.CalculateEntityCount();
             var attributeModifierArray = new NativeArray<float>(maxArrayLength, Allocator.TempJob);
             Entities
-                .WithName("AttributeUpdate")
+                .WithName("AttributeGather")
                 .WithoutBurst()
                 .ForEach((Entity entity, int entityInQueryIndex, DynamicBuffer<AttributeBufferElement> attributeBuffer, DynamicBuffer<AttributeModifierBufferElement> attributeModifierBuffer) => {
                     var entityOffset = _nAttributes * _nOperators * entityInQueryIndex;
@@ -110,6 +110,29 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
 
                         attributeModifierArray[modifierOffset] += modifierElement.ModifierValue;
                     }
+                })
+                .WithStoreEntityQueryInField(ref m_Query)
+                .ScheduleParallel();
+
+            Entities
+                .WithName("AttributeUpdate")
+                .WithoutBurst()
+                .ForEach((Entity entity, int entityInQueryIndex, DynamicBuffer<AttributeBufferElement> attributeBuffer, DynamicBuffer<AttributeModifierBufferElement> attributeModifierBuffer) => {
+                    var entityOffset = _nAttributes * _nOperators * entityInQueryIndex;
+
+                    /******* ATTRIBUTE ID *******/
+                    // Attribute ID: 0 - Health
+                    // Attribute ID: 1 - MaxHealth
+                    // Attribute ID: 2 - Mana
+                    // Attribute ID: 3 - MaxMana
+                    // Attribute ID: 4 - SpeedMana
+                    /*****************************/
+
+                    /******** OPERATOR ID *******/
+                    // Attribute ID: 0 - Add
+                    // Attribute ID: 1 - Multiply
+                    // Attribute ID: 2 - Divide
+                    /*****************************/
 
                     // Iterate 0 -> N-1
                     for (var i = 0; i < attributeBuffer.Length; i++) {

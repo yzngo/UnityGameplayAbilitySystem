@@ -63,9 +63,6 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
                         attributeModifierBuffer.Add(new AttributeModifierBufferElement() { AttributeId = k, ModifierValue = randFloat1, OperatorId = j });
                     }
                 }
-                // em.SetComponentData(entities[i], new GameplayEffectDurationSpec() { StartWorldTime = startWorldTime, Duration = duration });
-                // em.SetComponentData(entities[i], new GameplayEffectDurationRemaining() { Value = duration });
-                // em.SetComponentData(entities[i], new GameplayEffectIdentifier() { Value = id });
             }
 
             entities.Dispose();

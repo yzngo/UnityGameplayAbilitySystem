@@ -26,19 +26,24 @@ using System.Collections.Generic;
 /// 
 /// Code was inspired by https://stackoverflow.com/questions/2237927/is-there-any-way-to-create-indexed-events-in-c-sharp-or-some-workaround
 /// </summary>
-public abstract class AbilitySystemEventManager<T1, TEventArgs>
+public abstract class AbilitySystemEventManager<T1, TEventArgs, TEventArgsContainer>
 where T1 : struct
-where TEventArgs : struct {
+where TEventArgs : struct
+where TEventArgsContainer : IEnumerable<TEventArgs> {
     public abstract T1 KeyFromArgs(TEventArgs e);
 
     public class AbilitySystemEvent {
-        public event EventHandler<TEventArgs> OnEvent;
+        public event EventHandler<TEventArgsContainer> OnEvent;
 
-        public void RaiseEvent(ref TEventArgs e) {
+        public void RaiseEvent(ref TEventArgsContainer e) {
             OnEvent?.Invoke(this, e);
         }
 
-        public void Dispose() {
+        public void RaiseEvent(TEventArgsContainer e) {
+            OnEvent?.Invoke(this, e);
+        }
+
+        public void Reset() {
             OnEvent = null;
         }
     }
@@ -57,12 +62,12 @@ where TEventArgs : struct {
     /// <summary>
     /// Clean up after itself
     /// </summary>
-    public void Dispose() {
+    public void Reset() {
         // Go through dict and clear all event indices
         foreach (KeyValuePair<T1, AbilitySystemEvent> item in m_objects) {
-            item.Value.Dispose();
+            item.Value.Reset();
         }
-        
+
         // Clear dictionary
         m_objects.Clear();
     }

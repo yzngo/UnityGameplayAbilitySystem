@@ -1,6 +1,5 @@
 
 using System;
-using GameplayAbilitySystem.Abilities;
 using UnityEngine;
 
 [Serializable]

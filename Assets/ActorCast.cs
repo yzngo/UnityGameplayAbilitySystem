@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using GameplayAbilitySystem.Abilities.Components;
 using GameplayAbilitySystem.AbilitySystem.Components;
 using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
 using Unity.Collections;
@@ -45,7 +44,7 @@ public class ActorCast : MonoBehaviour, ICastActions {
     public GameObject Fire1Prefab;
 
     List<Entity> GrantedAbilityEntities;
-    List<(IAbilityTagComponent AbilityTag, ComponentType ComponentType, Entity GrantedAbilityEntity)> GrantedAbilities;
+   // List<(IAbilityTagComponent AbilityTag, ComponentType ComponentType, Entity GrantedAbilityEntity)> GrantedAbilities;
 
     public void OnCast1(InputAction.CallbackContext context) {
         if (!context.performed) return;
@@ -103,7 +102,7 @@ public class ActorCast : MonoBehaviour, ICastActions {
     }
 
     void GetAllAbilities() {
-        var abilityComponentTypes = AbilityManager.AbilityComponentTypes();
+        //var abilityComponentTypes = AbilityManager.AbilityComponentTypes();
 
     }
 
@@ -112,57 +111,57 @@ public class ActorCast : MonoBehaviour, ICastActions {
     /// </summary>
     /// <param name="entityManager">Entity Manager</param>
     void GetGrantedAbilities(EntityManager entityManager) {
-        MethodInfo methodInfo = typeof(EntityManager).GetMethod("GetComponentData");
-        if (GrantedAbilities == null) GrantedAbilities = new List<(IAbilityTagComponent AbilityTag, ComponentType ComponentType, Entity GrantedAbilityEntity)>();
+        // MethodInfo methodInfo = typeof(EntityManager).GetMethod("GetComponentData");
+        // if (GrantedAbilities == null) GrantedAbilities = new List<(IAbilityTagComponent AbilityTag, ComponentType ComponentType, Entity GrantedAbilityEntity)>();
 
-        grantedAbilityQuery = entityManager.CreateEntityQuery(ComponentType.ReadOnly<AbilityOwnerComponent>(), ComponentType.ReadOnly<AbilityStateFlags>());
-        var grantedAbilityEntities = grantedAbilityQuery.ToEntityArrayAsync(Allocator.TempJob, out var jobHandle);
-        jobHandle.Complete();
-        var abilities = AbilityManager.AbilityComponentTypes().ToList();
-        for (var i = 0; i < grantedAbilityEntities.Length; i++) {
-            var abilityOwner = entityManager.GetComponentData<AbilityOwnerComponent>(grantedAbilityEntities[i]);
-            // We need to do this only for abilities that have been granted to the actor that has this script.  Others should be ignored
-            if (abilityOwner != actorAbilitySystem.AbilityOwnerEntity) continue;
+        // grantedAbilityQuery = entityManager.CreateEntityQuery(ComponentType.ReadOnly<AbilityOwnerComponent>(), ComponentType.ReadOnly<AbilityStateFlags>());
+        // var grantedAbilityEntities = grantedAbilityQuery.ToEntityArrayAsync(Allocator.TempJob, out var jobHandle);
+        // jobHandle.Complete();
+        // var abilities = AbilityManager.AbilityComponentTypes().ToList();
+        // for (var i = 0; i < grantedAbilityEntities.Length; i++) {
+        //     var abilityOwner = entityManager.GetComponentData<AbilityOwnerComponent>(grantedAbilityEntities[i]);
+        //     // We need to do this only for abilities that have been granted to the actor that has this script.  Others should be ignored
+        //     if (abilityOwner != actorAbilitySystem.AbilityOwnerEntity) continue;
 
-            var abilityState = entityManager.GetComponentData<AbilityStateFlags>(grantedAbilityEntities[i]);
-            var grantedAbilityEntity = grantedAbilityEntities[i];
+        //     var abilityState = entityManager.GetComponentData<AbilityStateFlags>(grantedAbilityEntities[i]);
+        //     var grantedAbilityEntity = grantedAbilityEntities[i];
 
-            for (var iComponentType = 0; iComponentType < abilities.Count; iComponentType++) {
+        //     for (var iComponentType = 0; iComponentType < abilities.Count; iComponentType++) {
 
-                if (entityManager.HasComponent(grantedAbilityEntity, abilities[iComponentType])) {
-                    // Create instance of the ability to store locally, cast to the IAbilityTagComponent interface, so we can call things on it
-                    IAbilityTagComponent abilityTagComponent = (IAbilityTagComponent)Activator.CreateInstance(abilities[iComponentType].GetManagedType()); ;
-                    GrantedAbilities.Add((abilityTagComponent, abilities[iComponentType], grantedAbilityEntity));
-                }
-            }
-        }
-        grantedAbilityEntities.Dispose();
+        //         if (entityManager.HasComponent(grantedAbilityEntity, abilities[iComponentType])) {
+        //             // Create instance of the ability to store locally, cast to the IAbilityTagComponent interface, so we can call things on it
+        //             IAbilityTagComponent abilityTagComponent = (IAbilityTagComponent)Activator.CreateInstance(abilities[iComponentType].GetManagedType()); ;
+        //             GrantedAbilities.Add((abilityTagComponent, abilities[iComponentType], grantedAbilityEntity));
+        //         }
+        //     }
+        // }
+        // grantedAbilityEntities.Dispose();
     }
 
 
 
     void Cast(int abilityId) {
         // Find this ability in the GrantedAbilities array
-        var ability = GrantedAbilities.Find(x => x.AbilityTag.AbilityIdentifier == abilityId);
-        if (ability.AbilityTag == null) return;
-        var untypedPayload = ability.AbilityTag.EmptyPayload;
-        switch (untypedPayload) {
-            case BasicMeleeAbilityPayload payload:
-                payload.ActorAbilitySystem = this.actorAbilitySystem;
-                payload.ActorTransform = this.transform;
-                payload.EntityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-                payload.GrantedAbilityEntity = ability.GrantedAbilityEntity;
-                StartCoroutine(ability.AbilityTag.DoAbility(payload));
-                break;
-            case BasicRangeAbilityPayload payload:
-                payload.ActorAbilitySystem = this.actorAbilitySystem;
-                payload.ActorTransform = this.transform;
-                payload.EntityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-                payload.GrantedAbilityEntity = ability.GrantedAbilityEntity;
-                payload.AbilityPrefab = Fire1Prefab;
-                StartCoroutine(ability.AbilityTag.DoAbility(payload));
-                break;
-        }
+        // var ability = GrantedAbilities.Find(x => x.AbilityTag.AbilityIdentifier == abilityId);
+        // if (ability.AbilityTag == null) return;
+        // var untypedPayload = ability.AbilityTag.EmptyPayload;
+        // switch (untypedPayload) {
+        //     case BasicMeleeAbilityPayload payload:
+        //         payload.ActorAbilitySystem = this.actorAbilitySystem;
+        //         payload.ActorTransform = this.transform;
+        //         payload.EntityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        //         payload.GrantedAbilityEntity = ability.GrantedAbilityEntity;
+        //         StartCoroutine(ability.AbilityTag.DoAbility(payload));
+        //         break;
+        //     case BasicRangeAbilityPayload payload:
+        //         payload.ActorAbilitySystem = this.actorAbilitySystem;
+        //         payload.ActorTransform = this.transform;
+        //         payload.EntityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        //         payload.GrantedAbilityEntity = ability.GrantedAbilityEntity;
+        //         payload.AbilityPrefab = Fire1Prefab;
+        //         StartCoroutine(ability.AbilityTag.DoAbility(payload));
+        //         break;
+        // }
 
     }
 

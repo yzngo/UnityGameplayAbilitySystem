@@ -23,10 +23,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Entities;
 using MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours;
-using GameplayAbilitySystem.AbilitySystem.Components;
-using GameplayAbilitySystem.Abilities.Components;
 using MyGameplayAbilitySystem.Common.ScriptableObjects;
-using GameplayAbilitySystem.AbilitySystem.Enums;
 
 public class AbilityHotbarManager : MonoBehaviour {
     public ActorAbilitySystem AbilityCharacter;
@@ -79,11 +76,11 @@ public class AbilityHotbarUpdateSystem : ComponentSystem {
             }
 
 
-            if (World.DefaultGameObjectInjectionWorld.EntityManager.HasComponent<AbilityCooldownComponent>(GrantedAbilityEntities[i])) {
-                var abilityCooldown = World.DefaultGameObjectInjectionWorld.EntityManager.GetComponentData<AbilityCooldownComponent>(GrantedAbilityEntities[i]);
-                var abilityState = World.DefaultGameObjectInjectionWorld.EntityManager.GetComponentData<AbilityStateFlags>(GrantedAbilityEntities[i]);
-                UpdateButton(i, abilityCooldown.Value.NominalDuration, abilityCooldown.Value.RemainingTime, abilityState != AbilityStates.READY);
-            }
+            // if (World.DefaultGameObjectInjectionWorld.EntityManager.HasComponent<AbilityCooldownComponent>(GrantedAbilityEntities[i])) {
+            //     var abilityCooldown = World.DefaultGameObjectInjectionWorld.EntityManager.GetComponentData<AbilityCooldownComponent>(GrantedAbilityEntities[i]);
+            //     var abilityState = World.DefaultGameObjectInjectionWorld.EntityManager.GetComponentData<AbilityStateFlags>(GrantedAbilityEntities[i]);
+            //     UpdateButton(i, abilityCooldown.Value.NominalDuration, abilityCooldown.Value.RemainingTime, abilityState != AbilityStates.READY);
+            // }
 
         }
 
@@ -95,19 +92,19 @@ public class AbilityHotbarUpdateSystem : ComponentSystem {
             GrantedAbilityEntities[i] = default(Entity);
         }
 
-        Entities
-        .ForEach<AbilityOwnerComponent, AbilityCooldownComponent, AbilityStateFlags, AbilityIdentifierComponent>((Entity entity, ref AbilityOwnerComponent abilityOwner, ref AbilityCooldownComponent abilityCooldown, ref AbilityStateFlags state, ref AbilityIdentifierComponent identifier) => {
-            // Only do this for the appropriate actor
-            if (abilityOwner.Value == AbilityOwnerEntity) {
-                // Check our list to see if this ability is defined
-                var id = identifier.Value;
-                var abilityIdentifierIndex = AbilityIdentifiers.FindIndex(x => x == id);
-                if (abilityIdentifierIndex >= 0) {
-                    GrantedAbilityEntities[abilityIdentifierIndex] = entity;
-                }
-            }
+        // Entities
+        // .ForEach<AbilityOwnerComponent, AbilityCooldownComponent, AbilityStateFlags, AbilityIdentifierComponent>((Entity entity, ref AbilityOwnerComponent abilityOwner, ref AbilityCooldownComponent abilityCooldown, ref AbilityStateFlags state, ref AbilityIdentifierComponent identifier) => {
+        //     // Only do this for the appropriate actor
+        //     if (abilityOwner.Value == AbilityOwnerEntity) {
+        //         // Check our list to see if this ability is defined
+        //         var id = identifier.Value;
+        //         var abilityIdentifierIndex = AbilityIdentifiers.FindIndex(x => x == id);
+        //         if (abilityIdentifierIndex >= 0) {
+        //             GrantedAbilityEntities[abilityIdentifierIndex] = entity;
+        //         }
+        //     }
 
-        });
+        // });
     }
 
 

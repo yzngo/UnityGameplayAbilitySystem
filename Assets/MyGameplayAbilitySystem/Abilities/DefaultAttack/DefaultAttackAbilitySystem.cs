@@ -34,71 +34,71 @@ using GameplayAbilitySystem.AbilitySystem.Abilities.Systems.Generic;
 namespace MyGameplayAbilitySystem.Abilities.DefaultAttack {
 
     public class DefaultAttackAbilitySystem {
-        [UpdateInGroup(typeof(AbilityUpdateSystemGroup))]
-        public class AbilityCooldownSystem : JobComponentSystem {
-            EntityQuery m_GEQuery;
-            protected override JobHandle OnUpdate(JobHandle inputDeps) {
-                var Cooldown1DurationComponents = GetComponentDataFromEntity<GameplayEffectDurationComponent>();
-                var Cooldown1TagComponents = GetComponentDataFromEntity<GlobalCooldownGameplayEffectComponent>();
-                var AbilityTagComponents = GetComponentDataFromEntity<DefaultAttackAbilityTag>();
-                var AbilityCooldownComponents = GetComponentDataFromEntity<AbilityCooldownComponent>();
-                // NativeHashMap<Entity, GameplayEffectDurationComponent> AbilityCooldownDurations = new NativeHashMap<Entity, GameplayEffectDurationComponent>(m_GEQuery.CalculateEntityCount(), Allocator.TempJob);
-                inputDeps = Entities.ForEach((Entity entity, int entityInQueryIndex, in DynamicBuffer<GameplayEffectBufferElement> gameplayEffectBuffer, in DynamicBuffer<GrantedAbilityBufferElement> grantedAbilityBuffer) => {
-                    // The outer foreach loops through all actors
-                    var abilityCooldownDuration = new GameplayEffectDurationComponent();
-                    for (var i = 0; i < gameplayEffectBuffer.Length; i++) {
-                        // The inner loop is iterating through all active GE on a single actor
-                        var gameplayEffectEntity = gameplayEffectBuffer[i].Value;
-                        // Check if entity has any of the cooldown components
-                        if (Cooldown1DurationComponents.HasComponent(gameplayEffectEntity) && Cooldown1TagComponents.HasComponent(gameplayEffectEntity)) {
-                            var durationComponent = Cooldown1DurationComponents[gameplayEffectEntity];
+        // [UpdateInGroup(typeof(AbilityUpdateSystemGroup))]
+        // public class AbilityCooldownSystem : JobComponentSystem {
+        //     EntityQuery m_GEQuery;
+        //     protected override JobHandle OnUpdate(JobHandle inputDeps) {
+        //         var Cooldown1DurationComponents = GetComponentDataFromEntity<GameplayEffectDurationComponent>();
+        //         var Cooldown1TagComponents = GetComponentDataFromEntity<GlobalCooldownGameplayEffectComponent>();
+        //         var AbilityTagComponents = GetComponentDataFromEntity<DefaultAttackAbilityTag>();
+        //         var AbilityCooldownComponents = GetComponentDataFromEntity<AbilityCooldownComponent>();
+        //         // NativeHashMap<Entity, GameplayEffectDurationComponent> AbilityCooldownDurations = new NativeHashMap<Entity, GameplayEffectDurationComponent>(m_GEQuery.CalculateEntityCount(), Allocator.TempJob);
+        //         inputDeps = Entities.ForEach((Entity entity, int entityInQueryIndex, in DynamicBuffer<GameplayEffectBufferElement> gameplayEffectBuffer, in DynamicBuffer<GrantedAbilityBufferElement> grantedAbilityBuffer) => {
+        //             // The outer foreach loops through all actors
+        //             var abilityCooldownDuration = new GameplayEffectDurationComponent();
+        //             for (var i = 0; i < gameplayEffectBuffer.Length; i++) {
+        //                 // The inner loop is iterating through all active GE on a single actor
+        //                 var gameplayEffectEntity = gameplayEffectBuffer[i].Value;
+        //                 // Check if entity has any of the cooldown components
+        //                 if (Cooldown1DurationComponents.HasComponent(gameplayEffectEntity) && Cooldown1TagComponents.HasComponent(gameplayEffectEntity)) {
+        //                     var durationComponent = Cooldown1DurationComponents[gameplayEffectEntity];
 
-                            bool thisEffectIsLongest = durationComponent.Value > abilityCooldownDuration.Value;
-                            abilityCooldownDuration.Value.RemainingTime = math.select(abilityCooldownDuration.Value.RemainingTime, durationComponent.Value.RemainingTime, thisEffectIsLongest);
-                            abilityCooldownDuration.Value.NominalDuration = math.select(abilityCooldownDuration.Value.NominalDuration, durationComponent.Value.NominalDuration, thisEffectIsLongest);
-                            abilityCooldownDuration.Value.WorldStartTime = math.select(abilityCooldownDuration.Value.WorldStartTime, durationComponent.Value.WorldStartTime, thisEffectIsLongest);
-                        }
-                    }
-                    for (var i = 0; i < grantedAbilityBuffer.Length; i++) {
-                        if (AbilityTagComponents.HasComponent(grantedAbilityBuffer[i])) {
-                            AbilityCooldownComponents[grantedAbilityBuffer[i]] = new AbilityCooldownComponent
-                            {
-                                Value = abilityCooldownDuration
-                            };
-                            break;
-                        }
-                    }
-                })
-                .WithStoreEntityQueryInField(ref m_GEQuery)
-                .WithReadOnly(Cooldown1DurationComponents)
-                .WithReadOnly(Cooldown1TagComponents)
-                .WithReadOnly(AbilityTagComponents)
-                .WithNativeDisableParallelForRestriction(AbilityCooldownComponents)
-                .Schedule(inputDeps);
-                return inputDeps;
-            }
-        }
+        //                     bool thisEffectIsLongest = durationComponent.Value > abilityCooldownDuration.Value;
+        //                     abilityCooldownDuration.Value.RemainingTime = math.select(abilityCooldownDuration.Value.RemainingTime, durationComponent.Value.RemainingTime, thisEffectIsLongest);
+        //                     abilityCooldownDuration.Value.NominalDuration = math.select(abilityCooldownDuration.Value.NominalDuration, durationComponent.Value.NominalDuration, thisEffectIsLongest);
+        //                     abilityCooldownDuration.Value.WorldStartTime = math.select(abilityCooldownDuration.Value.WorldStartTime, durationComponent.Value.WorldStartTime, thisEffectIsLongest);
+        //                 }
+        //             }
+        //             for (var i = 0; i < grantedAbilityBuffer.Length; i++) {
+        //                 if (AbilityTagComponents.HasComponent(grantedAbilityBuffer[i])) {
+        //                     AbilityCooldownComponents[grantedAbilityBuffer[i]] = new AbilityCooldownComponent
+        //                     {
+        //                         Value = abilityCooldownDuration
+        //                     };
+        //                     break;
+        //                 }
+        //             }
+        //         })
+        //         .WithStoreEntityQueryInField(ref m_GEQuery)
+        //         .WithReadOnly(Cooldown1DurationComponents)
+        //         .WithReadOnly(Cooldown1TagComponents)
+        //         .WithReadOnly(AbilityTagComponents)
+        //         .WithNativeDisableParallelForRestriction(AbilityCooldownComponents)
+        //         .Schedule(inputDeps);
+        //         return inputDeps;
+        //     }
+        // }
 
-        public class AbilityAvailabilitySystem : AbilityAvailabilitySystem<DefaultAttackAbilityTag> {
-            // private EntityQuery m_Query;
-            // protected override void OnCreate() {
-            //     this.m_Query = GetEntityQuery(ComponentType.ReadOnly<DefaultAttackAbilityActive>(), ComponentType.ReadWrite<AbilityStateComponent>());
-            // }
+        // public class AbilityAvailabilitySystem : AbilityAvailabilitySystem<DefaultAttackAbilityTag> {
+        //     // private EntityQuery m_Query;
+        //     // protected override void OnCreate() {
+        //     //     this.m_Query = GetEntityQuery(ComponentType.ReadOnly<DefaultAttackAbilityActive>(), ComponentType.ReadWrite<AbilityStateComponent>());
+        //     // }
 
-            [RequireComponentTag(typeof(AbilityIsActive))]
-            struct SystemJob : IJobForEach<AbilityStateFlags, DefaultAttackAbilityTag> {
-                public void Execute(ref AbilityStateFlags abilityState, [ReadOnly] ref DefaultAttackAbilityTag _) {
-                    abilityState |= AbilityStates.ACTIVE;
-                }
-            }
-            protected override JobHandle UpdateAbilityAvailability(JobHandle inputDeps) {
-                // Check for existence of AbilityActive tag
-                inputDeps = inputDeps.ScheduleJob(new SystemJob(), this);
-                return inputDeps;
-            }
-        }
+        //     [RequireComponentTag(typeof(AbilityIsActive))]
+        //     struct SystemJob : IJobForEach<AbilityStateFlags, DefaultAttackAbilityTag> {
+        //         public void Execute(ref AbilityStateFlags abilityState, [ReadOnly] ref DefaultAttackAbilityTag _) {
+        //             abilityState |= AbilityStates.ACTIVE;
+        //         }
+        //     }
+        //     protected override JobHandle UpdateAbilityAvailability(JobHandle inputDeps) {
+        //         // Check for existence of AbilityActive tag
+        //         inputDeps = inputDeps.ScheduleJob(new SystemJob(), this);
+        //         return inputDeps;
+        //     }
+        // }
 
-        public class AssignAbilityIdentifierSystem : GenericAssignAbilityIdentifierSystem<DefaultAttackAbilityTag> { }
+        // public class AssignAbilityIdentifierSystem : GenericAssignAbilityIdentifierSystem<DefaultAttackAbilityTag> { }
 
     }
 

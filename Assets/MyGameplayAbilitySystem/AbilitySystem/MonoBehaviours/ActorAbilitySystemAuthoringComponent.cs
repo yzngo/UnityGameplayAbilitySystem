@@ -25,7 +25,7 @@ using System.Linq;
 using GameplayAbilitySystem.Abilities.Components;
 using GameplayAbilitySystem.AbilitySystem.Abilities.Components.Authoring;
 using GameplayAbilitySystem.AbilitySystem.Abilities.ScriptableObjects;
-using GameplayAbilitySystem.AbilitySystem.Abilities.Systems;
+using GameplayAbilitySystem.AbilitySystem.Abilities._Systems;
 using GameplayAbilitySystem.AbilitySystem.Components;
 using GameplayAbilitySystem.AbilitySystem.GameplayEffects._Components;
 using GameplayAbilitySystem.AbilitySystem.GameplayTags.Components;
@@ -33,8 +33,6 @@ using GameplayAbilitySystem.AbilitySystem.GameplayTags.Interfaces;
 using GameplayAbilitySystem.AttributeSystem._Components;
 using GameplayAbilitySystem.AttributeSystem.ScriptableObjects;
 using GameplayAbilitySystem.Common.Components;
-using MyGameplayAbilitySystem.Abilities.DefaultAttack;
-using MyGameplayAbilitySystem.Abilities.Fire1;
 using Unity.Entities;
 using UnityEngine;
 
@@ -69,24 +67,24 @@ namespace MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours {
             actorAbilitySystem.AbilityOwnerEntity = abilityOwnerEntity;
             actorAbilitySystem.AbilitySystemActorTransformEntity = entity;
             // Create some dummy health attributes to simulate a scenario where there are many modifiers for an attribute active in the world
-            CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Add, HealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Multiply, HealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Divide, HealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Add, MaxHealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Multiply, MaxHealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Add, ManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Multiply, ManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Divide, ManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Add, MaxManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
-            CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Multiply, MaxManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            // CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Add, HealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            // CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Multiply, HealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            // CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Divide, HealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            // CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Add, MaxHealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            // CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Multiply, MaxHealthAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            // CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Add, ManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            // CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Multiply, ManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            // CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Divide, ManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            // CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Add, MaxManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
+            // CreateEntities<GameplayAbilitySystem.AttributeSystem._Components.Operators.Multiply, MaxManaAttributeComponent>.CreateAttributeOperEntities(dstManager, abilityOwnerEntity);
 
 
-            // Create some dummy cooldown gameplay effects to simulate a scenario where an ability is on cooldown due to a gameplay effect
-            TestAbilitySystemCooldown<Fire1AbilityTag>(dstManager, abilityOwnerEntity);
-            TestAbilityCost<Fire1AbilityTag>(dstManager, abilityOwnerEntity);
+            // // Create some dummy cooldown gameplay effects to simulate a scenario where an ability is on cooldown due to a gameplay effect
+            // TestAbilitySystemCooldown<Fire1AbilityTag>(dstManager, abilityOwnerEntity);
+            // TestAbilityCost<Fire1AbilityTag>(dstManager, abilityOwnerEntity);
 
-            TestAbilitySystemCooldown<DefaultAttackAbilityTag>(dstManager, abilityOwnerEntity);
-            TestAbilityCost<DefaultAttackAbilityTag>(dstManager, abilityOwnerEntity);
+            // TestAbilitySystemCooldown<DefaultAttackAbilityTag>(dstManager, abilityOwnerEntity);
+            // TestAbilityCost<DefaultAttackAbilityTag>(dstManager, abilityOwnerEntity);
         }
 
         private List<Entity> CreateGrantedAbilityEntities(Entity entity, EntityManager dstManager, Entity abilitySystemAttributesEntity) {
@@ -126,20 +124,20 @@ namespace MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours {
         private Entity CreateActorAbilitySystemEntities(Entity entity, EntityManager entityManager) {
             // Get reference to character attribute component on script, and list of attributes
             var attributeTypes = new List<ComponentType>();
-            Type genericAttributeBufferElement = typeof(AttributeBufferElement<,>);
+            // Type genericAttributeBufferElement = typeof(AttributeBufferElement<,>);
             if (Attributes != null && Attributes.Components != null) {
                 attributeTypes = Attributes.ComponentTypes.ToList();
                 var attributeComponentTypes = Attributes.ComponentTypes.ToList();
                 for (var i = 0; i < attributeComponentTypes.Count; i++) {
-                    var temporaryBufferType = genericAttributeBufferElement.MakeGenericType(typeof(TemporaryAttributeModifierTag), attributeComponentTypes[i].GetManagedType());
-                    attributeTypes.Add(temporaryBufferType);
+                    //var temporaryBufferType = genericAttributeBufferElement.MakeGenericType(typeof(TemporaryAttributeModifierTag), attributeComponentTypes[i].GetManagedType());
+                    //attributeTypes.Add(temporaryBufferType);
                 }
             }
 
             // Add tag component to indicate that this entity represents an actor with attributes
             attributeTypes.Add(typeof(AbilitySystemActorTransformComponent));
             attributeTypes.Add(typeof(GameplayEffectBufferElement));
-            attributeTypes.Add(typeof(GrantedAbilityBufferElement));
+         //   attributeTypes.Add(typeof(GrantedAbilityBufferElement));
             attributeTypes.Add(typeof(GameplayTagsBufferElement<IActorOwnedGameplayTags>));
             var attributeArchetype = entityManager.CreateArchetype(attributeTypes.ToArray());
             // Create a new entity for this actor
@@ -176,7 +174,7 @@ namespace MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours {
         public static void CreateAttributeOperEntities(EntityManager EntityManager, Entity ActorEntity) {
             var random = new Unity.Mathematics.Random((uint)ActorEntity.Index);
             for (var i = 0; i < 5; i++) {
-                new PermanentAttributeModifierTag().CreateAttributeModifier<TAttribute, TOper>(EntityManager, ActorEntity, random.NextFloat(0, 50));
+                // new PermanentAttributeModifierTag().CreateAttributeModifier<TAttribute, TOper>(EntityManager, ActorEntity, random.NextFloat(0, 50));
             }
         }
     }
@@ -184,7 +182,7 @@ namespace MyGameplayAbilitySystem.AbilitySystem.MonoBehaviours {
     internal class CreatePlayer {
         public static Entity CreatePlayerEntity(EntityManager EntityManager) {
             var playerArchetype = EntityManager.CreateArchetype(
-                typeof(HealthAttributeComponent),
+                // typeof(HealthAttributeComponent),
                 typeof(AbilitySystemActorTransformComponent)
             );
 

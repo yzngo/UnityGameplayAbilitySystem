@@ -19,8 +19,6 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System.Collections.Generic;
-using GameplayAbilitySystem.AttributeSystem._Systems;
 using GameplayAbilitySystem.AttributeSystem.Components;
 using Unity.Collections;
 using Unity.Entities;
@@ -40,7 +38,6 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
         }
     }
 
-    [UpdateInGroup(typeof(AttributeGroupUpdateBeginSystem))]
     public class AttributeUpdateSystem : SystemBase {
         private EntityQuery m_Query;
         public int nAttributes = 0;

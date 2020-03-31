@@ -95,8 +95,8 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
                 }
             }
 
-            ActorAttributeChanged[entities[0]].OnEvent += (o, e) => {
-                Debug.Log(e.NewAttribute.Length);
+            AttributeChanged[0].OnEvent += (o, e) => {
+                Debug.Log(e.Actor.Length);
 
             };
 
@@ -122,46 +122,23 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
             var modifiedAttributesOld_ByEntity = new NativeArray<AttributeBufferElement>(nEntities * nAttributes, Allocator.TempJob);
             var modifiedAttributesNew_ByEntity = new NativeArray<AttributeBufferElement>(nEntities * nAttributes, Allocator.TempJob);
 
-            var modifiedAttributesEntities_ByAttribute = new NativeArray<Entity>(nEntities * nAttributes, Allocator.TempJob);
-            var modifiedAttributesOld_ByAttribute = new NativeArray<AttributeBufferElement>(nEntities * nAttributes, Allocator.TempJob);
-            var modifiedAttributesNew_ByAttribute = new NativeArray<AttributeBufferElement>(nEntities * nAttributes, Allocator.TempJob);
 
             AttributeUpdateJob(_nAttributes, _nOperators, attributeModifierArray,
-                                modifiedAttributesEntities_ByEntity, modifiedAttributesOld_ByEntity, modifiedAttributesNew_ByEntity,
-                                modifiedAttributesEntities_ByAttribute, modifiedAttributesOld_ByAttribute, modifiedAttributesNew_ByAttribute
+                                modifiedAttributesEntities_ByEntity, modifiedAttributesOld_ByEntity, modifiedAttributesNew_ByEntity
                                 );
 
-            RaiseEvents(_nAttributes, nEntities, modifiedAttributesEntities_ByEntity, modifiedAttributesOld_ByEntity, modifiedAttributesNew_ByEntity, modifiedAttributesEntities_ByAttribute, modifiedAttributesOld_ByAttribute, modifiedAttributesNew_ByAttribute);
+            RaiseEvents(_nAttributes, nEntities, modifiedAttributesEntities_ByEntity, modifiedAttributesOld_ByEntity, modifiedAttributesNew_ByEntity);
 
             modifiedAttributesEntities_ByEntity.Dispose(this.Dependency);
             modifiedAttributesOld_ByEntity.Dispose(this.Dependency);
             modifiedAttributesNew_ByEntity.Dispose(this.Dependency);
-            modifiedAttributesEntities_ByAttribute.Dispose(this.Dependency);
-            modifiedAttributesOld_ByAttribute.Dispose(this.Dependency);
-            modifiedAttributesNew_ByAttribute.Dispose(this.Dependency);
             attributeModifierArray.Dispose(this.Dependency);
         }
 
-        private void RaiseEvents(int _nAttributes, int nEntities, NativeArray<Entity> modifiedAttributesEntities_ByEntity, NativeArray<AttributeBufferElement> modifiedAttributesOld_ByEntity, NativeArray<AttributeBufferElement> modifiedAttributesNew_ByEntity, NativeArray<Entity> modifiedAttributesEntities_ByAttribute, NativeArray<AttributeBufferElement> modifiedAttributesOld_ByAttribute, NativeArray<AttributeBufferElement> modifiedAttributesNew_ByAttribute) {
+        private void RaiseEvents(int _nAttributes, int nEntities, NativeArray<Entity> modifiedAttributesEntities_ByEntity, NativeArray<AttributeBufferElement> modifiedAttributesOld_ByEntity, NativeArray<AttributeBufferElement> modifiedAttributesNew_ByEntity) {
             Job
                 .WithoutBurst()
                 .WithCode(() => {
-                    // Iterate through, grouped by attribute
-                    for (var attributeIndex = 0; attributeIndex < _nAttributes; attributeIndex++) {
-                        var calculatedArrayOffset = attributeIndex * nEntities;
-                        // the attributeIndex index is the starting offset
-                        // We increment by [_nAttributes] until we get to the end to collect all instances of a changed attribute
-                        var eventArgs = new AttributeChangedEventArgs()
-                        {
-                            Attribute = attributeIndex,
-                            Actor = modifiedAttributesEntities_ByAttribute.Slice(calculatedArrayOffset, nEntities).ToArray(),
-                            OldAttribute = modifiedAttributesOld_ByAttribute.Slice(calculatedArrayOffset, nEntities).ToArray(),
-                            NewAttribute = modifiedAttributesNew_ByAttribute.Slice(calculatedArrayOffset, nEntities).ToArray()
-                        };
-
-                        AttributeChanged[attributeIndex].RaiseEvent(eventArgs);
-                    }
-
                     // Iterate through, grouped by actor
                     for (var entityArrayOffset = 0; entityArrayOffset < nEntities; entityArrayOffset += _nAttributes) {
 
@@ -180,7 +157,6 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
                         };
 
                         ActorAttributeChanged[actorEntity].RaiseEvent(eventArgs);
-
                     }
                 })
                 .Run();
@@ -226,8 +202,7 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
         }
 
         private void AttributeUpdateJob(int _nAttributes, int _nOperators, NativeArray<float> attributeModifierArray,
-                                    NativeArray<Entity> modifiedAttributesEntities_ByEntity, NativeArray<AttributeBufferElement> modifiedAttributesOld_ByEntity, NativeArray<AttributeBufferElement> modifiedAttributesNew_ByEntity,
-                                    NativeArray<Entity> modifiedAttributesEntities_ByAttribute, NativeArray<AttributeBufferElement> modifiedAttributesOld_ByAttribute, NativeArray<AttributeBufferElement> modifiedAttributesNew_ByAttribute
+                                    NativeArray<Entity> modifiedAttributesEntities_ByEntity, NativeArray<AttributeBufferElement> modifiedAttributesOld_ByEntity, NativeArray<AttributeBufferElement> modifiedAttributesNew_ByEntity
                                     ) {
             Entities
                 .WithName("AttributeUpdate")
@@ -284,12 +259,6 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
                         modifiedAttributesEntities_ByEntity[arrayOffset_ByEntity] = entity;
                         modifiedAttributesOld_ByEntity[arrayOffset_ByEntity] = oldAttribute;
                         modifiedAttributesNew_ByEntity[arrayOffset_ByEntity] = newAttribute;
-
-                        modifiedAttributesEntities_ByAttribute[arrayOffset_ByAttribute] = entity;
-                        modifiedAttributesOld_ByAttribute[arrayOffset_ByAttribute] = oldAttribute;
-                        modifiedAttributesNew_ByAttribute[arrayOffset_ByAttribute] = newAttribute;
-
-
                     }
 
                     // If no attributes changed for this actor, mark the first index as Entity.Null

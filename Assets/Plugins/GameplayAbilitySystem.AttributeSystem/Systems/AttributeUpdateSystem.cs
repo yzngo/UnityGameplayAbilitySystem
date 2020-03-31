@@ -188,7 +188,6 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
                     var iterateLength = math.min(_nAttributes, attributeBuffer.Length);
                     // Iterate 0 -> N-1
                     for (var i = 0; i < iterateLength; i++) {
-                        var thisValueChanged = false;
                         var attributeElement = attributeBuffer[i];
                         var attributeOffset = (i) * _nOperators;
                         var addModifierOffset = entityOffset + attributeOffset + 0;
@@ -205,7 +204,6 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
                         var newValue = ((attributeElement.BaseValue + addValue) * (1 + multiplyValue) / (1 + divideValue));
                         if (newValue != attributeElement.CurrentValue) {
                             valueChanged = true;
-                            thisValueChanged = true;
                         }
 
                         var oldAttribute = attributeElement;

@@ -36,19 +36,19 @@ namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Systems {
         public GameplayEffectActorSpec ActorSpec;
     }
 
-    public class GameplayEffectExpiredEventManager : AbilitySystemEventManager<int, GameplayEffectExpiredEventArgs, IEnumerable<GameplayEffectExpiredEventArgs>> {
+    public class GameplayEffectExpiredEventManager : AbilitySystemEventManager<int, GameplayEffectExpiredEventArgs, List<GameplayEffectExpiredEventArgs>> {
         public override int KeyFromArgs(GameplayEffectExpiredEventArgs e) {
             return e.Id.Value;
         }
     }
 
-    public class GameplayEffectExpiredOnTargetEventManager : AbilitySystemEventManager<Entity, GameplayEffectExpiredEventArgs, IEnumerable<GameplayEffectExpiredEventArgs>> {
+    public class GameplayEffectExpiredOnTargetEventManager : AbilitySystemEventManager<Entity, GameplayEffectExpiredEventArgs, List<GameplayEffectExpiredEventArgs>> {
         public override Entity KeyFromArgs(GameplayEffectExpiredEventArgs e) {
             return e.ActorSpec.Target;
         }
     }
 
-    public class GameplayEffectExpiredOnSourceEventManager : AbilitySystemEventManager<Entity, GameplayEffectExpiredEventArgs, IEnumerable<GameplayEffectExpiredEventArgs>> {
+    public class GameplayEffectExpiredOnSourceEventManager : AbilitySystemEventManager<Entity, GameplayEffectExpiredEventArgs, List<GameplayEffectExpiredEventArgs>> {
         public override Entity KeyFromArgs(GameplayEffectExpiredEventArgs e) {
             return e.ActorSpec.Source;
         }
@@ -193,7 +193,7 @@ namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Systems {
         private void RaiseEvents<T1, T2, T3>(NativeMultiHashMap<T1, T2> eventsToRaise, T3 eventManager)
         where T1 : struct, IEquatable<T1>, IComparable<T1>
         where T2 : struct
-        where T3 : AbilitySystemEventManager<T1, T2, IEnumerable<T2>> {
+        where T3 : AbilitySystemEventManager<T1, T2, List<T2>> {
             (var gameplayEffectIdKey, var gameplayEffectIdKeyLength) = eventsToRaise.GetUniqueKeyArray(Allocator.Temp);
             for (var i = 0; i < gameplayEffectIdKeyLength; i++) {
                 var key = gameplayEffectIdKey[i];

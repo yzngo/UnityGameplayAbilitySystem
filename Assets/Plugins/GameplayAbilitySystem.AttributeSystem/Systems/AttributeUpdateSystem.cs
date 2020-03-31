@@ -30,10 +30,10 @@ using UnityEngine;
 namespace GameplayAbilitySystem.AttributeSystem.Systems {
     public struct AttributeChangedEventArgs {
         public Entity Actor;
-        public AttributeBufferElement OldAttribute;
-        public AttributeBufferElement NewAttribute;
+        public AttributeBufferElement[] OldAttribute;
+        public AttributeBufferElement[] NewAttribute;
     }
-    public class AttributeChangedEventManager : AbilitySystemEventManager<Entity, AttributeChangedEventArgs, IEnumerable<AttributeChangedEventArgs>> {
+    public class AttributeChangedEventManager : AbilitySystemEventManager<Entity, AttributeChangedEventArgs, AttributeChangedEventArgs> {
         public override Entity KeyFromArgs(AttributeChangedEventArgs e) {
             return e.Actor;
         }
@@ -80,8 +80,7 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
             }
 
             AttributeChanged[entities[0]].OnEvent += (o, e) => {
-                var list = (e as List<AttributeChangedEventArgs>);
-                Debug.Log(list.Count);
+                Debug.Log(e.NewAttribute.Length);
 
             };
 
@@ -111,29 +110,32 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
             Job
                 .WithoutBurst()
                 .WithCode(() => {
-                    for (var i = 0; i < nEntities; i++) {
-                        // Calculate pointer to starting element of this set of attributes
-                        var entityArrayOffset = i * _nAttributes;
+                    // Iterate through, grouped by attribute
+                    // for (var attributeIndex = 0; attributeIndex < _nAttributes; attributeIndex++) {
+                    //     // the attributeIndex index is the starting offset
+                    //     // We increment by [_nAttributes] until we get to the end to collect all instances of a changed attribute
 
-                        // If the first element is an Entity.Null, this attribute hasn't changed.
-                        if (modifiedAttributesEntities[entityArrayOffset] == Entity.Null) {
-                            continue;
-                        }
+                    // }
+
+                    // Iterate through, grouped by actor
+                    for (var entityArrayOffset = 0; entityArrayOffset < nEntities; entityArrayOffset += _nAttributes) {
 
                         var actorEntity = modifiedAttributesEntities[entityArrayOffset];
 
-                        var eventArgs = new List<AttributeChangedEventArgs>(_nAttributes);
-                        for (var j = 0; j < _nAttributes; j++) {
-                            var arrayOffset = entityArrayOffset + j;
-                            var e = new AttributeChangedEventArgs
-                            {
-                                Actor = actorEntity,
-                                OldAttribute = modifiedAttributesOld[arrayOffset],
-                                NewAttribute = modifiedAttributesNew[arrayOffset]
-                            };
-                            eventArgs.Add(e);
+                        // If the first element is an Entity.Null, this attribute hasn't changed.
+                        if (actorEntity == Entity.Null) {
+                            continue;
                         }
+
+                        var eventArgs = new AttributeChangedEventArgs
+                        {
+                            Actor = actorEntity,
+                            NewAttribute = modifiedAttributesNew.Slice(entityArrayOffset, _nAttributes).ToArray(),
+                            OldAttribute = modifiedAttributesOld.Slice(entityArrayOffset, _nAttributes).ToArray()
+                        };
+
                         AttributeChanged[actorEntity].RaiseEvent(eventArgs);
+
                     }
                 })
                 .Run();

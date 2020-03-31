@@ -28,8 +28,7 @@ using System.Collections.Generic;
 /// </summary>
 public abstract class AbilitySystemEventManager<T1, TEventArgs, TEventArgsContainer>
 where T1 : struct
-where TEventArgs : struct
-where TEventArgsContainer : IEnumerable<TEventArgs> {
+where TEventArgs : struct {
     public abstract T1 KeyFromArgs(TEventArgs e);
 
     public class AbilitySystemEvent {

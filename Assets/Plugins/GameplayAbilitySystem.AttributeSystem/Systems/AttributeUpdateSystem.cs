@@ -28,22 +28,38 @@ using Unity.Mathematics;
 using UnityEngine;
 
 namespace GameplayAbilitySystem.AttributeSystem.Systems {
-    public struct AttributeChangedEventArgs {
+    public struct ActorAttributeChangedEventArgs {
         public Entity Actor;
         public AttributeBufferElement[] OldAttribute;
         public AttributeBufferElement[] NewAttribute;
     }
-    public class AttributeChangedEventManager : AbilitySystemEventManager<Entity, AttributeChangedEventArgs, AttributeChangedEventArgs> {
-        public override Entity KeyFromArgs(AttributeChangedEventArgs e) {
+
+    public struct AttributeChangedEventArgs {
+        public int Attribute;
+        public Entity[] Actor;
+        public AttributeBufferElement[] OldAttribute;
+        public AttributeBufferElement[] NewAttribute;
+    }
+
+    public class ActorAttributeChangedEventManager : AbilitySystemEventManager<Entity, ActorAttributeChangedEventArgs, ActorAttributeChangedEventArgs> {
+        public override Entity KeyFromArgs(ActorAttributeChangedEventArgs e) {
             return e.Actor;
         }
     }
+
+    public class AttributeChangedEventManager : AbilitySystemEventManager<int, AttributeChangedEventArgs, AttributeChangedEventArgs> {
+        public override int KeyFromArgs(AttributeChangedEventArgs e) {
+            return e.Attribute;
+        }
+    }
+
     [UpdateInGroup(typeof(AttributeGroupUpdateBeginSystem))]
     public class AttributeUpdateSystem : SystemBase {
         private EntityQuery m_Query;
         public int nAttributes = 0;
         private int nOperators = 3;
 
+        public ActorAttributeChangedEventManager ActorAttributeChanged;
         public AttributeChangedEventManager AttributeChanged;
 
         private void Test() {
@@ -79,7 +95,7 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
                 }
             }
 
-            AttributeChanged[entities[0]].OnEvent += (o, e) => {
+            ActorAttributeChanged[entities[0]].OnEvent += (o, e) => {
                 Debug.Log(e.NewAttribute.Length);
 
             };
@@ -88,6 +104,7 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
         }
 
         protected override void OnCreate() {
+            ActorAttributeChanged = new ActorAttributeChangedEventManager();
             AttributeChanged = new AttributeChangedEventManager();
             Test();
         }
@@ -101,113 +118,74 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
 
             GatherAttributesJob(_nAttributes, _nOperators, maxArrayLength, attributeModifierArray);
 
-            var modifiedAttributesEntities = new NativeArray<Entity>(nEntities * nAttributes, Allocator.TempJob);
-            var modifiedAttributesOld = new NativeArray<AttributeBufferElement>(nEntities * nAttributes, Allocator.TempJob);
-            var modifiedAttributesNew = new NativeArray<AttributeBufferElement>(nEntities * nAttributes, Allocator.TempJob);
+            var modifiedAttributesEntities_ByEntity = new NativeArray<Entity>(nEntities * nAttributes, Allocator.TempJob);
+            var modifiedAttributesOld_ByEntity = new NativeArray<AttributeBufferElement>(nEntities * nAttributes, Allocator.TempJob);
+            var modifiedAttributesNew_ByEntity = new NativeArray<AttributeBufferElement>(nEntities * nAttributes, Allocator.TempJob);
 
-            AttributeUpdateJob(_nAttributes, _nOperators, attributeModifierArray, modifiedAttributesEntities, modifiedAttributesOld, modifiedAttributesNew);
+            var modifiedAttributesEntities_ByAttribute = new NativeArray<Entity>(nEntities * nAttributes, Allocator.TempJob);
+            var modifiedAttributesOld_ByAttribute = new NativeArray<AttributeBufferElement>(nEntities * nAttributes, Allocator.TempJob);
+            var modifiedAttributesNew_ByAttribute = new NativeArray<AttributeBufferElement>(nEntities * nAttributes, Allocator.TempJob);
 
+            AttributeUpdateJob(_nAttributes, _nOperators, attributeModifierArray,
+                                modifiedAttributesEntities_ByEntity, modifiedAttributesOld_ByEntity, modifiedAttributesNew_ByEntity,
+                                modifiedAttributesEntities_ByAttribute, modifiedAttributesOld_ByAttribute, modifiedAttributesNew_ByAttribute
+                                );
+
+            RaiseEvents(_nAttributes, nEntities, modifiedAttributesEntities_ByEntity, modifiedAttributesOld_ByEntity, modifiedAttributesNew_ByEntity, modifiedAttributesEntities_ByAttribute, modifiedAttributesOld_ByAttribute, modifiedAttributesNew_ByAttribute);
+
+            modifiedAttributesEntities_ByEntity.Dispose(this.Dependency);
+            modifiedAttributesOld_ByEntity.Dispose(this.Dependency);
+            modifiedAttributesNew_ByEntity.Dispose(this.Dependency);
+            modifiedAttributesEntities_ByAttribute.Dispose(this.Dependency);
+            modifiedAttributesOld_ByAttribute.Dispose(this.Dependency);
+            modifiedAttributesNew_ByAttribute.Dispose(this.Dependency);
+            attributeModifierArray.Dispose(this.Dependency);
+        }
+
+        private void RaiseEvents(int _nAttributes, int nEntities, NativeArray<Entity> modifiedAttributesEntities_ByEntity, NativeArray<AttributeBufferElement> modifiedAttributesOld_ByEntity, NativeArray<AttributeBufferElement> modifiedAttributesNew_ByEntity, NativeArray<Entity> modifiedAttributesEntities_ByAttribute, NativeArray<AttributeBufferElement> modifiedAttributesOld_ByAttribute, NativeArray<AttributeBufferElement> modifiedAttributesNew_ByAttribute) {
             Job
                 .WithoutBurst()
                 .WithCode(() => {
                     // Iterate through, grouped by attribute
-                    // for (var attributeIndex = 0; attributeIndex < _nAttributes; attributeIndex++) {
-                    //     // the attributeIndex index is the starting offset
-                    //     // We increment by [_nAttributes] until we get to the end to collect all instances of a changed attribute
+                    for (var attributeIndex = 0; attributeIndex < _nAttributes; attributeIndex++) {
+                        var calculatedArrayOffset = attributeIndex * nEntities;
+                        // the attributeIndex index is the starting offset
+                        // We increment by [_nAttributes] until we get to the end to collect all instances of a changed attribute
+                        var eventArgs = new AttributeChangedEventArgs()
+                        {
+                            Attribute = attributeIndex,
+                            Actor = modifiedAttributesEntities_ByAttribute.Slice(calculatedArrayOffset, nEntities).ToArray(),
+                            OldAttribute = modifiedAttributesOld_ByAttribute.Slice(calculatedArrayOffset, nEntities).ToArray(),
+                            NewAttribute = modifiedAttributesNew_ByAttribute.Slice(calculatedArrayOffset, nEntities).ToArray()
+                        };
 
-                    // }
+                        AttributeChanged[attributeIndex].RaiseEvent(eventArgs);
+                    }
 
                     // Iterate through, grouped by actor
                     for (var entityArrayOffset = 0; entityArrayOffset < nEntities; entityArrayOffset += _nAttributes) {
 
-                        var actorEntity = modifiedAttributesEntities[entityArrayOffset];
+                        var actorEntity = modifiedAttributesEntities_ByEntity[entityArrayOffset];
 
                         // If the first element is an Entity.Null, this attribute hasn't changed.
                         if (actorEntity == Entity.Null) {
                             continue;
                         }
 
-                        var eventArgs = new AttributeChangedEventArgs
+                        var eventArgs = new ActorAttributeChangedEventArgs
                         {
                             Actor = actorEntity,
-                            NewAttribute = modifiedAttributesNew.Slice(entityArrayOffset, _nAttributes).ToArray(),
-                            OldAttribute = modifiedAttributesOld.Slice(entityArrayOffset, _nAttributes).ToArray()
+                            NewAttribute = modifiedAttributesNew_ByEntity.Slice(entityArrayOffset, _nAttributes).ToArray(),
+                            OldAttribute = modifiedAttributesOld_ByEntity.Slice(entityArrayOffset, _nAttributes).ToArray()
                         };
 
-                        AttributeChanged[actorEntity].RaiseEvent(eventArgs);
+                        ActorAttributeChanged[actorEntity].RaiseEvent(eventArgs);
 
                     }
                 })
                 .Run();
-
-            modifiedAttributesEntities.Dispose(this.Dependency);
-            modifiedAttributesOld.Dispose(this.Dependency);
-            modifiedAttributesNew.Dispose(this.Dependency);
-            attributeModifierArray.Dispose(this.Dependency);
         }
 
-        private void AttributeUpdateJob(int _nAttributes, int _nOperators, NativeArray<float> attributeModifierArray, NativeArray<Entity> modifiedAttributesEntities, NativeArray<AttributeBufferElement> modifiedAttributesOld, NativeArray<AttributeBufferElement> modifiedAttributesNew) {
-            Entities
-                .WithName("AttributeUpdate")
-                //.WithoutBurst()
-                .ForEach((Entity entity, int entityInQueryIndex, DynamicBuffer<AttributeBufferElement> attributeBuffer, DynamicBuffer<AttributeModifierBufferElement> attributeModifierBuffer) => {
-                    var entityOffset = _nAttributes * _nOperators * entityInQueryIndex;
-
-                    /******* ATTRIBUTE ID *******/
-                    // Attribute ID: 0 - Health
-                    // Attribute ID: 1 - MaxHealth
-                    // Attribute ID: 2 - Mana
-                    // Attribute ID: 3 - MaxMana
-                    // Attribute ID: 4 - SpeedMana
-                    /*****************************/
-
-                    /******** OPERATOR ID *******/
-                    // Attribute ID: 0 - Add
-                    // Attribute ID: 1 - Multiply
-                    // Attribute ID: 2 - Divide
-                    /*****************************/
-
-                    var valueChanged = false;
-
-                    var entityArrayOffset = entityInQueryIndex * _nAttributes;
-                    // Iterate 0 -> N-1
-                    for (var i = 0; i < attributeBuffer.Length; i++) {
-                        var attributeElement = attributeBuffer[i];
-                        var attributeOffset = (i) * _nOperators;
-                        var addModifierOffset = entityOffset + attributeOffset + 0;
-                        var multiplyModifierOffset = entityOffset + attributeOffset + 1;
-                        var divideModifierOffset = entityOffset + attributeOffset + 2;
-                        var addValue = attributeModifierArray[addModifierOffset];
-                        var multiplyValue = attributeModifierArray[multiplyModifierOffset];
-                        var divideValue = attributeModifierArray[divideModifierOffset];
-
-                        // Sanity check on multiply values
-                        multiplyValue = math.select(0f, multiplyValue, multiplyValue > 0);
-                        divideValue = math.select(0f, divideValue, divideValue > 0);
-
-                        var newValue = ((attributeElement.BaseValue + addValue) * (1 + multiplyValue) / (1 + divideValue));
-                        if (newValue != attributeElement.CurrentValue) {
-                            valueChanged = true;
-                        }
-
-                        var oldAttribute = attributeElement;
-                        var arrayOffset = entityArrayOffset + i;
-                        attributeElement.CurrentValue = newValue;
-                        attributeBuffer[i] = attributeElement;
-                        var newAttribute = attributeElement;
-                        modifiedAttributesEntities[arrayOffset] = entity;
-                        modifiedAttributesOld[arrayOffset] = oldAttribute;
-                        modifiedAttributesNew[arrayOffset] = newAttribute;
-                    }
-
-                    // If no attributes changed for this actor, mark the first index as Entity.Null
-                    // We will use this marker to tell us to not raise a change notification
-                    if (!valueChanged) {
-                        modifiedAttributesEntities[entityArrayOffset] = Entity.Null;
-                    }
-                })
-                .ScheduleParallel();
-        }
         private void GatherAttributesJob(int _nAttributes, int _nOperators, int maxArrayLength, NativeArray<float> attributeModifierArray) {
             Entities
                 .WithName("AttributeGather")
@@ -246,5 +224,82 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
                 .WithStoreEntityQueryInField(ref m_Query)
                 .ScheduleParallel();
         }
+
+        private void AttributeUpdateJob(int _nAttributes, int _nOperators, NativeArray<float> attributeModifierArray,
+                                    NativeArray<Entity> modifiedAttributesEntities_ByEntity, NativeArray<AttributeBufferElement> modifiedAttributesOld_ByEntity, NativeArray<AttributeBufferElement> modifiedAttributesNew_ByEntity,
+                                    NativeArray<Entity> modifiedAttributesEntities_ByAttribute, NativeArray<AttributeBufferElement> modifiedAttributesOld_ByAttribute, NativeArray<AttributeBufferElement> modifiedAttributesNew_ByAttribute
+                                    ) {
+            Entities
+                .WithName("AttributeUpdate")
+                //.WithoutBurst()
+                .ForEach((Entity entity, int entityInQueryIndex, DynamicBuffer<AttributeBufferElement> attributeBuffer, DynamicBuffer<AttributeModifierBufferElement> attributeModifierBuffer) => {
+                    var entityOffset = _nAttributes * _nOperators * entityInQueryIndex;
+
+                    /******* ATTRIBUTE ID *******/
+                    // Attribute ID: 0 - Health
+                    // Attribute ID: 1 - MaxHealth
+                    // Attribute ID: 2 - Mana
+                    // Attribute ID: 3 - MaxMana
+                    // Attribute ID: 4 - SpeedMana
+                    /*****************************/
+
+                    /******** OPERATOR ID *******/
+                    // Attribute ID: 0 - Add
+                    // Attribute ID: 1 - Multiply
+                    // Attribute ID: 2 - Divide
+                    /*****************************/
+                    var valueChanged = false;
+
+                    var entityArrayOffset = entityInQueryIndex * _nAttributes;
+                    var iterateLength = math.min(_nAttributes, attributeBuffer.Length);
+                    // Iterate 0 -> N-1
+                    for (var i = 0; i < iterateLength; i++) {
+                        var thisValueChanged = false;
+                        var attributeElement = attributeBuffer[i];
+                        var attributeOffset = (i) * _nOperators;
+                        var addModifierOffset = entityOffset + attributeOffset + 0;
+                        var multiplyModifierOffset = entityOffset + attributeOffset + 1;
+                        var divideModifierOffset = entityOffset + attributeOffset + 2;
+                        var addValue = attributeModifierArray[addModifierOffset];
+                        var multiplyValue = attributeModifierArray[multiplyModifierOffset];
+                        var divideValue = attributeModifierArray[divideModifierOffset];
+
+                        // Sanity check on multiply values
+                        multiplyValue = math.select(0f, multiplyValue, multiplyValue > 0);
+                        divideValue = math.select(0f, divideValue, divideValue > 0);
+
+                        var newValue = ((attributeElement.BaseValue + addValue) * (1 + multiplyValue) / (1 + divideValue));
+                        if (newValue != attributeElement.CurrentValue) {
+                            valueChanged = true;
+                            thisValueChanged = true;
+                        }
+
+                        var oldAttribute = attributeElement;
+                        var arrayOffset_ByEntity = entityArrayOffset + i;
+                        var arrayOffset_ByAttribute = i * _nAttributes + entityInQueryIndex;
+                        attributeElement.CurrentValue = newValue;
+                        attributeBuffer[i] = attributeElement;
+                        var newAttribute = attributeElement;
+
+                        modifiedAttributesEntities_ByEntity[arrayOffset_ByEntity] = entity;
+                        modifiedAttributesOld_ByEntity[arrayOffset_ByEntity] = oldAttribute;
+                        modifiedAttributesNew_ByEntity[arrayOffset_ByEntity] = newAttribute;
+
+                        modifiedAttributesEntities_ByAttribute[arrayOffset_ByAttribute] = entity;
+                        modifiedAttributesOld_ByAttribute[arrayOffset_ByAttribute] = oldAttribute;
+                        modifiedAttributesNew_ByAttribute[arrayOffset_ByAttribute] = newAttribute;
+
+
+                    }
+
+                    // If no attributes changed for this actor, mark the first index as Entity.Null
+                    // We will use this marker to tell us to not raise a change notification
+                    if (!valueChanged) {
+                        modifiedAttributesEntities_ByEntity[entityArrayOffset] = Entity.Null;
+                    }
+                })
+                .ScheduleParallel();
+        }
+
     }
 }

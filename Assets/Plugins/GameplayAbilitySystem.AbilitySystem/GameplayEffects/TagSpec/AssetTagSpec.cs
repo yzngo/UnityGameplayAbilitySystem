@@ -22,9 +22,9 @@
 using GameplayAbilitySystem.AbilitySystem.GameplayTags.Components;
 using Unity.Entities;
 
-namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Components {
+namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Components.TagSpec {
 
-    public struct GrantedTagsSpec : IBufferElementData {
+    public struct AssetTagSpec : IBufferElementData {
         public GameplayTagComponent Tag;
     }
 }

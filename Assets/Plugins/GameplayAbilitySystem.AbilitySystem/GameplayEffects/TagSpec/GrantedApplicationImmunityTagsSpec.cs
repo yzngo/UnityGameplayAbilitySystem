@@ -1,5 +1,5 @@
 /*
- * Created on Sun Jan 05 2020
+ * Created on Thu Mar 26 2020
  *
  * The MIT License (MIT)
  * Copyright (c) 2020 Sahil Jain
@@ -19,15 +19,12 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using GameplayAbilitySystem.AbilitySystem.GameplayTags.Interfaces;
+using GameplayAbilitySystem.AbilitySystem.GameplayTags.Components;
 using Unity.Entities;
 
-namespace GameplayAbilitySystem.AbilitySystem.GameplayTags.Components {
-    public struct GameplayTagsBufferElement<T> : IBufferElementData
-    where T : IGameplayTagBufferElement {
-        public GameplayTagComponent Value;
-        public Entity SourceGameplayEffectEntity;
-        public static implicit operator GameplayTagComponent(GameplayTagsBufferElement<T> e) { return e.Value; }
-        public static implicit operator GameplayTagsBufferElement<T>(GameplayTagComponent e) { return new GameplayTagsBufferElement<T> { Value = e }; }
+namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Components.TagSpec {
+
+    public struct GrantedApplicationImmunityTagsSpec : IBufferElementData {
+        public GameplayTagComponent Tag;
     }
 }

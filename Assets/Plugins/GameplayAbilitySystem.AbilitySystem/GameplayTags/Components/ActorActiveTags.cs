@@ -24,7 +24,7 @@ using Unity.Entities;
 
 namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Components {
 
-    public struct GrantedApplicationImmunityTagsSpec : IBufferElementData {
+    public struct ActorActiveTags : IBufferElementData {
         public GameplayTagComponent Tag;
     }
 }

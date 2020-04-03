@@ -24,7 +24,7 @@ using Unity.Entities;
 
 namespace GameplayAbilitySystem.AbilitySystem.GameplayEffects.Components {
 
-    public struct GameplayEffectTag : IBufferElementData {
+    public struct ApplicationTagRequirementsSpec : IBufferElementData {
         public GameplayTagComponent Tag;
     }
 }

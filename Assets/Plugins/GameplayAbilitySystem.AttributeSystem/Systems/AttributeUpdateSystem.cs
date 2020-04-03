@@ -120,7 +120,7 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
             Entities
                 .WithName("AttributeGather")
                 //.WithoutBurst()
-                .ForEach((Entity entity, int entityInQueryIndex, DynamicBuffer<AttributeBufferElement> attributeBuffer, DynamicBuffer<AttributeModifierBufferElement> attributeModifierBuffer) => {
+                .ForEach((Entity entity, int entityInQueryIndex, in DynamicBuffer<AttributeBufferElement> attributeBuffer, in DynamicBuffer<AttributeModifierBufferElement> attributeModifierBuffer) => {
                     var entityOffset = _nAttributes * _nOperators * entityInQueryIndex;
 
                     // First, collect all additions, multipliers, dividers for each attribute id
@@ -163,7 +163,7 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
             Entities
                 .WithName("AttributeUpdate")
                 //.WithoutBurst()
-                .ForEach((Entity entity, int entityInQueryIndex, DynamicBuffer<AttributeBufferElement> attributeBuffer, DynamicBuffer<AttributeModifierBufferElement> attributeModifierBuffer) => {
+                .ForEach((Entity entity, int entityInQueryIndex, ref DynamicBuffer<AttributeBufferElement> attributeBuffer, in DynamicBuffer<AttributeModifierBufferElement> attributeModifierBuffer) => {
                     var entityOffset = _nAttributes * _nOperators * entityInQueryIndex;
 
                     /******* ATTRIBUTE ID *******/

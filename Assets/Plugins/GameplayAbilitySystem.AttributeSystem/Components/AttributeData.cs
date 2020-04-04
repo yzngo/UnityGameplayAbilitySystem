@@ -1,5 +1,5 @@
 /*
- * Created on Sun Mar 29 2020
+ * Created on Sat Apr 04 2020
  *
  * The MIT License (MIT)
  * Copyright (c) 2020 Sahil Jain
@@ -23,7 +23,8 @@ using Unity.Entities;
 
 namespace GameplayAbilitySystem.AttributeSystem.Components {
     [InternalBufferCapacity(8)]
-    public struct AttributeBufferElement : IBufferElementData {
-        public AttributeData Value;
+    public struct AttributeData {
+        public float BaseValue;
+        public float CurrentValue;
     }
 }

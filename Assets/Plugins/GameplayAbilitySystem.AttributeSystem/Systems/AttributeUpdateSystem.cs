@@ -64,11 +64,11 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
                 var attributeBuffer = em.GetBuffer<AttributeBufferElement>(entities[i]);
                 var attributeModifierBuffer = em.GetBuffer<AttributeModifierBufferElement>(entities[i]);
 
-                attributeBuffer.Add(new AttributeBufferElement() { BaseValue = 100, CurrentValue = 100 });
-                attributeBuffer.Add(new AttributeBufferElement() { BaseValue = 100, CurrentValue = 100 });
-                attributeBuffer.Add(new AttributeBufferElement() { BaseValue = 20, CurrentValue = 20 });
-                attributeBuffer.Add(new AttributeBufferElement() { BaseValue = 20, CurrentValue = 20 });
-                attributeBuffer.Add(new AttributeBufferElement() { BaseValue = 5, CurrentValue = 5 });
+                attributeBuffer.Add(new AttributeBufferElement() { Value = new AttributeData { BaseValue = 100, CurrentValue = 100 } });
+                attributeBuffer.Add(new AttributeBufferElement() { Value = new AttributeData { BaseValue = 100, CurrentValue = 100 } });
+                attributeBuffer.Add(new AttributeBufferElement() { Value = new AttributeData { BaseValue = 20, CurrentValue = 20 } });
+                attributeBuffer.Add(new AttributeBufferElement() { Value = new AttributeData { BaseValue = 20, CurrentValue = 20 } });
+                attributeBuffer.Add(new AttributeBufferElement() { Value = new AttributeData { BaseValue = 5, CurrentValue = 5 } });
 
                 for (var j = 0; j < nOperators; j++) {
                     for (var k = 0; k < this.nAttributes; k++) {
@@ -198,15 +198,15 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
                         multiplyValue = math.select(0f, multiplyValue, multiplyValue > 0);
                         divideValue = math.select(0f, divideValue, divideValue > 0);
 
-                        var newValue = ((attributeElement.BaseValue + addValue) * (1 + multiplyValue) / (1 + divideValue));
-                        if (newValue != attributeElement.CurrentValue) {
+                        var newValue = ((attributeElement.Value.BaseValue + addValue) * (1 + multiplyValue) / (1 + divideValue));
+                        if (newValue != attributeElement.Value.CurrentValue) {
                             valueChanged = true;
                         }
 
                         var oldAttribute = attributeElement;
                         var arrayOffset_ByEntity = entityArrayOffset + i;
                         var arrayOffset_ByAttribute = i * _nAttributes + entityInQueryIndex;
-                        attributeElement.CurrentValue = newValue;
+                        attributeElement.Value.CurrentValue = newValue;
                         attributeBuffer[i] = attributeElement;
                         var newAttribute = attributeElement;
 

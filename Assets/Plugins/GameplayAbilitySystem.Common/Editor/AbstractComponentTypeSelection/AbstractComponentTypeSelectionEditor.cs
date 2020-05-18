@@ -124,7 +124,8 @@ namespace GameplayAbilitySystem.Common.Editor {
             listView.makeItem = makeButtons;
             listView.bindItem = bindItem;
             listView.style.flexGrow = 1.0f;
-            listView.onSelectionChanged += objects => {
+            listView.onSelectionChange += _objects => {
+                var objects = _objects.ToList();
                 // No object is selected
                 if (objects.Count < 1) {
                     ClearSelectedTypeLabel(selectedLabel, componentSerialized);

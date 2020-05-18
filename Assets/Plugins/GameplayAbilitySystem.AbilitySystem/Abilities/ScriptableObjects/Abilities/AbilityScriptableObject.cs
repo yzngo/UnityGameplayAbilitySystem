@@ -20,6 +20,7 @@
  */
 
 using GameplayAbilitySystem.AbilitySystem.GameplayTags.ScriptableObjects;
+using UnityEditor;
 using UnityEngine;
 
 namespace GameplayAbilitySystem.AbilitySystem.Abilities.ScriptableObjects {
@@ -27,7 +28,7 @@ namespace GameplayAbilitySystem.AbilitySystem.Abilities.ScriptableObjects {
     public class AbilityScriptableObject : UIElementScriptableObject {
         [SerializeField]
         public AbilityTagComponentTypeOf AbilityType;
-        
+
         [SerializeField]
         public SpritePreview Sprite;
         // public AbilityTagFlag AbilityDefaultFlags;

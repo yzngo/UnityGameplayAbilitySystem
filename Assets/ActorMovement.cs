@@ -37,7 +37,7 @@ public class ActorMovement : MonoBehaviour {
         cam = Camera.main;
     }
 
-    void Update() {
+    void FixedUpdate() {
         FaceCameraDirection();
         Move();
     }

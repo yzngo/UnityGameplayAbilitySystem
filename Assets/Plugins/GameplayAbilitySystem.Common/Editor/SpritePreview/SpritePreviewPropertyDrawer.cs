@@ -27,7 +27,7 @@ using UnityEngine.UIElements;
 
 [CustomPropertyDrawer(typeof(SpritePreview))]
 public class SpritePreviewPropertyDrawer : PropertyDrawer {
-    const string baseAssetPath = "Assets/Plugins/GameplayAbilitySystem/Common/Editor/SpritePreview/";
+    const string baseAssetPath = "Assets/Plugins/GameplayAbilitySystem.Common/Editor/SpritePreview/";
 
     public override VisualElement CreatePropertyGUI(SerializedProperty property) {
         var m_ModulesVisualTree =

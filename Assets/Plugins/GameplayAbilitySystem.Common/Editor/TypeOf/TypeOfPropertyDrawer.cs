@@ -27,7 +27,7 @@ using UnityEditor;
 using UnityEngine.UIElements;
 
 public abstract class TypeOfPropertyDrawer<T> : PropertyDrawer {
-    const string baseAssetPath = "Assets/Plugins/GameplayAbilitySystem/Common/Editor/TypeOf/";
+    const string baseAssetPath = "Assets/Plugins/GameplayAbilitySystem.Common/Editor/TypeOf/";
 
     public override VisualElement CreatePropertyGUI(SerializedProperty property) {
         // Create property container element.
@@ -72,6 +72,7 @@ public abstract class TypeOfPropertyDrawer<T> : PropertyDrawer {
     private VisualElement BuildTypeList(SerializedProperty property, Action<Type> selectionChanged) {
         var allTypes = new ComponentCollector().GetAllTypes(System.AppDomain.CurrentDomain).OrderBy(x => x.AssemblyQualifiedName).ToList();
         var listView = new ListView();
+
         Func<VisualElement> makeButtons = () => new Button();
         Action<VisualElement, int> bindItem = (e, i) => {
             var button = (e as Button);
@@ -96,7 +97,8 @@ public abstract class TypeOfPropertyDrawer<T> : PropertyDrawer {
         listView.makeItem = makeButtons;
         listView.bindItem = bindItem;
         listView.style.flexGrow = 1.0f;
-        listView.onSelectionChanged += objects => {
+        listView.onSelectionChange += _objects => {
+            var objects = _objects.ToList();
             // No object is selected
             if (objects.Count < 1) {
                 selectionChanged(null);
@@ -133,8 +135,8 @@ public abstract class TypeOfPropertyDrawer<T> : PropertyDrawer {
             var componentInterface = typeof(T);
             var types = domain.GetAssemblies()
                         .SelectMany(s => s.GetTypes())
-                        .Where(p => componentInterface.IsAssignableFrom(p) && !p.IsInterface);
-
+                        .Where(p => componentInterface.IsAssignableFrom(p) && !p.IsInterface)
+                        ;
             return types;
         }
 

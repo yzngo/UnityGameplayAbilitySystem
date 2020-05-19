@@ -32,7 +32,7 @@ using UnityEngine.InputSystem;
 using static InputSystem.InputSystem;
 
 [RequireComponent(typeof(ActorAbilitySystem))]
-public class ActorCast : MonoBehaviour, ICastActions {
+public class ActorCast : MonoBehaviour, ICastActions, IEquipActions {
 
     private InputSystem.InputSystem controls;
     private ActorAbilitySystem actorAbilitySystem;
@@ -43,8 +43,31 @@ public class ActorCast : MonoBehaviour, ICastActions {
 
     public GameObject Fire1Prefab;
 
+    private Animator animator;
+
+    private WeaponHandler weaponHandler;
+
     List<Entity> GrantedAbilityEntities;
-   // List<(IAbilityTagComponent AbilityTag, ComponentType ComponentType, Entity GrantedAbilityEntity)> GrantedAbilities;
+    // List<(IAbilityTagComponent AbilityTag, ComponentType ComponentType, Entity GrantedAbilityEntity)> GrantedAbilities;
+    // Start is called before the first frame update
+
+    void Start() {
+        actorAbilitySystem = GetComponent<ActorAbilitySystem>();
+        if (controls == null) {
+            controls = new InputSystem.InputSystem();
+            controls.Cast.SetCallbacks(this);
+            controls.Equip.SetCallbacks(this);
+        }
+        controls.Cast.Enable();
+        controls.Equip.Enable();
+
+        GetAllAbilities();
+        // Get list of grantedAbility entities
+        GetGrantedAbilities(World.DefaultGameObjectInjectionWorld.EntityManager);
+
+        this.animator = GetComponent<Animator>();
+        this.weaponHandler = GetComponent<WeaponHandler>();
+    }
 
     public void OnCast1(InputAction.CallbackContext context) {
         if (!context.performed) return;
@@ -86,24 +109,14 @@ public class ActorCast : MonoBehaviour, ICastActions {
         Cast(8);
     }
 
-
-    // Start is called before the first frame update
-    void Start() {
-        actorAbilitySystem = GetComponent<ActorAbilitySystem>();
-        if (controls == null) {
-            controls = new InputSystem.InputSystem();
-            controls.Cast.SetCallbacks(this);
-        }
-        controls.Cast.Enable();
-
-        GetAllAbilities();
-        // Get list of grantedAbility entities
-        GetGrantedAbilities(World.DefaultGameObjectInjectionWorld.EntityManager);
+    public void Update() {
+        weaponHandler.IsWeaponEquipped = animator.GetBool("IsWeaponEquipped");
     }
+
+
 
     void GetAllAbilities() {
         //var abilityComponentTypes = AbilityManager.AbilityComponentTypes();
-
     }
 
     /// <summary>
@@ -165,60 +178,9 @@ public class ActorCast : MonoBehaviour, ICastActions {
 
     }
 
+    public void OnToggleEquip(InputAction.CallbackContext context) {
+        if (!context.performed) return;
+        animator.SetBool("IsWeaponEquipped", !weaponHandler.IsWeaponEquipped);
+    }
 
-    // private IEnumerator DoDefaultAttack(EntityManager entityManager, Entity entity, ActorAbilitySystem actorAbilitySystem) {
-    //     var translation = entityManager.GetComponentData<Translation>(entity);
-    //     var rotation = entityManager.GetComponentData<Rotation>(entity);
-    //     var AbilityState = -1;
-    //     Entity GrantedAbilityEntity = default(Entity);
-    //     var forwardVector = math.normalize(math.mul(rotation.Value, new float3(0, 0, 1)));
-
-    //     // Get all entities that have these components
-    //     // Check if player can use ability (the GrantedAbility entity contains this information)
-    //     Entities
-    //         .WithAllReadOnly<AbilityOwnerComponent, AbilityStateComponent, DefaultAttackAbilityTag>().ForEach((Entity grantedAbilityEntity, ref AbilityStateComponent abilityState, ref AbilityOwnerComponent abilityOwner) => {
-    //             if (abilityOwner == actorAbilitySystem.AbilityOwnerEntity) {
-    //                 AbilityState = abilityState;
-    //                 GrantedAbilityEntity = grantedAbilityEntity;
-    //             }
-    //         });
-
-    //     if (AbilityState != 0) {
-    //         // We could also do checks here to see what the ability state is and report an appropriate error on screen
-    //         // For example, we are using AbilityState = 2 to note that the ability is on cooldown, so we could display
-    //         // something like "This ability is on cooldown" on the screen.
-    //         yield break;
-    //     }
-
-
-
-
-    //     var playerCastHelper = actorAbilitySystem.GetComponent<PlayerCastTimelineHelperMono>();
-
-    //     // Raycast forward, and if we hit something, reduce it's HP.
-    //     RaycastHit hit;
-    //     float3 rayOrigin = actorAbilitySystem.CastPoint.transform.position;
-    //     // Does the ray intersect any objects
-    //     if (!Physics.Raycast(rayOrigin, forwardVector, out hit, Mathf.Infinity)) {
-    //         yield break;
-    //     }
-    //     bool wasHit = false;
-    //     Entity targetEntity = default(Entity);
-    //     if (hit.distance < 1f) {
-    //         Debug.DrawRay(rayOrigin, forwardVector * hit.distance, Color.black, 1f);
-    //         if (hit.transform.parent.gameObject.TryGetComponent<ActorAbilitySystem>(out var targetActorAbilitySystemMono)) {
-    //             targetEntity = targetActorAbilitySystemMono.AbilityOwnerEntity;
-    //             wasHit = true;
-    //         }
-    //     }
-
-    //     new DefaultAttackAbilityTag().BeginActivateAbility(EntityManager, GrantedAbilityEntity);
-
-    //     playerCastHelper.PlaySwingAnimation();
-    //     yield return playerCastHelper.StartCoroutine(playerCastHelper.CheckForSwingHit(wasHit, EntityManager, targetEntity));
-    //     // Default attack - trigger cooldown and resource cost
-    //     (new DefaultAttackAbilityTag()).CommitAbility(EntityManager, actorAbilitySystem.AbilityOwnerEntity);
-    //     new DefaultAttackAbilityTag().EndActivateAbility(EntityManager, GrantedAbilityEntity);
-
-    // }
 }

@@ -84,7 +84,7 @@
                     "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "ScaleVector2(x=0.5,y=0.5)",
-                    "groups": "",
+                    "groups": "KBM",
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -246,6 +246,33 @@
                     "processors": "",
                     "groups": "KBM",
                     "action": " Cast 8",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Equip",
+            "id": "cd7467a3-1b11-4908-bb36-74f9c7afd8e7",
+            "actions": [
+                {
+                    "name": "Toggle Equip",
+                    "type": "Button",
+                    "id": "4d3ef36e-e8e7-4b5e-af7a-3d0c72e4653e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5fdf349f-6347-4624-8fdb-09abd76e6b81",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KBM",
+                    "action": "Toggle Equip",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

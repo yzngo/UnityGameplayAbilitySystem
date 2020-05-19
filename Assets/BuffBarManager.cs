@@ -29,7 +29,7 @@ using Unity.Entities;
 using UnityEngine;
 
 public class BuffBarManager : MonoBehaviour {
-    public BuffsContainerScriptableObject EffectsToShow;
+    //public BuffsContainerScriptableObject EffectsToShow;
     public List<GameplayTagStatusBarButton> BuffUIObject;
     public BuffIconMapScriptableObject BuffIconMaps;
     public ActorAbilitySystem AbilitySystem;
@@ -41,13 +41,13 @@ public class BuffBarManager : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        this.ComponentTypes = new HashSet<ComponentType>(EffectsToShow.Buffs.Select(x => x.ComponentType));
-        this.Buffs = new HashSet<int>(EffectsToShow.GetIndices());
-        BuffIconForIdentifier = new Dictionary<int, BuffIconMap>();
-        for (var i = 0; i < BuffIconMaps.BuffIconMaps.Count; i++) {
-            var iconMap = BuffIconMaps.BuffIconMaps[i];
-            BuffIconForIdentifier[iconMap.BuffIdentifier] = iconMap;
-        }
+        // this.ComponentTypes = new HashSet<ComponentType>(EffectsToShow.Buffs.Select(x => x.ComponentType));
+        // this.Buffs = new HashSet<int>(EffectsToShow.GetIndices());
+        // BuffIconForIdentifier = new Dictionary<int, BuffIconMap>();
+        // for (var i = 0; i < BuffIconMaps.BuffIconMaps.Count; i++) {
+        //     var iconMap = BuffIconMaps.BuffIconMaps[i];
+        //     BuffIconForIdentifier[iconMap.BuffIdentifier] = iconMap;
+        // }
     }
 
     // Update is called once per frame

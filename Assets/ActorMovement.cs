@@ -18,6 +18,7 @@
  * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -25,8 +26,14 @@ public class ActorMovement : MonoBehaviour {
     public float moveSpeed;
     public InputSystem.InputSystem controls;
     Rigidbody rb;
-
     Camera cam;
+
+    private Animator animator;
+
+    void Start() {
+        animator = GetComponent<Animator>();
+    }
+
     void Awake() {
         rb = GetComponent<Rigidbody>();
         if (controls == null) {
@@ -40,6 +47,11 @@ public class ActorMovement : MonoBehaviour {
     void FixedUpdate() {
         FaceCameraDirection();
         Move();
+        SetMovementSpeed();
+    }
+
+    private void SetMovementSpeed() {
+        this.animator.SetFloat("Speed", Vector2.ClampMagnitude(controls.Movement.WASD.ReadValue<Vector2>(), 1).magnitude);
     }
 
     private void Move() {

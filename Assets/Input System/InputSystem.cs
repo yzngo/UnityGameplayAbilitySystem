@@ -99,7 +99,7 @@ namespace InputSystem
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": ""ScaleVector2(x=0.5,y=0.5)"",
-                    ""groups"": """",
+                    ""groups"": ""KBM"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -265,6 +265,33 @@ namespace InputSystem
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Equip"",
+            ""id"": ""cd7467a3-1b11-4908-bb36-74f9c7afd8e7"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle Equip"",
+                    ""type"": ""Button"",
+                    ""id"": ""4d3ef36e-e8e7-4b5e-af7a-3d0c72e4653e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""5fdf349f-6347-4624-8fdb-09abd76e6b81"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KBM"",
+                    ""action"": ""Toggle Equip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -300,6 +327,9 @@ namespace InputSystem
             m_Cast_Cast6 = m_Cast.FindAction(" Cast 6", throwIfNotFound: true);
             m_Cast_Cast7 = m_Cast.FindAction(" Cast 7", throwIfNotFound: true);
             m_Cast_Cast8 = m_Cast.FindAction(" Cast 8", throwIfNotFound: true);
+            // Equip
+            m_Equip = asset.FindActionMap("Equip", throwIfNotFound: true);
+            m_Equip_ToggleEquip = m_Equip.FindAction("Toggle Equip", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -475,6 +505,39 @@ namespace InputSystem
             }
         }
         public CastActions @Cast => new CastActions(this);
+
+        // Equip
+        private readonly InputActionMap m_Equip;
+        private IEquipActions m_EquipActionsCallbackInterface;
+        private readonly InputAction m_Equip_ToggleEquip;
+        public struct EquipActions
+        {
+            private @InputSystem m_Wrapper;
+            public EquipActions(@InputSystem wrapper) { m_Wrapper = wrapper; }
+            public InputAction @ToggleEquip => m_Wrapper.m_Equip_ToggleEquip;
+            public InputActionMap Get() { return m_Wrapper.m_Equip; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(EquipActions set) { return set.Get(); }
+            public void SetCallbacks(IEquipActions instance)
+            {
+                if (m_Wrapper.m_EquipActionsCallbackInterface != null)
+                {
+                    @ToggleEquip.started -= m_Wrapper.m_EquipActionsCallbackInterface.OnToggleEquip;
+                    @ToggleEquip.performed -= m_Wrapper.m_EquipActionsCallbackInterface.OnToggleEquip;
+                    @ToggleEquip.canceled -= m_Wrapper.m_EquipActionsCallbackInterface.OnToggleEquip;
+                }
+                m_Wrapper.m_EquipActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @ToggleEquip.started += instance.OnToggleEquip;
+                    @ToggleEquip.performed += instance.OnToggleEquip;
+                    @ToggleEquip.canceled += instance.OnToggleEquip;
+                }
+            }
+        }
+        public EquipActions @Equip => new EquipActions(this);
         private int m_KBMSchemeIndex = -1;
         public InputControlScheme KBMScheme
         {
@@ -499,6 +562,10 @@ namespace InputSystem
             void OnCast6(InputAction.CallbackContext context);
             void OnCast7(InputAction.CallbackContext context);
             void OnCast8(InputAction.CallbackContext context);
+        }
+        public interface IEquipActions
+        {
+            void OnToggleEquip(InputAction.CallbackContext context);
         }
     }
 }

@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0231870f02d480942b18f3b23278bc70, type: 3}
   m_Name: Default Attack Ability
   m_EditorClassIdentifier: 
-  AbilityType:
-    _type: MyGameplayAbilitySystem.Abilities.DefaultAttack.DefaultAttackAbilityTag,
-      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  AbilityName: Attack
   Sprite:
     Sprite: {fileID: 21300000, guid: f64054035c823ca40ace8a2e5021f7ec, type: 3}
   AbilityTags: {fileID: 11400000, guid: 1562e05bb53c50c4a86fadde82c1fe6f, type: 2}

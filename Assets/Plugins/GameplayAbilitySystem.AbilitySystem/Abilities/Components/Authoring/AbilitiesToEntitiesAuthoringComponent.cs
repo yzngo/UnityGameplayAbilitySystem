@@ -41,16 +41,16 @@ namespace GameplayAbilitySystem.AbilitySystem.Abilities.Components.Authoring {
         [SerializeField]
         private List<AbilityScriptableObject> Abilities;
 
-        private static Dictionary<Type, Entity> Entities;
+        private static Dictionary<string, Entity> Entities;
 
-        public Entity EntityForType(Type t) {
+        public Entity EntityForType(string t) {
             return Entities[t];
         }
 
-        public static Entity GetEntityForAbilityType(Type type) => Entities[type];
+        public static Entity GetEntityForAbilityType(string type) => Entities[type];
 
         public void Convert(EntityManager dstManager) {
-            Entities = new Dictionary<Type, Entity>();
+            Entities = new Dictionary<string, Entity>();
             var archetype = dstManager.CreateArchetype(
                     // typeof(GameplayTagsBufferElement<IAbilityTagsBufferElement>),
                     // typeof(GameplayTagsBufferElement<ICancelAbilitiesWithTagsBufferElement>),
@@ -77,8 +77,8 @@ namespace GameplayAbilitySystem.AbilitySystem.Abilities.Components.Authoring {
                 // PopulateGameplayTagBuffers<ISourceBlockedTagsBufferElement>(dstManager, abilitySO.SourceBlockedTags, abilityEntity);
                 // PopulateGameplayTagBuffers<ITargetRequiredTagsBufferElement>(dstManager, abilitySO.TargetRequiredTags, abilityEntity);
                 // PopulateGameplayTagBuffers<ITargetBlockedTagsBufferElement>(dstManager, abilitySO.TargetBlockedTags, abilityEntity);
-                dstManager.SetName(abilityEntity, GetDisplayNameForType(abilitySO.AbilityType.ComponentType.GetManagedType()));
-                Entities.Add(abilitySO.AbilityType.ComponentType.GetManagedType(), abilityEntity);
+                dstManager.SetName(abilityEntity, abilitySO.AbilityName);
+                Entities.Add(abilitySO.AbilityName, abilityEntity);
             }
         }
 

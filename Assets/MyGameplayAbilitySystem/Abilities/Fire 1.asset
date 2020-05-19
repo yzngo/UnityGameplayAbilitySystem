@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0231870f02d480942b18f3b23278bc70, type: 3}
   m_Name: Fire 1
   m_EditorClassIdentifier: 
-  AbilityType:
-    _type: MyGameplayAbilitySystem.Abilities.Fire1.Fire1AbilityTag, Assembly-CSharp,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  AbilityName: Fire
   Sprite:
     Sprite: {fileID: 21300000, guid: 012e223bae53ce3439432cd17309ca89, type: 3}
   AbilityTags: {fileID: 11400000, guid: b0eeb7ad50c3f6c47b5df541a0d465fd, type: 2}

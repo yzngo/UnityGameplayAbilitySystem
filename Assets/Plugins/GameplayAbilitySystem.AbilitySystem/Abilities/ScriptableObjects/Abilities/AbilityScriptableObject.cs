@@ -20,14 +20,12 @@
  */
 
 using GameplayAbilitySystem.AbilitySystem.GameplayTags.ScriptableObjects;
-using UnityEditor;
 using UnityEngine;
 
 namespace GameplayAbilitySystem.AbilitySystem.Abilities.ScriptableObjects {
     [CreateAssetMenu(fileName = "Ability", menuName = "Gameplay Ability System/Abilities/Ability")]
     public class AbilityScriptableObject : UIElementScriptableObject {
-        [SerializeField]
-        public AbilityTagComponentTypeOf AbilityType;
+        public string AbilityName;
 
         [SerializeField]
         public SpritePreview Sprite;

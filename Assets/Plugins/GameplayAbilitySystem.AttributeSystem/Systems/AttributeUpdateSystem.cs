@@ -79,7 +79,7 @@ namespace GameplayAbilitySystem.AttributeSystem.Systems {
             }
 
             ActorAttributeChanged[entities[0]].OnEvent += (o, e) => {
-                Debug.Log(e.NewAttribute.Length);
+                //Debug.Log(e.NewAttribute.Length);
             };
 
             entities.Dispose();

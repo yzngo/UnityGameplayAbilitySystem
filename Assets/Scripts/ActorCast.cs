@@ -29,6 +29,7 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 using static InputSystem.InputSystem;
 
 [RequireComponent(typeof(ActorAbilitySystem))]
@@ -43,10 +44,11 @@ public class ActorCast : MonoBehaviour, ICastActions, IEquipActions {
 
     public GameObject Fire1Prefab;
 
-    private Animator animator;
+    private Animator _animator;
 
     private WeaponHandler weaponHandler;
 
+    private int weaponHandlerAnimatorLayerIndex;
     List<Entity> GrantedAbilityEntities;
     // List<(IAbilityTagComponent AbilityTag, ComponentType ComponentType, Entity GrantedAbilityEntity)> GrantedAbilities;
     // Start is called before the first frame update
@@ -65,8 +67,11 @@ public class ActorCast : MonoBehaviour, ICastActions, IEquipActions {
         // Get list of grantedAbility entities
         GetGrantedAbilities(World.DefaultGameObjectInjectionWorld.EntityManager);
 
-        this.animator = GetComponent<Animator>();
+        this._animator = GetComponent<Animator>();
         this.weaponHandler = GetComponent<WeaponHandler>();
+
+        this.weaponHandlerAnimatorLayerIndex = _animator.GetLayerIndex("WeaponHandler");
+
     }
 
     public void OnCast1(InputAction.CallbackContext context) {
@@ -110,7 +115,8 @@ public class ActorCast : MonoBehaviour, ICastActions, IEquipActions {
     }
 
     public void Update() {
-        weaponHandler.IsWeaponEquipped = animator.GetBool("IsWeaponEquipped");
+        weaponHandler.IsWeaponEquipped = _animator.GetBool("IsWeaponEquipped");
+        weaponHandler.IsWeaponReady = _animator.GetBool("IsWeaponReady");
     }
 
 
@@ -180,7 +186,32 @@ public class ActorCast : MonoBehaviour, ICastActions, IEquipActions {
 
     public void OnToggleEquip(InputAction.CallbackContext context) {
         if (!context.performed) return;
-        animator.SetBool("IsWeaponEquipped", !weaponHandler.IsWeaponEquipped);
+        var weaponEquipped = _animator.GetBool("IsWeaponEquipped");
+        var isAttacking = _animator.GetBool("IsAttacking");
+        var animatorStateInfo = _animator.GetCurrentAnimatorStateInfo(weaponHandlerAnimatorLayerIndex);
+        if (weaponEquipped && animatorStateInfo.IsName("WeaponHandler.IdleEquip") && !isAttacking) {
+            _animator.SetBool("IsWeaponEquipped", false);
+        } else if (!weaponEquipped && animatorStateInfo.IsName("WeaponHandler.IdleUnequip")) {
+            _animator.SetBool("IsWeaponEquipped", true);
+        }
     }
 
+    public void OnAutoAttack(InputAction.CallbackContext context) {
+        if (context.performed) {
+            DoAttack(1);
+        }
+    }
+
+    public void OnHeavyAttack(InputAction.CallbackContext context) {
+        if (context.performed) {
+            DoAttack(2);
+        }
+    }
+
+    private void DoAttack(int attackType) {
+        if (_animator.GetBool("CanAttack")) {
+            _animator.SetTrigger("Attack");
+            _animator.SetInteger("AttackType", attackType);
+        }
+    }
 }

@@ -173,6 +173,22 @@ namespace InputSystem
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""AutoAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""7da7755e-b608-4d3a-9fc2-c79066b2314d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""HeavyAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""fdc023e5-0592-48cc-88f7-49575ece3050"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -263,6 +279,28 @@ namespace InputSystem
                     ""action"": "" Cast 8"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4eceae65-fc2f-4fb7-9fae-dc0b8190b3a2"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""KBM"",
+                    ""action"": ""AutoAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4b9956cf-35cf-45ae-93b9-d354a7cae3e4"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KBM"",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -327,6 +365,8 @@ namespace InputSystem
             m_Cast_Cast6 = m_Cast.FindAction(" Cast 6", throwIfNotFound: true);
             m_Cast_Cast7 = m_Cast.FindAction(" Cast 7", throwIfNotFound: true);
             m_Cast_Cast8 = m_Cast.FindAction(" Cast 8", throwIfNotFound: true);
+            m_Cast_AutoAttack = m_Cast.FindAction("AutoAttack", throwIfNotFound: true);
+            m_Cast_HeavyAttack = m_Cast.FindAction("HeavyAttack", throwIfNotFound: true);
             // Equip
             m_Equip = asset.FindActionMap("Equip", throwIfNotFound: true);
             m_Equip_ToggleEquip = m_Equip.FindAction("Toggle Equip", throwIfNotFound: true);
@@ -428,6 +468,8 @@ namespace InputSystem
         private readonly InputAction m_Cast_Cast6;
         private readonly InputAction m_Cast_Cast7;
         private readonly InputAction m_Cast_Cast8;
+        private readonly InputAction m_Cast_AutoAttack;
+        private readonly InputAction m_Cast_HeavyAttack;
         public struct CastActions
         {
             private @InputSystem m_Wrapper;
@@ -440,6 +482,8 @@ namespace InputSystem
             public InputAction @Cast6 => m_Wrapper.m_Cast_Cast6;
             public InputAction @Cast7 => m_Wrapper.m_Cast_Cast7;
             public InputAction @Cast8 => m_Wrapper.m_Cast_Cast8;
+            public InputAction @AutoAttack => m_Wrapper.m_Cast_AutoAttack;
+            public InputAction @HeavyAttack => m_Wrapper.m_Cast_HeavyAttack;
             public InputActionMap Get() { return m_Wrapper.m_Cast; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -473,6 +517,12 @@ namespace InputSystem
                     @Cast8.started -= m_Wrapper.m_CastActionsCallbackInterface.OnCast8;
                     @Cast8.performed -= m_Wrapper.m_CastActionsCallbackInterface.OnCast8;
                     @Cast8.canceled -= m_Wrapper.m_CastActionsCallbackInterface.OnCast8;
+                    @AutoAttack.started -= m_Wrapper.m_CastActionsCallbackInterface.OnAutoAttack;
+                    @AutoAttack.performed -= m_Wrapper.m_CastActionsCallbackInterface.OnAutoAttack;
+                    @AutoAttack.canceled -= m_Wrapper.m_CastActionsCallbackInterface.OnAutoAttack;
+                    @HeavyAttack.started -= m_Wrapper.m_CastActionsCallbackInterface.OnHeavyAttack;
+                    @HeavyAttack.performed -= m_Wrapper.m_CastActionsCallbackInterface.OnHeavyAttack;
+                    @HeavyAttack.canceled -= m_Wrapper.m_CastActionsCallbackInterface.OnHeavyAttack;
                 }
                 m_Wrapper.m_CastActionsCallbackInterface = instance;
                 if (instance != null)
@@ -501,6 +551,12 @@ namespace InputSystem
                     @Cast8.started += instance.OnCast8;
                     @Cast8.performed += instance.OnCast8;
                     @Cast8.canceled += instance.OnCast8;
+                    @AutoAttack.started += instance.OnAutoAttack;
+                    @AutoAttack.performed += instance.OnAutoAttack;
+                    @AutoAttack.canceled += instance.OnAutoAttack;
+                    @HeavyAttack.started += instance.OnHeavyAttack;
+                    @HeavyAttack.performed += instance.OnHeavyAttack;
+                    @HeavyAttack.canceled += instance.OnHeavyAttack;
                 }
             }
         }
@@ -562,6 +618,8 @@ namespace InputSystem
             void OnCast6(InputAction.CallbackContext context);
             void OnCast7(InputAction.CallbackContext context);
             void OnCast8(InputAction.CallbackContext context);
+            void OnAutoAttack(InputAction.CallbackContext context);
+            void OnHeavyAttack(InputAction.CallbackContext context);
         }
         public interface IEquipActions
         {

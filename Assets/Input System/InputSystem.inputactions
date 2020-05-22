@@ -158,6 +158,22 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "AutoAttack",
+                    "type": "Button",
+                    "id": "7da7755e-b608-4d3a-9fc2-c79066b2314d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "HeavyAttack",
+                    "type": "Button",
+                    "id": "fdc023e5-0592-48cc-88f7-49575ece3050",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -246,6 +262,28 @@
                     "processors": "",
                     "groups": "KBM",
                     "action": " Cast 8",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4eceae65-fc2f-4fb7-9fae-dc0b8190b3a2",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "KBM",
+                    "action": "AutoAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4b9956cf-35cf-45ae-93b9-d354a7cae3e4",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KBM",
+                    "action": "HeavyAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

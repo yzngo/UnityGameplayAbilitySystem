@@ -10,6 +10,7 @@ public class WeaponHandler : MonoBehaviour {
     public Transform WeaponRestPose;
 
     public bool IsWeaponEquipped;
+    public bool IsWeaponReady;
     public void ResetWeapon(Action action) {
         if (action == Action.Equip) {
             Weapon.SetParent(WeaponHandle);
